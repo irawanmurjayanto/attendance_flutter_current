@@ -232,7 +232,7 @@ setPlatformType() {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                          Text(prov.datamap[i].nama!+"("+prov.datamap[i].nik!+"/"+prov.datamap[i].section!+")",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
-                         Text(DateFormat('dd-MM-yyyy hh:mm:ss').parse(prov.datamap[i].tglrec!.toString()).toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                         Text(DateFormat('dd-MM-yyyy').format(DateTime.parse(prov.datamap[i].tglrec!)).toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
                       ],
                     )
                     
