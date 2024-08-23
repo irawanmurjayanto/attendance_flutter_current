@@ -11,7 +11,7 @@
 
 
     <application
-        android:label="Attandance of Paradise"
+        android:label="Attandance of Current"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
       

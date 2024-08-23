@@ -1,4 +1,4 @@
-package com.example.flutter_attendance_paradise
+package com.example.flutter_attendance_current
 
 import io.flutter.embedding.android.FlutterActivity
 

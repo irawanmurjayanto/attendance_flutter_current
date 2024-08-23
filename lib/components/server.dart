@@ -1,3 +1,3 @@
 class NamaServer{
-  static String server='https://irawan.angsoft.info/';
+  static String server='http://kinipi.net/';
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
  
-import 'package:flutter_attendance_paradise/components/history.dart';
-import 'package:flutter_attendance_paradise/main2.dart';
-import 'package:flutter_attendance_paradise/main3.dart';
-import 'package:flutter_attendance_paradise/provider/mapdatas.dart';
+import 'package:flutter_attendance_current/components/history.dart';
+import 'package:flutter_attendance_current/main2.dart';
+import 'package:flutter_attendance_current/main3.dart';
+import 'package:flutter_attendance_current/provider/mapdatas.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 

@@ -1,38 +1,40 @@
 class DataModel{
 
+ 
+
    int? idno;
-   String? title;
-   String? imei_no; 
-   String? keyno;
-   double? map_lat;
-   double? map_long;
-   String? image;
-   String? tgl_rec;
+   String? nik;
+   String? nama;
+   String? tglrec;
+   String? absen;
+   String? lokasi;
+   String? section;
+   String? pict_att;
+   
 
 DataModel({
   this.idno,
-  this.title,
-  this.imei_no,
-  this.keyno,
-  this.map_lat,
-  this.map_long,
-  this.image, 
-  this.tgl_rec, 
-
+  this.nik,
+  this.nama,
+  this.tglrec,
+  this.absen,
+  this.lokasi,
+  this.section,
+  this.pict_att,
+ 
+ 
 });
 
 
  DataModel.fromJson(Map<String, dynamic> json) {
     idno = json['idno'];
-    title = json['title'];
-    imei_no = json['imei_no'];
-    keyno = json['keyno'];
-    map_lat = json['map_lat'];
-    map_long = json['map_long'];
-    image = json['image'];
-    tgl_rec = json['tgl_rec'];
-   
-    
+    nik = json['nik'];
+    nama = json['nama'];
+    tglrec = json['tglrec'];
+    absen = json['absen'];
+    lokasi = json['lokasi'];
+    section = json['section'];
+    pict_att = json['pict_att']; 
   }
 
 

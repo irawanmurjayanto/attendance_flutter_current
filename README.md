@@ -1,3 +1,3 @@
-# flutter_attendance_paradise
+# flutter_attendance_current
 
 A new Flutter project.

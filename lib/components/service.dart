@@ -1,7 +1,7 @@
  
  
 import 'dart:convert';
-import 'package:flutter_attendance_paradise/datamodel/history.dart';
+import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:http/http.dart' as http;
 
 class Services{

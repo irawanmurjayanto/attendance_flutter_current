@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
  
-import 'package:flutter_attendance_paradise/components/history.dart';
-import 'package:flutter_attendance_paradise/main.dart';
+import 'package:flutter_attendance_current/components/history.dart';
+import 'package:flutter_attendance_current/main.dart';
+import 'package:flutter_attendance_current/message/warning.dart';
+import 'package:flutter_attendance_current/provider/mapdatas.dart';
+//import 'package:flutter_attendance_current/provider/mapdatas.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,9 +15,11 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:device_imei/device_imei.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 // import 'package:get_location_addres/get_imei.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:flutter_share/flutter_share.dart';
 //import 'package:documents_picker/documents_picker.dart';
@@ -23,6 +30,7 @@ import 'package:device_info_plus/device_info_plus.dart';
  
     import 'package:http/http.dart' as http;
      import 'dart:convert';
+     import 'package:fluttertoast/fluttertoast.dart';
  
   
  //awal
@@ -76,7 +84,8 @@ class _HomepageState extends State<HomepageMenu> {
   
     super.initState();
  
-  // _getImei();
+    _getImeix();
+   _getTimeClock();
    _gethasil();
    _getTime();
    _getId(); 
@@ -84,8 +93,41 @@ class _HomepageState extends State<HomepageMenu> {
    
   }
 
+final _empregnik=TextEditingController();
+ getEmpReg() async {
+  showDialog(context: context, builder: (context) {
+    // ignore: prefer_const_constructors
+    return AlertDialog(
+      
+       title: Text("Employee Register"), 
+       content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+          autofocus: true,  
+          controller: _empregnik,
+          decoration: InputDecoration(
+          labelText: "NIK",
+          hintText: "NIK"
+        ),
+       ),
 
- 
+        ],
+        
+       ),
+      actions: [
+        IconButton(onPressed: () {
+           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_tempImei!).then((value) => Navigator.pop(context));
+        }, icon: Icon(Icons.save)),
+
+        IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon: Icon(Icons.cancel))
+      ],
+    );
+  },);
+ }
+
 
 _shareImage2() async{
 
@@ -142,9 +184,9 @@ Future<void> _launchUrl() async {
 
 
 
-      static double lat1=0;
+  static double lat1=0;
   static double lat2=0;
-    static double lat1new=0;
+  static double lat1new=0;
   static double lat2new=0;
  _gethasil() async{
    Position position = await _getGeoLocationPosition();
@@ -196,11 +238,11 @@ Future _getwarn(String msg) async{
           ScaffoldMessenger.of(context).showSnackBar(warn1);
 
 }
-
+ 
       
-      final ImagePicker picker = ImagePicker();
+ final ImagePicker picker = ImagePicker();
  static String now2="x";
-Future _getTime () async {
+ Future _getTime () async {
  DateTime now1=DateTime.now(); 
  int day=now1.day;
  int month=now1.month;
@@ -213,12 +255,22 @@ return now2;
  
 }
 
+String? jam;
+
+ _getTimeClock() async{
+
+ 
+  Timer.periodic(Duration(seconds: 1), (timer) { 
+   
+   jam=DateFormat("HH:mm:ss dd-MM-yyyy ").format(DateTime.now());
+   _jam.text=jam!; 
+    
+  });
+    
+   
+}
+
 final snakbartime=SnackBar(content:Text("test"));
-
-      
- 
- 
-
 
 //t3 
 TextEditingController _title=TextEditingController();
@@ -260,79 +312,29 @@ TextEditingController _title=TextEditingController();
  
  Future saveImageMap() async {
    
-       // var img = await picker.pickImage(source: media);
-          //var choosedimage = await picker.pickImage(source: media,imageQuality: 5,preferredCameraDevice: CameraDevice.front) ;
-        //set source: ImageSource.camera to get image from camera
-      // setState(() {
-       //image = File(choosedimage!.path);
-    //});
-
     
-       var uploadurl = Uri.parse('https://irawan.angsoft.info/tests/flutter/map1/insert.php');
 
-
-//  uploadurl.files.add(pic);
-    
-//           await uploadurl.send();
-
-  EasyLoading.show(status: "Saving Data..");
-
-    try{
+ 
       List<int> imageBytes = image!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);
       String baseimage2=baseimage==null?'x':baseimage;
-     
 
-      var response = await http.post(
-          uploadurl,
-          body: {
-            'imei_no':ambilid,
-            'map_lat':lat1new.toString(),
-            'map_long':lat2new.toString(),
-            'keyno':now2,
-            'judul':Address.toString(),
-            'image': baseimage2,
-          }
-      );
-      if(response.statusCode == 200){
-        var jsondata = json.decode(response.body);
-        if(jsondata["error"]){
-          print(jsondata["msg"]);
-        }else{
-         // print("Upload successful");
-             var message = jsonDecode(response.body);
+      final String lok="test";
+
+       setMessageAll(context, lok);
+
     
-              // show snackbar if input data successfully
-              // final snackBar = SnackBar(
-              //   content: Center(child:Text(message['message'])),
-              //   backgroundColor: Colors.black,
-              //   dismissDirection: DismissDirection.up,
-              //   behavior: SnackBarBehavior.floating,
-              //   margin: EdgeInsets.only(
-              //     left: 30,
-              //     right: 30,
-              //     bottom: MediaQuery.of(context).size.height-350
-              //   ),
-                
-              //   );
-              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              _getwarn(message['message']) ;
-             // Navigator.pop(context);
-              EasyLoading.dismiss();
-        }
-      }else{
-        print("Error during connection to server");
-      }
-    }catch(e){
-      print("Error during converting to Base64");
-    }
-    
+   
       }
 
+
+  
+
+ 
  Future takePicture(ImageSource media) async {
    
        // var img = await picker.pickImage(source: media);
-          var choosedimage = await picker.pickImage(source: media,imageQuality: 5,preferredCameraDevice: CameraDevice.front) ;
+          var choosedimage = await picker.pickImage(source: media,imageQuality: 4,preferredCameraDevice: CameraDevice.rear) ;
         //set source: ImageSource.camera to get image from camera
        setState(() {
        image = File(choosedimage!.path);
@@ -340,9 +342,10 @@ TextEditingController _title=TextEditingController();
  }
 
 
- 
+ String? _tempImei;  
+ final _imetText =TextEditingController();
 
- _getImei() async {
+ _getImeix() async {
     
     var permission = await Permission.phone.status;
 
@@ -351,6 +354,8 @@ TextEditingController _title=TextEditingController();
     if (dInfo != null) {
       setState(() {
         deviceInfo = dInfo;
+        _tempImei=deviceInfo!.deviceId;
+         
       });
     }
 
@@ -369,7 +374,7 @@ TextEditingController _title=TextEditingController();
           setState(() {
             getPermission = false;
           });
-          _getImei();
+          _getImeix();
         } else {
           setState(() {
             getPermission = false;
@@ -393,19 +398,7 @@ TextEditingController _title=TextEditingController();
 
 final TextEditingController TestExt=TextEditingController();
  
-
- 
-      
-
-
- 
-               
- 
-
-
   final mybutton=GlobalKey();
-
-
 
   String location ='Null, Press Button';
   String Address = 'search';
@@ -415,6 +408,7 @@ final TextEditingController TestExt=TextEditingController();
     LocationPermission permission;
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
@@ -472,33 +466,76 @@ if (await Permission.location.isRestricted) {
   }
 
 
+  //atas
+  
+
+
   @override
   Widget build(BuildContext context) {
 
- 
-
-  
-
+   final screenHeight=MediaQuery.of(context).size.height;
     return Scaffold(
       //backgroundColor: Colors.transparent,
+      
        appBar: AppBar(
-         title: const Center(child:Text('Attendance of PT Paradise',style: TextStyle(color: Colors.white),)),
+         title: const Center(child:Text('Attendance of PT. Paradise Island',style: TextStyle(color: Colors.white,fontSize: 18),)),
  backgroundColor: Colors.blueAccent,
 // actions: [
 //             IconButton(onPressed: () {
 //               Navigator.push(context, MaterialPageRoute(builder: (context) => History1(),));
 //             }, icon: Icon(Icons.access_alarm,size: 30,))
 //           ],
-
+        flexibleSpace: Stack(
+           
+           children: [
+            Image.asset("assets/images/appbar.png",
+            fit: BoxFit.contain,
+            //height: screenHeight*0.1,
+            ),
+            
+           ],
         ),
+        actions: [
+         
+          PopupMenuButton(
+            iconColor: Colors.white,
+            iconSize: 30,
+            color: Colors.white,
+            itemBuilder: (context) {
+            
+            return[
+              PopupMenuItem<int>(
+                value: 0,
+                child: Text("Employee Register"),
+              ),       
+               
+            ];
+          },
+          onSelected: (value) {
+
+            if (value==0)
+            {
+              //_getwarn("Menu 1");
+              getEmpReg();
+            }
+
+           
+              
+          },
+          )
+          
+        ],
+        
+        ),
+        
       body:
       
       SingleChildScrollView(
          
         child: 
       Container(
-        
-       height: MediaQuery.sizeOf(context).height/1.14,
+       //height all frame 
+       height: MediaQuery.sizeOf(context).height/1.25,
 
         // constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -512,13 +549,15 @@ if (await Permission.location.isRestricted) {
 
 //bikinbox flexible
               
-          
+            //bedul 2
                 
                Flexible(
                 flex:5,
                 fit: FlexFit.loose,
                 child: Container(
-                 padding: EdgeInsets.all(5),
+                 //frame block 2 
+                  height: MediaQuery.of(context).size.height/2,
+                 padding: EdgeInsets.all(10),
                 // height: MediaQuery.of(context).size.height/3,
                   width: double.infinity,
                   margin: EdgeInsets.all(10),
@@ -561,28 +600,7 @@ FutureBuilder<Position>(
   )
  
  
-//addresss etc
-
-// Expanded(child: 
-// getAmbilpeta(),
-
-// ),
  
- 
-                        
-                        // decoration: BoxDecoration(
-                        //   color: Colors.white12,
-                        //   borderRadius: BorderRadius.circular(5),
-                        //  border: Border.all(
-                        //   style: BorderStyle.solid,
-                        //   color: Colors.black,
-                        //   strokeAlign: BorderSide.strokeAlignOutside,
-                        //   width: 0.8
-                          
-                        // ),
-
-                        // ),
-
 ],
 
                       )
@@ -602,24 +620,32 @@ FutureBuilder<Position>(
                    )
 
                 )
-                
+          
                 ),
 
-Flexible(
-  flex: 2,
-  child: 
+
+//bedul2
 Container(
  
-  margin: EdgeInsets.all(10),
+  child: 
+Container(
+  height: MediaQuery.of(context).size.height/3.3,
+  padding: EdgeInsets.all(20),
+  margin: EdgeInsets.only(left:10,right:10,top:2),
 decoration: BoxDecoration(
   color: Colors.black12,
   border: Border.all(style: BorderStyle.solid),
   borderRadius: BorderRadius.circular(7),  
-  image: DecorationImage(
-    image: AssetImage('assets/images/back5b.jpg'),
-    fit: BoxFit.cover,
+   image: DecorationImage(
+      image: AssetImage('assets/images/back5b.jpg'),
+      fit: BoxFit.cover,
+      )
+
+  // image: DecorationImage(
+  //   image: AssetImage('assets/images/back5b.jpg'),
+  //   fit: BoxFit.cover,
     
-    )
+  //   )
   
 ),
 
@@ -632,66 +658,8 @@ children: [
 Column(
   children: [
 
-    IconButton(
-      onPressed: () {
-        takePicture(ImageSource.camera);
-        
-      }, 
-      
-      icon: Icon(Icons.camera_enhance_rounded),iconSize: 30,),
-
-      
-    IconButton(
-      onPressed: () {
-
-
-   if (image==null){
-
-          _getwarn('Image must be exist');
-        //  ScaffoldMessenger.of(context).showSnackBar(warn1);
-
-        }else{
-
-        showDialog(context: context, 
-        builder: (context) {
-         return  AlertDialog(
-            content: Image.file(File(image!.path)),
-          );
-        },);
-        }
-
-
-
-
-       
-        
-      }, 
-      
-      icon: Icon(Icons.center_focus_strong),iconSize: 30,),
-
-      
-    IconButton(
-      onPressed: ( ) {
-      //  shareFile();
-
-      //  showDialog(context: context, 
-      //   builder: (context) {
-      //    return  AlertDialog(
-      //       content: Image.file(File(image!.path)),
-      //     );
-      //   },);
-    if (image==null){
-
-          _getwarn('Image must be exist');
-        //  ScaffoldMessenger.of(context).showSnackBar(warn1);
-
-        }else{
-      _shareImage2();
-        }
-      
-      }, 
-      
-      icon: Icon(Icons.share_rounded),iconSize: 30,),
+  
+   
  
   ],
 ),
@@ -733,16 +701,48 @@ children: [
       File(image!.path)
       ),
   )
+
+,
+ //pick camera
+
+
+  //  IconButton(
+  //     onPressed: () {
+  //       takePicture(ImageSource.camera);
+        
+  //     }, 
+      
+  //     icon: Icon(Icons.camera_enhance_rounded),iconSize: 30,),
+
+   
+ 
+   
+
+
 ],
 ),
  
-SizedBox(width: 8,),
+SizedBox(width: 20,),
  //for save control
  
 Column(
   mainAxisAlignment: MainAxisAlignment.center,
    children: [
 
+
+ElevatedButton(onPressed: () {
+     takePicture(ImageSource.camera);
+  }, child: 
+  Row(
+    children: [
+      Icon(Icons.camera_enhance_rounded,size: 20,),
+      SizedBox(width: 5,),
+      Text("Ambil Photo   ",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
+    ],
+  )
+  ),
+
+  SizedBox(height: 5,),
 
 ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -775,15 +775,78 @@ ElevatedButton(
       child: Row(
         
         children: [
-          Icon(Icons.save,color: Colors.white),
+          Icon(Icons.input,color: Colors.white),
           SizedBox(width: 5,),
-          Text("Save",style: TextStyle(color: Colors.white),)
+          Text("Absen Masuk",style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.bold))
+
+        ],
+
+      )
+      
+      ),
+
+
+      SizedBox(height: 5,),
+
+      ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black87,
+       
+      ),
+      //savedata
+      onPressed: () {
+        
+
+       if (image==null){
+        Fluttertoast.showToast(
+        msg: "Photo Wajah harus ada",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0
+       );
+        return;
+        }
+
+
+      List<int> imageBytes = image!.readAsBytesSync();
+      String baseimage = base64Encode(imageBytes);
+      String baseimage2=baseimage==null?'x':baseimage;
+
+      final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
+
+       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'KELUAR');   
+
+     
+     
+
+      
+
+
+          
+    
+   
+
+       
+      }, 
+      
+      child: Row(
+        
+        children: [
+          Icon(Icons.output,color: Colors.white),
+          SizedBox(width: 5,),
+          Text("Absen Keluar",style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.bold),)
 
         ],
 
       )
       
       )
+
+
+
 
    ],
 )
@@ -867,6 +930,20 @@ ElevatedButton(
 
 //t5
 
+  final _jam=TextEditingController();
+
+  Widget Jam_clock(){
+    return Padding(padding: EdgeInsets.all(5),
+    child: TextField(
+      textAlign: TextAlign.center,
+      style: TextStyle(decoration: TextDecoration.none,fontWeight: FontWeight.bold,fontSize: 20), 
+     
+      
+      controller: _jam,
+    ),
+    
+    );
+  }
   Widget getAmbildata(snapshot){
 return Container(
    decoration: BoxDecoration(
@@ -878,29 +955,6 @@ return Container(
 
  child: Column(
 children: [
- Container(
-   height: MediaQuery.of(context).size.height/3.0,
-  child: 
- GoogleMap(
-           
-          initialCameraPosition: CameraPosition(    
-    
-          // target:LatLng(snapshot.latitude, snapshot.longitude),
-          target:LatLng(lat1new,lat2new),
-           zoom: 14,
-            
-          ),
-        //  myLocationEnabled: true,
-              
-          markers: {
-    Marker(
-      markerId: MarkerId("source"),
-      position: LatLng(snapshot.latitude, snapshot.longitude) ,
-    ),
-          }
-        )
- ),
-
 
 
                 Container(
@@ -947,7 +1001,7 @@ mainAxisAlignment: MainAxisAlignment.center,
  
   Container(
       // height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-  height: 80,
+ // height: 80,
    child: Scrollbar(
      thumbVisibility: true,
  
@@ -961,23 +1015,14 @@ mainAxisAlignment: MainAxisAlignment.center,
      child:Column(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
-   //t11    
-            // FutureBuilder(future: _getTime(), 
-            // builder: (context, snapshot) {
-            //   if (snapshot.hasData){
-            //    //return snapshot.data??"";
-            //    return  Text(snapshot.data);
-            //   }else{
-            //     return CircularProgressIndicator();
-            //   }
-              
-            // },),
-          
-            // SizedBox(height: 5,),
-           // Text(now2.toString()),
-            // Text('ID/Corrdinates Location',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
-            // Text("ID : ${deviceInfo?.deviceId}"),
 
+
+    //cur   T
+            Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+            SizedBox(height: 5,),
+            Jam_clock(),
+            SizedBox(height: 5,),
+            Text (deviceInfo!.deviceId.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
             SizedBox(height: 5,),
             
             Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),
@@ -1032,22 +1077,8 @@ Row(
     )
     
     ),
-SizedBox(width: 10,),
-     ElevatedButton(onPressed: 
-    () {
-    //_launchUrl;
+ 
     
-    IntentUtils.launchGoogleMaps(lat1new,lat2new);
-       //  get_urltest();
-      // get_urltest();
-    }, 
-    child: Row(
-      children: [
-        Icon(Icons.directions),
-        SizedBox(width: 10,),
-        Text("Go To ",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
-      ],
-    ))
   ],
 )
 ]
@@ -1138,6 +1169,7 @@ class _MyAppState extends State<MyApp_imei> {
     }
   }
 
+  
   _getImei() async {
     
     var permission = await Permission.phone.status;

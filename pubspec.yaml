@@ -1,4 +1,4 @@
-name: flutter_attendance_paradise
+name: flutter_attendance_current
 description: "A new Flutter project."
 publish_to: 'none'
 version: 0.1.0
@@ -14,9 +14,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_easyloading: ^3.0.5
-  flutter_launcher_icons: ^0.13.1
   flutter_share: ^2.0.0
   flutter_typeahead: ^5.2.0
+  fluttertoast: ^8.2.8
   geocoding: ^2.2.0
   geolocator: ^11.0.0
   google_maps_flutter: ^2.5.3
@@ -30,18 +30,15 @@ dependencies:
   url_launcher: ^6.2.5
 
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
-flutter_icons:
-  image_path: "assets/icon/icon.png" 
-  android: true
-  ios: true  
+# flutter_icons:
+#   image_path: "assets/images/icon.png" 
+#   android: true
+#   ios: true  
 
 
 
