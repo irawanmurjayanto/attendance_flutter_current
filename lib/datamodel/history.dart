@@ -33,8 +33,8 @@ DataModel({
     tglrec = json['tglrec'];
     absen = json['absen'];
     lokasi = json['lokasi'];
-    section = json['section'];
-    pict_att = json['pict_att']; 
+    section = json['section'] ?? "x";
+    pict_att = json['pict_att'] ?? "x" ; 
   }
 
 

@@ -94,6 +94,7 @@ setPlatformType() {
     }
   }
 
+  String? _empimei;
  _getImei() async {
     
     var permission = await Permission.phone.status;
@@ -103,6 +104,7 @@ setPlatformType() {
     if (dInfo != null) {
       setState(() {
         deviceInfo = dInfo;
+        _empimei=deviceInfo!.deviceId;
       });
     }
 
@@ -170,7 +172,7 @@ setPlatformType() {
  
  
  Future <void> getRefreshdata() async{
-  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(deviceInfo!.deviceId.toString());
+  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(_empimei!);
  }
 
  
@@ -204,56 +206,95 @@ setPlatformType() {
      backgroundColor: Colors.blueAccent,
      
      ),
-     body:Padding(
-      padding: EdgeInsets.all(10),
-     child: 
-     
-      
-      FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(deviceInfo!.deviceId.toString()), 
-      
-      builder: 
-      (context, snapshot) {
-        if (snapshot.connectionState==ConnectionState.waiting)
-        {
-          return CircularProgressIndicator();
-        }else{
-          return Consumer<MapDatas>(builder: (context, prov, child) {
+     body:Container(
+      color: Colors.amber,
+  
+      child: 
+      Column(
+        
+        children: [
+            Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                Text("Last 30 Records..",textAlign: TextAlign.center,)
+              ],
+             ),
 
-            return ListView.builder(
-              itemCount: prov.datamap.length,
-              itemBuilder: (context, i) {
-                return  Container(
-                
-                  child:ListTile(
-                    leading: Text("Gbr"),
-                    title: Text(prov.datamap[i].absen!,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),), 
-                    subtitle:Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                         Text(prov.datamap[i].nama!+"("+prov.datamap[i].nik!+"/"+prov.datamap[i].section!+")",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
-                         Text(DateFormat('dd-MM-yyyy').format(DateTime.parse(prov.datamap[i].tglrec!)).toString(),style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
-                      ],
-                    )
-                    
-                    
-                  )  
-                   // Text(prov.datamap[i].nama!,style: TextStyle(color: Colors.red),),
-                  //  Text("Test"),
-                );
-            },);
-          },);
-        }
-      },
-      )
-      
-    
-      ),
-     
-     )
+            
+             SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height/1.4,
+                 child: 
+                 RefreshIndicator(onRefresh: () => getRefreshdata(),
+                child: 
+                FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(_empimei!.toString())
+                , builder: (context, snapshot) {
+                   if (snapshot.connectionState==ConnectionState.waiting)
+                   {
+                    return Center( child:CircularProgressIndicator());
+                   }else{
+                    return Consumer<MapDatas>(builder: (context, prov, child) {
+                    return ListView.builder(
+                      itemCount: prov.datamap.length,
+                      itemBuilder: (context, i) {
+                        return ListTile(
+                          leading: Container(
+                            height: 50,
+                            width: 50,
+                              decoration: BoxDecoration(
+                          border: Border.all(style: BorderStyle.solid),
+                          borderRadius: BorderRadius.circular(10),
+                           
+                           
+                        ),  
+                            clipBehavior: Clip.antiAlias,
+                            child: Image==isLoading?Center(child: CircularProgressIndicator(),):
+                            Image.network(
+                            height: 50,width: 50,
+                            fit: BoxFit.fill,
+                            NamaServer.server+'hrd/uploademp/'+prov.datamap[i].pict_att!+".jpg",
+                            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                              return child;
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress==null)
+                              {
+                                return child;
+                              }else{
+                                return Center(child: CircularProgressIndicator(),);
+                              }
+                            },
+                            ),
+                           
+                          ),
+                          title: Column(
+                            children: [
+                              Text(prov.datamap[i].nama!),
+                              Text(prov.datamap[i].absen!+"/"+prov.datamap[i].tglrec!)
+
+                            ],
+                          )
+                        );
+                    },);
+                  }
+                  );
+                   }
+                },
+                ),
+              ),
+             )
+             ) 
+
+          ]
+          )
+         )
+        )    
+      );
+
  
-     
-     );
+ 
+ 
+ 
 
  
     
@@ -412,9 +453,9 @@ height: MediaQuery.of(context).size.height/1.5,
                             {
                               return child;
                             }else{
-                              return CircularProgressIndicator();
+                             return Center(child: CircularProgressIndicator(),);
                             }
-                          },
+                          }, 
                         ),
                         
                         

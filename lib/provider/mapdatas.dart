@@ -32,13 +32,6 @@ final response=await http.post(
  
   final json=jsonDecode(response.body)['data'] as List;
 
-  // if (json==null)
-  // {
-  //   return ;
-  // }
-
-   //print(response.body);
-
   final datajson=json.map((e) => DataModel.fromJson(e)).toList();
   _datamap=datajson;
 
