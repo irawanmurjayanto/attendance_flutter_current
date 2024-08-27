@@ -28,9 +28,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:device_info_plus/device_info_plus.dart';
  
  
-    import 'package:http/http.dart' as http;
-     import 'dart:convert';
-     import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_storage/get_storage.dart';
  
   
  //awal
@@ -77,8 +78,10 @@ class _HomepageState extends State<HomepageMenu> {
    late Position _currentPosition2;
 
    //late final String apiEndpoint;
-   
-
+   getSession() async{
+    await GetStorage.init();
+   } 
+  
   @override
   void initState() {
   
@@ -89,9 +92,11 @@ class _HomepageState extends State<HomepageMenu> {
    _gethasil();
    _getTime();
    _getId(); 
-  
+   getSession(); 
    
   }
+
+  final box=GetStorage();
 
 final _empregnik=TextEditingController();
  getEmpReg() async {
@@ -355,6 +360,7 @@ TextEditingController _title=TextEditingController();
       setState(() {
         deviceInfo = dInfo;
         _tempImei=deviceInfo!.deviceId;
+        box.write("imei",deviceInfo!.deviceId );
          
       });
     }

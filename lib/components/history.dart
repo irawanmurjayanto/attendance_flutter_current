@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
   import 'package:http/http.dart' as http;
      import 'dart:convert';
  import 'package:flutter_typeahead/flutter_typeahead.dart';    
+ import 'package:get_storage/get_storage.dart';
 
 
 
@@ -67,7 +68,8 @@ class _History1State extends State<History1> {
   final _deviceImeiPlugin = DeviceImei();
   TextEditingController _cari=TextEditingController();
  
-
+    static DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
  
 
@@ -75,113 +77,31 @@ class _History1State extends State<History1> {
  
  
   
-
- 
-
-setPlatformType() {
-    if (Platform.isAndroid) {
-      setState(() {
-        type = 'Android';
-      });
-    } else if (Platform.isIOS) {
-      setState(() {
-        type = 'iOS';
-      });
-    } else {
-      setState(() {
-        type = 'other';
-      });
-    }
-  }
-
-  String? _empimei;
- _getImei() async {
-    
-    var permission = await Permission.phone.status;
-
-    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
-
-    if (dInfo != null) {
-      setState(() {
-        deviceInfo = dInfo;
-        _empimei=deviceInfo!.deviceId;
-      });
-    }
-
-    if (Platform.isAndroid) {
-      if (permission.isGranted) {
-        String? imei = await _deviceImeiPlugin.getDeviceImei();
-        if (imei != null) {
-          setState(() {
-            getPermission = true;
-            deviceImei = imei;
-          });
-        }
-      } else {
-        PermissionStatus status = await Permission.phone.request();
-        if (status == PermissionStatus.granted) {
-          setState(() {
-            getPermission = false;
-          });
-          _getImei();
-        } else {
-          setState(() {
-            getPermission = false;
-            message = "Permission not granted, please allow permission";
-          });
-        }
-      }
-    } else {
-      String? imei = await _deviceImeiPlugin.getDeviceImei();
-      if (imei != null) {
-        setState(() {
-          getPermission = true;
-          deviceImei = imei;
-        });
-      }
-    }
-  }
-
-
-
-
- Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion = await _deviceImeiPlugin.getPlatformVersion() ??
-          'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
+  
+  final box=GetStorage();
+ //n2
+ Future <void> getRefreshdata() async{
+  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei"));
+ }
 
 
   
- 
- 
- Future <void> getRefreshdata() async{
-  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(_empimei!);
- }
 
+
+ Future <dynamic> getFormatDate() async{
+ // final String tglnow=DateFormat('dd-MM-yyyy').format(DateTime.parse(tgl));
+    DateTime now = DateTime.now();
+    String formattedDate = '${now.day}/${now.month}/${now.year}';
+    return formattedDate;
+   
+}
  
   @override
   void initState() {
   
     super.initState();
    getRefreshdata();
-   _getImei();
+ 
  
    
   }
@@ -227,7 +147,7 @@ setPlatformType() {
                  child: 
                  RefreshIndicator(onRefresh: () => getRefreshdata(),
                 child: 
-                FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(_empimei!.toString())
+                FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(box.read("imei"))
                 , builder: (context, snapshot) {
                    if (snapshot.connectionState==ConnectionState.waiting)
                    {
@@ -267,11 +187,14 @@ setPlatformType() {
                             ),
                            
                           ),
+                          //n1
                           title: Column(
                             children: [
                               Text(prov.datamap[i].nama!),
-                              Text(prov.datamap[i].absen!+"/"+prov.datamap[i].tglrec!)
-
+                              showDateDetail(prov.datamap[i].tglrec!),
+                              //Text(prov.datamap[i].absen!+"/"+DateFormat('dd-MMM-yyyy HH:mm').format(DateTime.parse(prov.datamap[i].tglrec!))),
+                              //Text(formattedDate),
+                             // Text(getFormatDate()),
                             ],
                           )
                         );
@@ -304,47 +227,20 @@ setPlatformType() {
   }
 
 
+Widget showDateDetail(String tgl) {
+  final _tempDate=TextEditingController();
    
- 
- 
-// Widget DataAll2(){
-//   return   
-//     Container(
-      
-//       color: Colors.blue,
-//       child: 
-      
-//       SingleChildScrollView(
-//         child: 
-//       FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(deviceInfo!.deviceId.toString()), 
-      
-//       builder: 
-//       (context, snapshot) {
-//         if (snapshot.connectionState==ConnectionState.waiting)
-//         {
-//           return CircularProgressIndicator();
-//         }else{
-//           return Consumer<MapDatas>(builder: (context, prov, child) {
+ _tempDate.text=tgl;
+  //final String formatdate=tgl;
+  
+  return Padding(padding: EdgeInsets.all(5),
+      child: TextField(
+        controller: _tempDate,
 
-//             return ListView.builder(
-//               itemCount: prov.datamap.length,
-//               itemBuilder: (context, i) {
-//                 return ListTile(
-//                     title: Text(prov.datamap[i].nama!,style: TextStyle(color: Colors.red),),
-//                 );
-//             },);
-//           },);
-//         }
-//       },
-//       )
-      
-    
-//       ),
-//   );
-// }
-    
-    
-
+      ),
+  );
+}   
+ 
 Widget dataAll(){
 return
 

@@ -7,6 +7,7 @@ import 'package:flutter_attendance_current/provider/mapdatas.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
+//Irawan Murjayanto Agustus 2024
 
 void main() {
   runApp(
