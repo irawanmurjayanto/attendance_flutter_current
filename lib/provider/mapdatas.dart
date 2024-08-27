@@ -159,6 +159,24 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         if (response.statusCode==200)
         {
          print(json);
+
+
+         if (json['errormsg']=='fail') 
+         {
+        
+              Fluttertoast.showToast(
+              msg: "NIK Anda belum terdaftar,Mohon hubungi HRD",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+              return;
+            
+          }
+
          showDialog(context: context, builder: (context) {
            return AlertDialog(
               content:
@@ -169,8 +187,8 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
                   SizedBox(height: 5,),
                   Text(json['nama'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold)),
                   Text('('+json['nik']+'/'+json['section']+')',style: TextStyle(fontWeight:FontWeight.bold),),
-                  Text("Status :",textAlign: TextAlign.center,),
-                  Text(json['absen']+'/'+json['jam'],textAlign: TextAlign.center,),
+                  Text("Status :",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(json['absen']+'/'+json['jam'],textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
               

@@ -127,7 +127,7 @@ class _History1State extends State<History1> {
      
      ),
      body:Container(
-      color: Colors.amber,
+      color: Color.fromARGB(255, 233, 214, 214),
   
       child: 
       Column(
@@ -157,11 +157,16 @@ class _History1State extends State<History1> {
                     return ListView.builder(
                       itemCount: prov.datamap.length,
                       itemBuilder: (context, i) {
-                        return ListTile(
-                          leading: Container(
+                        return Card(
+
+                          child: 
+                          
+                          Row(
+                          children: [
+                          Container(
                             height: 50,
                             width: 50,
-                              decoration: BoxDecoration(
+                          decoration: BoxDecoration(
                           border: Border.all(style: BorderStyle.solid),
                           borderRadius: BorderRadius.circular(10),
                            
@@ -188,14 +193,15 @@ class _History1State extends State<History1> {
                            
                           ),
                           //n1
-                          title: Column(
+                          Column(
                             children: [
                               Text(prov.datamap[i].nama!),
                               showDateDetail(prov.datamap[i].tglrec!,prov.datamap[i].absen!),
-                              //Text(prov.datamap[i].absen!+"/"+DateFormat('dd-MMM-yyyy HH:mm').format(DateTime.parse(prov.datamap[i].tglrec!))),
-                              //Text(formattedDate),
-                             // Text(getFormatDate()),
+                            
                             ],
+                          )
+
+                          ]
                           )
                         );
                     },);

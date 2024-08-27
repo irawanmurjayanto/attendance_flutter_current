@@ -778,7 +778,8 @@ ElevatedButton(
 
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
-       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'MASUK');   
+      getStatusInet(context);
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'MASUK');   
 
      
      
@@ -834,7 +835,8 @@ ElevatedButton(
 
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
-       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'KELUAR');   
+      getStatusInet(context);
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'KELUAR');   
 
      
      
