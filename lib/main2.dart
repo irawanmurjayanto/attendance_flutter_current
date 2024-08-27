@@ -757,23 +757,34 @@ ElevatedButton(
       ),
       //savedata
       onPressed: () {
-        
-        if (image==null){
-//EasyLoading.show(status: "Saving Data..");
-          _getwarn('Image must be exist');
-        //  ScaffoldMessenger.of(context).showSnackBar(warn1);
 
-        }else{
-        //  showDialog(context: context, 
-        //  builder:  (context){
-        //     // Future.delayed(const Duration(milliseconds: 300));
-        //    return Center(child: CircularProgressIndicator(),);
-        //  },);
-        //_AlertSave();
-       // EasyLoading.show(status: "Saving Data..");
-        saveImageMap();
-     //   Navigator.pop(context);
+      if (image==null){
+        Fluttertoast.showToast(
+        msg: "Photo Wajah harus ada",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0
+       );
+        return;
         }
+
+
+      List<int> imageBytes = image!.readAsBytesSync();
+      String baseimage = base64Encode(imageBytes);
+      String baseimage2=baseimage==null?'x':baseimage;
+
+      final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
+
+       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'MASUK');   
+
+     
+     
+
+      
+        
 
        
       }, 

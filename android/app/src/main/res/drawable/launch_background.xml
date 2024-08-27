@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:src="@drawable/back3a" />
+            android:src="@drawable/back3a_2" />
     </item>
 
     <!-- You can insert your own image assets here -->

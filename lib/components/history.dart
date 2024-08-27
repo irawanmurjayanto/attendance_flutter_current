@@ -191,7 +191,7 @@ class _History1State extends State<History1> {
                           title: Column(
                             children: [
                               Text(prov.datamap[i].nama!),
-                              showDateDetail(prov.datamap[i].tglrec!),
+                              showDateDetail(prov.datamap[i].tglrec!,prov.datamap[i].absen!),
                               //Text(prov.datamap[i].absen!+"/"+DateFormat('dd-MMM-yyyy HH:mm').format(DateTime.parse(prov.datamap[i].tglrec!))),
                               //Text(formattedDate),
                              // Text(getFormatDate()),
@@ -227,10 +227,10 @@ class _History1State extends State<History1> {
   }
 
 
-Widget showDateDetail(String tgl) {
+Widget showDateDetail(String tgl,String Absen) {
   final _tempDate=TextEditingController();
-   
- _tempDate.text=tgl;
+   String formatdate=tgl;
+ _tempDate.text=Absen+" / "+formatdate;
   //final String formatdate=tgl;
   
   return Padding(padding: EdgeInsets.all(5),
