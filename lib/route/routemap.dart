@@ -10,7 +10,7 @@ import 'package:device_imei/device_imei.dart';
  
 // import 'package:get_location_addres/get_imei.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:flutter_share/flutter_share.dart';
 //import 'package:documents_picker/documents_picker.dart';
@@ -227,7 +227,7 @@ class _HomepageState2 extends State<Homepage2> {
 
 children: [
 
- getAmbildata(),
+ //getAmbildata(),
 
 ],
 
@@ -384,123 +384,123 @@ children: [
 
 //t5
 
-  Widget getAmbildata(){
-return Container(
-   decoration: BoxDecoration(
-    image: DecorationImage(
-      image: AssetImage('assets/images/back5b.jpg'),
-      fit: BoxFit.cover,
-      )
-   ),
+//   Widget getAmbildata(){
+// return Container(
+//    decoration: BoxDecoration(
+//     image: DecorationImage(
+//       image: AssetImage('assets/images/back5b.jpg'),
+//       fit: BoxFit.cover,
+//       )
+//    ),
 
- child: Column(
-children: [
- Container(
-   height: MediaQuery.of(context).size.height/3.0,
-  child: 
- GoogleMap(
+//  child: Column(
+// children: [
+//  Container(
+//    height: MediaQuery.of(context).size.height/3.0,
+//   child: 
+//  GoogleMap(
            
-          initialCameraPosition: CameraPosition(    
+//           initialCameraPosition: CameraPosition(    
     
-           target:LatLng(latx!, longx!),
-           zoom: 14,
+//            target:LatLng(latx!, longx!),
+//            zoom: 14,
             
-          ),
-        //  myLocationEnabled: true,
+//           ),
+//         //  myLocationEnabled: true,
               
-          markers: {
-    Marker(
-      markerId: MarkerId("source"),
-      position: LatLng(latx!, longx!) ,
-    ),
-          }
-        )
- ),
+//           markers: {
+//     Marker(
+//       markerId: MarkerId("source"),
+//       position: LatLng(latx!, longx!) ,
+//     ),
+//           }
+//         )
+//  ),
 
 
 
-                Container(
-                 //   height: MediaQuery.of(context).size.height /6,
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
+//                 Container(
+//                  //   height: MediaQuery.of(context).size.height /6,
+//                 padding: EdgeInsets.all(5),
+//                 margin: EdgeInsets.all(10),
+//                 decoration: BoxDecoration(
                   
-                    color: Colors.amberAccent,
-                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.white,Colors.blueAccent]
-                 ),
-                 borderRadius: BorderRadius.circular(10),
-                 border: Border.all(style: BorderStyle.solid,color: Colors.black12,width: 1,),
-                 boxShadow: [
+//                     color: Colors.amberAccent,
+//                  gradient: LinearGradient(
+//                   begin: Alignment.topLeft,
+//                   end: Alignment.bottomRight,
+//                   colors: [Colors.white,Colors.blueAccent]
+//                  ),
+//                  borderRadius: BorderRadius.circular(10),
+//                  border: Border.all(style: BorderStyle.solid,color: Colors.black12,width: 1,),
+//                  boxShadow: [
                   
-                 const  BoxShadow(
-                  offset: Offset(3, 3),
-                  blurRadius: 3,
-                  spreadRadius: 3
+//                  const  BoxShadow(
+//                   offset: Offset(3, 3),
+//                   blurRadius: 3,
+//                   spreadRadius: 3
 
-                 ),
-                 const  BoxShadow(
-                  color: Colors.white,
-                  offset: Offset(2, 2),
-                  blurRadius: 2,
-                  spreadRadius: 2
+//                  ),
+//                  const  BoxShadow(
+//                   color: Colors.white,
+//                   offset: Offset(2, 2),
+//                   blurRadius: 2,
+//                   spreadRadius: 2
 
-                 )
+//                  )
 
-                 ]
+//                  ]
                 
 
-                ),
+//                 ),
            
                  
-                  child: Column(
-mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+//                   child: Column(
+// mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
 
-//layar1
+// //layar1
  
-  Container(
-      // height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-  height: 80,
-   child: Scrollbar(
-     thumbVisibility: true,
+//   Container(
+//       // height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+//   height: 80,
+//    child: Scrollbar(
+//      thumbVisibility: true,
  
-                  thickness: 10, //width of scrollbar
-                  radius: Radius.circular(20), //corner radius of scrollbar
-                  scrollbarOrientation: ScrollbarOrientation.left,
+//                   thickness: 10, //width of scrollbar
+//                   radius: Radius.circular(20), //corner radius of scrollbar
+//                   scrollbarOrientation: ScrollbarOrientation.left,
 
-    child: SingleChildScrollView(
+//     child: SingleChildScrollView(
  
-    scrollDirection: Axis.vertical,
-     child:Column(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
+//     scrollDirection: Axis.vertical,
+//      child:Column(
+//   mainAxisAlignment: MainAxisAlignment.center,
+//   children: [
  
 
-            SizedBox(height: 5,),
-            Text("Lat: "+latx!.toString()+ " , Long: "+longx!.toString(),style: TextStyle(color: Colors.black,fontSize: 16),),
-            SizedBox(height: 5,),
+//             SizedBox(height: 5,),
+//             Text("Lat: "+latx!.toString()+ " , Long: "+longx!.toString(),style: TextStyle(color: Colors.black,fontSize: 16),),
+//             SizedBox(height: 5,),
             
-            SizedBox(height: 5,),
-            Text('${Address}',textAlign: TextAlign.center,),
-]
-),
-   ),
+//             SizedBox(height: 5,),
+//             Text('${Address}',textAlign: TextAlign.center,),
+// ]
+// ),
+//    ),
    
    
-   ),
+//    ),
   
-  )
+//   )
   
 
                     
 
  
-                      ],
+//                       ],
 
-                  ),
+//                   ),
                 
 
          
@@ -508,82 +508,82 @@ mainAxisAlignment: MainAxisAlignment.center,
                
                 
                   
-              //for gmap
+//               //for gmap
 
-               ),
+//                ),
 
-//button
+// //button
 
-SizedBox(height: 5,),
-Row(
- mainAxisAlignment: MainAxisAlignment.center,
-  children: [
+// SizedBox(height: 5,),
+// Row(
+//  mainAxisAlignment: MainAxisAlignment.center,
+//   children: [
   
  
-     ElevatedButton(onPressed: 
-    () {
-    //_launchUrl;
+//      ElevatedButton(onPressed: 
+//     () {
+//     //_launchUrl;
  
-       //  get_urltest();
-      // get_urltest();
+//        //  get_urltest();
+//       // get_urltest();
       
-    IntentUtils.launchGoogleMaps(latx!,longx!);
-    }, 
-    child: Row(
-      children: [
-        Icon(Icons.directions),
-        SizedBox(width: 10,),
-        Text("Go To ",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
-      ],
-    ))
-  ],
-)
-]
+//     IntentUtils.launchGoogleMaps(latx!,longx!);
+//     }, 
+//     child: Row(
+//       children: [
+//         Icon(Icons.directions),
+//         SizedBox(width: 10,),
+//         Text("Go To ",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
+//       ],
+//     ))
+//   ],
+// )
+// ]
 
 
-//t7
- ),
+// //t7
+//  ),
 
-);
+// );
   
-  }
+//   }
 
 
-  Widget getAmbilpeta(){
+  // Widget getAmbilpeta(){
    
-       double? lat11=_currentPosition?.latitude;
-      double? lat22=_currentPosition?.longitude;
+  //      double? lat11=_currentPosition?.latitude;
+  //     double? lat22=_currentPosition?.longitude;
 
-   return Column(
-    children: [
+  //  return Column(
+  //   children: [
        
-  Text("Tele "+lat11.toString()+" ' "+lat22.toString()),
+  // Text("Tele "+lat11.toString()+" ' "+lat22.toString()),
 
-    Expanded(child: 
+  //   Expanded(child: 
 
 
     
-     GoogleMap(
+  //    GoogleMap(
            
-          initialCameraPosition: CameraPosition(    
-         //   target: _kInitialPosition,       
-       //target:_LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-       target:
-       LatLng(_currentPosition2.latitude, _currentPosition2.longitude),
-      // target:LatLng(lat1??0, lat2??0),
-          zoom: 14,
-          ),
-        )
+  //         initialCameraPosition: CameraPosition(    
+  //        //   target: _kInitialPosition,       
+  //      //target:_LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+  //      target:
+  //      LatLng(_currentPosition2.latitude, _currentPosition2.longitude),
+  //     // target:LatLng(lat1??0, lat2??0),
+  //         zoom: 14,
+  //         ),
+  //       )
     
-    )
+  //   )
    
-    ,
-    ],
+  //   ,
+  //   ],
     
     
-   );
+  //  );
 
-  }
+  // }
 }
 
 

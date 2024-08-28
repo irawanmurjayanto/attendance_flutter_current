@@ -18,9 +18,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 // import 'package:get_location_addres/get_imei.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 //import 'package:flutter_share/flutter_share.dart';
 //import 'package:documents_picker/documents_picker.dart';
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
@@ -175,18 +175,18 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
 
   
  
-       get_urltest() async {
-       await IntentUtils.launchGoogleMaps;
+    //    get_urltest() async {
+    //    await IntentUtils.launchGoogleMaps;
        
        
-    }
+    // }
         
 
-Future<void> _launchUrl() async {
-  if (!await launchUrl(_url)) {
-    throw Exception('Could not launch $_url');
-  }
-}
+// Future<void> _launchUrl() async {
+//   if (!await launchUrl(_url)) {
+//     throw Exception('Could not launch $_url');
+//   }
+// }
 
 
 
@@ -1113,41 +1113,41 @@ Row(
   }
 
 
-  Widget getAmbilpeta(){
+  // Widget getAmbilpeta(){
    
-       double? lat11=_currentPosition?.latitude;
-      double? lat22=_currentPosition?.longitude;
+  //      double? lat11=_currentPosition?.latitude;
+  //     double? lat22=_currentPosition?.longitude;
 
-   return Column(
-    children: [
+  //  return Column(
+  //   children: [
        
-  Text("Tele "+lat11.toString()+" ' "+lat22.toString()),
+  // Text("Tele "+lat11.toString()+" ' "+lat22.toString()),
 
-    Expanded(child: 
+  //   Expanded(child: 
 
 
     
-     GoogleMap(
+  // //    GoogleMap(
            
-          initialCameraPosition: CameraPosition(    
-         //   target: _kInitialPosition,       
-       //target:_LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-       target:
-       LatLng(_currentPosition2.latitude, _currentPosition2.longitude),
-      // target:LatLng(lat1??0, lat2??0),
-          zoom: 14,
-          ),
-        )
+  // //         initialCameraPosition: CameraPosition(    
+  // //        //   target: _kInitialPosition,       
+  // //      //target:_LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+  // //      target:
+  // //      LatLng(_currentPosition2.latitude, _currentPosition2.longitude),
+  // //     // target:LatLng(lat1??0, lat2??0),
+  // //         zoom: 14,
+  // //         ),
+  // //       )
     
-    )
+  // //   )
    
-    ,
-    ],
+  // //   ,
+  // //   ],
     
     
-   );
+  // //  );
 
-  }
+  // // }
 }
 
 
@@ -1302,25 +1302,25 @@ class _MyAppState extends State<MyApp_imei> {
 
 //t6
  
-class IntentUtils {
+// class IntentUtils {
 
  
-  IntentUtils._();
-  static Future<void> launchGoogleMaps(double lat1,double lat2) async {
-    // const double destinationLatitude= 31.5204;
-    // const double destinationLongitude = 74.3587;
-    double destinationLatitude= lat1;
-    double destinationLongitude = lat2;
-    final uri = Uri(
-        scheme: "google.navigation",
-        // host: '"0,0"',  {here we can put host}
-        queryParameters: {
-          'q': '$destinationLatitude, $destinationLongitude'
-        });
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      debugPrint('An error occurred');
-    }
-  }
-}
+//   IntentUtils._();
+//   static Future<void> launchGoogleMaps(double lat1,double lat2) async {
+//     // const double destinationLatitude= 31.5204;
+//     // const double destinationLongitude = 74.3587;
+//     double destinationLatitude= lat1;
+//     double destinationLongitude = lat2;
+//     final uri = Uri(
+//         scheme: "google.navigation",
+//         // host: '"0,0"',  {here we can put host}
+//         queryParameters: {
+//           'q': '$destinationLatitude, $destinationLongitude'
+//         });
+//     if (await canLaunchUrl(uri)) {
+//       await launchUrl(uri);
+//     } else {
+//       debugPrint('An error occurred');
+//     }
+//   }
+// }
