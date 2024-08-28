@@ -57,7 +57,7 @@ class _History1State extends State<History1> {
 
  bool isLoading=true;
  
- String? txtTampung1;
+  String? txtTampung1;
   String _platformVersion = 'Unknown';
   String? deviceImei;
   String? type;
@@ -143,7 +143,7 @@ class _History1State extends State<History1> {
             
              SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height/1.4,
+                height: MediaQuery.of(context).size.height/1.35,
                  child: 
                  RefreshIndicator(onRefresh: () => getRefreshdata(),
                 child: 
@@ -158,11 +158,16 @@ class _History1State extends State<History1> {
                       itemCount: prov.datamap.length,
                       itemBuilder: (context, i) {
                         return Card(
-
+                          margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                            clipBehavior: Clip.antiAlias,
                           child: 
-                          
+                            Padding(padding: EdgeInsets.all(10),
+                            child: 
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                        
+                            
                           Container(
                             height: 50,
                             width: 50,
@@ -193,16 +198,35 @@ class _History1State extends State<History1> {
                            
                           ),
                           //n1
+                          
+                          SizedBox(width: 5,),
+
                           Column(
+                           
                             children: [
-                              Text(prov.datamap[i].nama!),
-                              showDateDetail(prov.datamap[i].tglrec!,prov.datamap[i].absen!),
-                            
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [Colors.blue,Colors.red])
+                                ),
+                                child: 
+                              Text(prov.datamap[i].absen!+"/"+prov.datamap[i].tglrec!,style: TextStyle(color: Colors.white),),
+                              ),
+                              Text(prov.datamap[i].nama!+"/"+prov.datamap[i].nik!)
+
+
                             ],
                           )
+                          
 
+                        
                           ]
                           )
+                            )
                         );
                     },);
                   }

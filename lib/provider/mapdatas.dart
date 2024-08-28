@@ -1,3 +1,5 @@
+
+
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
@@ -8,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:io';
+import 'package:just_audio/just_audio.dart';
+ 
 
 class MapDatas with ChangeNotifier {
  
@@ -160,13 +164,28 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         {
          print(json);
 
+          if (json['detek']=='sudahabsen') {
+
+             Fluttertoast.showToast(
+              msg: "Anda sudah Absen MASUK hari ini jam "+json['jam'],
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+              return;
+          }      
+
+
 
          if (json['errormsg']=='fail') 
          {
         
               Fluttertoast.showToast(
               msg: "NIK Anda belum terdaftar,Mohon hubungi HRD",
-              toastLength: Toast.LENGTH_SHORT,
+              toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.CENTER,
               timeInSecForIosWeb: 2,
               backgroundColor: Colors.green,
@@ -176,6 +195,23 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
               return;
             
           }
+
+          //sound farewell  
+          final player = AudioPlayer();    
+          if (absen=='MASUK')
+          {
+             player.setAsset('assets/sound/feramsuk.mpeg');
+             player.play(); 
+          }else
+          {
+             player.setAsset('assets/sound/ferakeluar.mpeg');
+             player.play();
+
+          }
+
+          
+          //player.play(AssetSource('audio/bell.mpeg'));
+         
 
          showDialog(context: context, builder: (context) {
            return AlertDialog(

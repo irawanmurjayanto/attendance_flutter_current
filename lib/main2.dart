@@ -32,6 +32,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:just_audio/just_audio.dart';
  
   
  //awal
@@ -738,6 +739,13 @@ Column(
 
 ElevatedButton(onPressed: () {
      takePicture(ImageSource.camera);
+      // final player = AudioPlayer();  
+      //     //player.play(AssetSource('audio/bell.mpeg'));
+      //     player.setAsset('assets/sound/ferakeluar.mpeg');
+    
+      //     player.play();
+
+
   }, child: 
   Row(
     children: [
@@ -780,12 +788,6 @@ ElevatedButton(
 
       getStatusInet(context);
       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'MASUK');   
-
-     
-     
-
-      
-        
 
        
       }, 
