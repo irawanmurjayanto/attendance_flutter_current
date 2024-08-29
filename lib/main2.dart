@@ -873,7 +873,7 @@ ElevatedButton(
             SizedBox(height: 5,),
             Jam_clock(),
             SizedBox(height: 5,),
-            Text (ambilid!.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
+            Text (box.read("imei"),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
             SizedBox(height: 5,),
             
             Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),

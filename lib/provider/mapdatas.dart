@@ -200,7 +200,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
           final player = AudioPlayer();    
           if (absen=='MASUK')
           {
-             player.setAsset('assets/sound/feramsuk.mpeg');
+             player.setAsset('assets/sound/feramasuk.mpeg');
              player.play(); 
           }else
           {
