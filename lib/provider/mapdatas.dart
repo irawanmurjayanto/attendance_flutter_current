@@ -18,32 +18,32 @@ class MapDatas with ChangeNotifier {
 List<DataModel> _datamap=[];
 List<DataModel> get datamap => _datamap;
 
-Future<void> getHistoryC(String imeino) async{
+// Future<void> getHistoryC(String imeino) async{
 
-var url=Uri.parse('https://irawan.angsoft.info/tests/flutter/map1/history.php');
+// var url=Uri.parse(NamaServer.server+'tests/flutter/map1/history.php');
 
-final response=await http.post(
-  url,
+// final response=await http.post(
+//   url,
   
-  body: {
-    'tipe':'lihat',
-    'imeino':imeino,
-  }
+//   body: {
+//     'tipe':'lihat',
+//     'imeino':imeino,
+//   }
   
-  ); 
+//   ); 
 
 
  
-  final json=jsonDecode(response.body)['data'] as List;
+//   final json=jsonDecode(response.body)['data'] as List;
 
-  final datajson=json.map((e) => DataModel.fromJson(e)).toList();
-  _datamap=datajson;
+//   final datajson=json.map((e) => DataModel.fromJson(e)).toList();
+//   _datamap=datajson;
 
-  notifyListeners();
+//   notifyListeners();
   
 
 
-}
+// }
 
 
 Future <void> getHistoryCari (String imeino) async {
