@@ -73,7 +73,7 @@ class _History1State extends State<History1> {
 
  
 
-//  DeviceInfoPlugin androidDeviceInfo = DeviceInfoPlugin();
+ DeviceInfoPlugin androidDeviceInfo = DeviceInfoPlugin();
  
  
   
@@ -143,7 +143,7 @@ class _History1State extends State<History1> {
             
              SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height/1.35,
+                height: MediaQuery.of(context).size.height/1.4,
                  child: 
                  RefreshIndicator(onRefresh: () => getRefreshdata(),
                 child: 
@@ -304,7 +304,7 @@ height: MediaQuery.of(context).size.height/1.5,
 
       
   FutureBuilder(
-        future: Provider.of<MapDatas>(context,listen:false ).getHistoryCari(deviceInfo!.deviceId.toString()),
+        future: Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei")),
         builder: 
         (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

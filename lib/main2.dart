@@ -16,13 +16,11 @@ import 'package:flutter/services.dart';
 import 'package:device_imei/device_imei.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-// import 'package:get_location_addres/get_imei.dart';
+ 
 import 'package:permission_handler/permission_handler.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
+ 
 import 'package:provider/provider.dart';
-//import 'package:url_launcher/url_launcher.dart';
-//import 'package:flutter_share/flutter_share.dart';
-//import 'package:documents_picker/documents_picker.dart';
+ 
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -77,6 +75,7 @@ class _HomepageState extends State<HomepageMenu> {
    //late Position _currentPosition=Position(longitude: 0, latitude: 0, timestamp: DateTime(1972), accuracy: 0, altitude: 0, altitudeAccuracy: 0, heading: 0, headingAccuracy: 0, speed: 0, speedAccuracy: 0);
    late Position _currentPosition;
    late Position _currentPosition2;
+ 
 
    //late final String apiEndpoint;
    getSession() async{
@@ -88,12 +87,12 @@ class _HomepageState extends State<HomepageMenu> {
   
     super.initState();
  
-    _getImeix();
+   // _getImeix();
    _getTimeClock();
    _gethasil();
    _getTime();
    _getId(); 
-   getSession(); 
+    getSession(); 
    
   }
 
@@ -123,7 +122,7 @@ final _empregnik=TextEditingController();
        ),
       actions: [
         IconButton(onPressed: () {
-           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_tempImei!).then((value) => Navigator.pop(context));
+           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,ambilid!.toString()).then((value) => Navigator.pop(context));
         }, icon: Icon(Icons.save)),
 
         IconButton(onPressed: () {
@@ -155,7 +154,7 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
   String message = "Please allow permission request!";
   DeviceInfo? deviceInfo;
   bool getPermission = false;
-  final Uri _url = Uri.parse('https://flutter.dev'); 
+ 
   static String? ambilid;
    
   
@@ -168,26 +167,14 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
   } else if(Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     ambilid=androidDeviceInfo.id;
+    box.write("imei",androidDeviceInfo.id);
     return androidDeviceInfo.id; // unique ID on Android
   }
 }
   
 
   
- 
-    //    get_urltest() async {
-    //    await IntentUtils.launchGoogleMaps;
-       
-       
-    // }
-        
-
-// Future<void> _launchUrl() async {
-//   if (!await launchUrl(_url)) {
-//     throw Exception('Could not launch $_url');
-//   }
-// }
-
+  
 
 
   static double lat1=0;
@@ -280,59 +267,7 @@ final snakbartime=SnackBar(content:Text("test"));
 
 //t3 
 TextEditingController _title=TextEditingController();
- Future _AlertSave() async{
-
- return showDialog(
-  context: context, 
-  builder: (context) {
-    return AlertDialog(
-     // title: Center(child:Text("Title For Map")),
-      content: TextField(
-        onChanged: (value) {
-          setState(() {
-            _title.text=value;
-          });
-          
-        },
-        controller: _title,
-        decoration: InputDecoration(
-          hintText: 'Title For Parking Spot',
-
-        ),
-        
-      ),
-      actions: [
-        MaterialButton(
-          color: Colors.black,
-          child: Text("Ok",style: TextStyle(color: Colors.white),),
-          onPressed: () {
-            saveImageMap();
-            Navigator.pop(context);
-          },)
-      ],
-    );
-    
-  },); 
  
- }
- 
- Future saveImageMap() async {
-   
-    
-
- 
-      List<int> imageBytes = image!.readAsBytesSync();
-      String baseimage = base64Encode(imageBytes);
-      String baseimage2=baseimage==null?'x':baseimage;
-
-      final String lok="test";
-
-       setMessageAll(context, lok);
-
-    
-   
-      }
-
 
   
 
@@ -351,19 +286,38 @@ TextEditingController _title=TextEditingController();
  String? _tempImei;  
  final _imetText =TextEditingController();
 
+
+//u3
  _getImeix() async {
+
+    Fluttertoast.showToast(
+                          msg: "tset",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                        ); 
     
     var permission = await Permission.phone.status;
 
+    //DeviceInfoPlugin androidDeviceInfo = DeviceInfoPlugin();
+
     DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+
+
+      
 
     if (dInfo != null) {
       setState(() {
         deviceInfo = dInfo;
         _tempImei=deviceInfo!.deviceId;
-        box.write("imei",deviceInfo!.deviceId );
+        box.write("imei",ambilid!.toString());
          
       });
+
+           
     }
 
     if (Platform.isAndroid) {
@@ -487,17 +441,32 @@ if (await Permission.location.isRestricted) {
        appBar: AppBar(
          title: const Center(child:Text('Attendance of PT. Paradise Island',style: TextStyle(color: Colors.white,fontSize: 18),)),
  backgroundColor: Colors.blueAccent,
-// actions: [
-//             IconButton(onPressed: () {
-//               Navigator.push(context, MaterialPageRoute(builder: (context) => History1(),));
-//             }, icon: Icon(Icons.access_alarm,size: 30,))
-//           ],
+ toolbarHeight: screenHeight*0.1,
+ 
+                //   actions: [
+                //               IconButton(onPressed: () {
+
+
+                //                 Fluttertoast.showToast(
+                //           msg: box.read('imei'),
+                //           toastLength: Toast.LENGTH_SHORT,
+                //           gravity: ToastGravity.CENTER,
+                //           timeInSecForIosWeb: 2,
+                //           backgroundColor: Colors.green,
+                //           textColor: Colors.white,
+                //           fontSize: 16.0
+                //         );
+                                
+                //   }, icon: Icon(Icons.access_alarm,size: 30,))
+                // ],
         flexibleSpace: Stack(
            
            children: [
+           
             Image.asset("assets/images/appbar.png",
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
             //height: screenHeight*0.1,
+            height: screenHeight * 0.2,
             ),
             
            ],
@@ -532,9 +501,25 @@ if (await Permission.location.isRestricted) {
           )
           
         ],
-        
+      
         ),
-        
+      // floatingActionButton: FloatingActionButton.small(onPressed: () {
+
+      //  //_getImeix();
+      //  _getId();
+
+       
+      //                           Fluttertoast.showToast(
+      //                     msg: "test"+ambilid!.toString(),
+      //                     toastLength: Toast.LENGTH_SHORT,
+      //                     gravity: ToastGravity.CENTER,
+      //                     timeInSecForIosWeb: 2,
+      //                     backgroundColor: Colors.green,
+      //                     textColor: Colors.white,
+      //                     fontSize: 16.0
+      //                   );
+
+      // },),  
       body:
       
       SingleChildScrollView(
@@ -542,7 +527,7 @@ if (await Permission.location.isRestricted) {
         child: 
       Container(
        //height all frame 
-       height: MediaQuery.sizeOf(context).height/1.25,
+       height: MediaQuery.sizeOf(context).height/1.1,
 
         // constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -563,13 +548,13 @@ if (await Permission.location.isRestricted) {
                 fit: FlexFit.loose,
                 child: Container(
                  //frame block 2 
-                  height: MediaQuery.of(context).size.height/2,
-                 padding: EdgeInsets.all(10),
+                  height: MediaQuery.of(context).size.height/2.5,
+                 padding: EdgeInsets.all(5),
                 // height: MediaQuery.of(context).size.height/3,
                   width: double.infinity,
                   margin: EdgeInsets.all(10),
                    decoration: BoxDecoration(
-                    color: Colors.black12,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
           
                    ),
@@ -583,35 +568,8 @@ if (await Permission.location.isRestricted) {
                  
  
                       
-                      // child: image==null?Center(child: Text("No Image")):Image.file(File(image!.path)),
-                      child:Column(
-
-
-children: [
-
-FutureBuilder<Position>(
-  
-  future: getInitialPosition(), 
-  builder:  (context, snapshot) {
-   
-    if (snapshot.hasData)
-    {
-      
-       return getAmbildata(snapshot.data);
-    }else{
-      return CircularProgressIndicator();
-    }
-
-  },
-  
-  )
- 
- 
- 
-],
-
-                      )
-                     
+                      //u1
+                      child: newData(),
 
 
 
@@ -636,23 +594,19 @@ Container(
  
   child: 
 Container(
-  height: MediaQuery.of(context).size.height/3.3,
+  height: MediaQuery.of(context).size.height/3,
   padding: EdgeInsets.all(20),
   margin: EdgeInsets.only(left:10,right:10,top:2),
 decoration: BoxDecoration(
-  color: Colors.black12,
-  border: Border.all(style: BorderStyle.solid),
+  color: Colors.white,
+  border: Border.all(style: BorderStyle.solid,color: Colors.white),
   borderRadius: BorderRadius.circular(7),  
    image: DecorationImage(
       image: AssetImage('assets/images/back5b.jpg'),
       fit: BoxFit.cover,
       )
 
-  // image: DecorationImage(
-  //   image: AssetImage('assets/images/back5b.jpg'),
-  //   fit: BoxFit.cover,
-    
-  //   )
+ 
   
 ),
 
@@ -662,14 +616,6 @@ child: Row(
  //mainAxisAlignment:MainAxisAlignment.center,
 children: [
 
-Column(
-  children: [
-
-  
-   
- 
-  ],
-),
 
 //for camera
 Column(
@@ -710,20 +656,7 @@ children: [
   )
 
 ,
- //pick camera
-
-
-  //  IconButton(
-  //     onPressed: () {
-  //       takePicture(ImageSource.camera);
-        
-  //     }, 
-      
-  //     icon: Icon(Icons.camera_enhance_rounded),iconSize: 30,),
-
-   
- 
-   
+  
 
 
 ],
@@ -787,7 +720,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'MASUK');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,ambilid!.toString(),lok,'MASUK');   
 
        
       }, 
@@ -838,7 +771,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,deviceInfo!.deviceId.toString(),lok,'KELUAR');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,ambilid!.toString() ,lok,'KELUAR');   
 
      
      
@@ -873,58 +806,7 @@ ElevatedButton(
 )
 
  
-
-// child: Column(
-  
-//   mainAxisAlignment: MainAxisAlignment.center,
-//   children: [
-//     Padding(padding: EdgeInsets.all(5),
-//     child: ElevatedButton(
-//       style: ElevatedButton.styleFrom(
-//         backgroundColor: Colors.black87,
-       
-//       ),
-//       //savedata
-//       onPressed: () {
-        
-//         if (image==null){
-// //EasyLoading.show(status: "Saving Data..");
-//           _getwarn('Image must be exist');
-//         //  ScaffoldMessenger.of(context).showSnackBar(warn1);
-
-//         }else{
-//         //  showDialog(context: context, 
-//         //  builder:  (context){
-//         //     // Future.delayed(const Duration(milliseconds: 300));
-//         //    return Center(child: CircularProgressIndicator(),);
-//         //  },);
-//         //_AlertSave();
-//        // EasyLoading.show(status: "Saving Data..");
-//         saveImageMap();
-//      //   Navigator.pop(context);
-//         }
-
-       
-//       }, 
-      
-//       child: Row(
-        
-//         children: [
-//           Icon(Icons.save,color: Colors.white),
-//           SizedBox(width: 5,),
-//           Text("Save",style: TextStyle(color: Colors.white),)
-
-//         ],
-
-//       )
-      
-//       )
-    
-    
-//     ),
-    
-//   ],
-// )    
+ 
    
 
  
@@ -965,7 +847,50 @@ ElevatedButton(
     
     );
   }
-  Widget getAmbildata(snapshot){
+
+//u2
+  Widget newData(){
+   return Container(
+          padding: EdgeInsets.only(bottom:10,top:10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: AssetImage('assets/images/back5b.jpg'),
+                fit: BoxFit.cover,
+                )
+            ),
+
+     child: SingleChildScrollView(
+ 
+    scrollDirection: Axis.vertical,
+     child:Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+
+
+    //cur   T
+            Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+            SizedBox(height: 5,),
+            Jam_clock(),
+            SizedBox(height: 5,),
+            Text (ambilid!.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
+            SizedBox(height: 5,),
+            
+            Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),
+            SizedBox(height: 5,),
+            
+            SizedBox(height: 5,),
+            Text('${Address}',textAlign: TextAlign.center,),
+]
+),
+   ),
+    
+    );
+  }
+
+
+//just note script for next
+  Widget getAmbildata(){
 return Container(
    decoration: BoxDecoration(
     image: DecorationImage(
