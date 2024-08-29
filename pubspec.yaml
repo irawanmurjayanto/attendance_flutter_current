@@ -7,7 +7,6 @@ environment:
   sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
-  barcode_scan2: ^4.3.0
   connectivity_plus: ^6.0.5
   device_imei: ^0.0.4+2
   device_info_plus: ^10.0.1
