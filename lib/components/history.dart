@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/server.dart';
-import 'package:flutter_attendance_current/datamodel/history.dart';
-import 'package:flutter_attendance_current/datamodel/listpend.dart';
-import 'package:flutter_attendance_current/datamodel/post.dart';
-import 'package:flutter_attendance_current/main.dart';
+// import 'package:flutter_attendance_current/datamodel/history.dart';
+// import 'package:flutter_attendance_current/datamodel/listpend.dart';
+// import 'package:flutter_attendance_current/datamodel/post.dart';
+// import 'package:flutter_attendance_current/main.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
  
-import 'package:flutter_attendance_current/route/routemap.dart';
+// import 'package:flutter_attendance_current/route/routemap.dart';
 import 'package:flutter/services.dart';
 import 'package:device_imei/device_imei.dart';
 import 'dart:io'; 
@@ -81,7 +81,7 @@ class _History1State extends State<History1> {
   final box=GetStorage();
  //n2
  Future <void> getRefreshdata() async{
-  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei"));
+  Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei").toString());
  }
 
 
@@ -147,7 +147,7 @@ class _History1State extends State<History1> {
                  child: 
                  RefreshIndicator(onRefresh: () => getRefreshdata(),
                 child: 
-                FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(box.read("imei"))
+                FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getHistoryCari(box.read("imei").toString())
                 , builder: (context, snapshot) {
                    if (snapshot.connectionState==ConnectionState.waiting)
                    {
@@ -304,7 +304,7 @@ height: MediaQuery.of(context).size.height/1.5,
 
       
   FutureBuilder(
-        future: Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei")),
+        future: Provider.of<MapDatas>(context,listen:false ).getHistoryCari(box.read("imei").toString()),
         builder: 
         (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -421,6 +421,10 @@ height: MediaQuery.of(context).size.height/1.5,
 
 
 }
+
+
+
+ 
     
 
 

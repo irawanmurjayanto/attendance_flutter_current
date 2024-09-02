@@ -1,6 +1,9 @@
+ 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_attendance_current/components/attreport.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
 import 'package:flutter_attendance_current/main.dart';
@@ -10,7 +13,7 @@ import 'package:flutter_attendance_current/provider/mapdatas.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
- import 'dart:async';
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:device_imei/device_imei.dart';
@@ -75,6 +78,7 @@ class _HomepageState extends State<HomepageMenu> {
    //late Position _currentPosition=Position(longitude: 0, latitude: 0, timestamp: DateTime(1972), accuracy: 0, altitude: 0, altitudeAccuracy: 0, heading: 0, headingAccuracy: 0, speed: 0, speedAccuracy: 0);
    late Position _currentPosition;
    late Position _currentPosition2;
+   ImageLoadingBuilder? loadingBuilder;
  
 
    //late final String apiEndpoint;
@@ -280,6 +284,7 @@ TextEditingController _title=TextEditingController();
        setState(() {
        image = File(choosedimage!.path);
     });
+   // EasyLoading.show(status: "Getting Image");
  }
 
 
@@ -485,6 +490,12 @@ if (await Permission.location.isRestricted) {
                 child: Text("Employee Register"),
               ),       
                
+               PopupMenuItem<int>(
+                value: 1,
+                child: Text("Attendance By Section"),
+              ),       
+                 
+
             ];
           },
           onSelected: (value) {
@@ -493,6 +504,11 @@ if (await Permission.location.isRestricted) {
             {
               //_getwarn("Menu 1");
               getEmpReg();
+            }
+
+            if (value==1)
+            {
+              Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
             }
 
            
@@ -548,7 +564,7 @@ if (await Permission.location.isRestricted) {
                 fit: FlexFit.loose,
                 child: Container(
                  //frame block 2 
-                  height: MediaQuery.of(context).size.height/2.5,
+                  height: MediaQuery.of(context).size.height/2.4,
                  padding: EdgeInsets.all(5),
                 // height: MediaQuery.of(context).size.height/3,
                   width: double.infinity,
@@ -563,18 +579,8 @@ if (await Permission.location.isRestricted) {
                     children: [
 
                       
-                      Container(
-
-                 
- 
-                      
-                      //u1
+                      Container(                       
                       child: newData(),
-
-
-
-
-
                       ),
                       //t4
                      
@@ -649,9 +655,29 @@ children: [
 
         
     ),
-    child: image==null?Center(child: Text("No Image",style: TextStyle(color: Colors.white),)):Image.file(
+    child: image==null?Center
+    (child: IconButton(onPressed: () {
+      takePicture(ImageSource.camera);
+      
+    }, icon: Icon(Icons.photo_camera,size: 50,)))
+    
+    :Image.file(
       fit: BoxFit.cover,
-      File(image!.path)
+      File(image!.path),
+      // frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+      //   return child;
+      // },
+      
+      
+      // loadingBuilder: (context, child, loadingProgress) {
+      //                       if (loadingProgress==null)
+      //                       {
+      //                         return child;
+      //                       }else{
+      //                        return Center(child: CircularProgressIndicator(),);
+      //                       }
+      //                     }, 
+  
       ),
   )
 
@@ -670,24 +696,24 @@ Column(
    children: [
 
 
-ElevatedButton(onPressed: () {
-     takePicture(ImageSource.camera);
-      // final player = AudioPlayer();  
-      //     //player.play(AssetSource('audio/bell.mpeg'));
-      //     player.setAsset('assets/sound/ferakeluar.mpeg');
+// ElevatedButton(onPressed: () {
+//      takePicture(ImageSource.camera);
+//       // final player = AudioPlayer();  
+//       //     //player.play(AssetSource('audio/bell.mpeg'));
+//       //     player.setAsset('assets/sound/ferakeluar.mpeg');
     
-      //     player.play();
+//       //     player.play();
 
 
-  }, child: 
-  Row(
-    children: [
-      Icon(Icons.camera_enhance_rounded,size: 20,),
-      SizedBox(width: 5,),
-      Text("Ambil Photo   ",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
-    ],
-  )
-  ),
+//   }, child: 
+//   Row(
+//     children: [
+//       Icon(Icons.camera_enhance_rounded,size: 20,),
+//       SizedBox(width: 5,),
+//       Text("Ambil Photo   ",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
+//     ],
+//   )
+//   ),
 
   SizedBox(height: 5,),
 
@@ -711,7 +737,21 @@ ElevatedButton(
        );
         return;
         }
+ 
 
+      if (Address=='search')
+      {
+        Fluttertoast.showToast(
+        msg: "Alamat masih kosong,Mohon click tombol Refresh",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0,
+        );
+        return;
+      }
 
       List<int> imageBytes = image!.readAsBytesSync();
       String baseimage = base64Encode(imageBytes);
@@ -748,7 +788,21 @@ ElevatedButton(
       ),
       //savedata
       onPressed: () {
-        
+
+      
+      if (Address=='search')
+      {
+        Fluttertoast.showToast(
+        msg: "Alamat masih kosong,Mohon click tombol Refresh",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0,
+        );
+        return;
+      }
 
        if (image==null){
         Fluttertoast.showToast(
@@ -869,11 +923,16 @@ ElevatedButton(
 
 
     //cur   T
-            Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-            SizedBox(height: 5,),
+           
+
+            
+            
+
+             Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+             
             Jam_clock(),
             SizedBox(height: 5,),
-            Text (box.read("imei"),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
+            Text (box.read("imei").toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
             SizedBox(height: 5,),
             
             Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),
@@ -881,10 +940,33 @@ ElevatedButton(
             
             SizedBox(height: 5,),
             Text('${Address}',textAlign: TextAlign.center,),
+
+              ElevatedButton(onPressed: 
+                  () {
+                    _getTime();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
+                  // _gethasil();
+                  }, 
+                  style: ElevatedButton.styleFrom(
+                       fixedSize: Size(100,10) ,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.refresh,size: 10,),
+                      Text("Refresh",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+                    ],
+                  )
+                  
+                  ),
+ 
+
+
 ]
 ),
    ),
     
+    
+
     );
   }
 
@@ -965,10 +1047,14 @@ mainAxisAlignment: MainAxisAlignment.center,
 
     //cur   T
             Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-            SizedBox(height: 5,),
+
+
+
+
+            SizedBox(height: 1,),
             Jam_clock(),
             SizedBox(height: 5,),
-            Text (deviceInfo!.deviceId.toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
+            Text (box.read("imei").toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
             SizedBox(height: 5,),
             
             Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),

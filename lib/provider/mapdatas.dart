@@ -2,6 +2,7 @@
 
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
+import 'package:flutter_attendance_current/datamodel/listsection.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -219,7 +220,16 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(json['message'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold),),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.black ,
+                      borderRadius: BorderRadius.circular(5) 
+                    ),
+                    child:  Text(json['message'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold,color: Colors.white),), 
+                  ),
+                  
                   SizedBox(height: 5,),
                   Text(json['nama'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold)),
                   Text('('+json['nik']+'/'+json['section']+')',style: TextStyle(fontWeight:FontWeight.bold),),
@@ -251,5 +261,26 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
    
     
       }
+
+   List <hrdsection> _gethrdsection=[];
+   List <hrdsection> get globalhrdsection=>_gethrdsection;
+
+  Future <void> getListSection() async{
+
+      var url=Uri.parse(NamaServer.server+"hrd/carisection.php");
+
+      final response=await http.post(
+        url,
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        final _newData=json.map((e) => hrdsection.fromJson(e)).toList();
+        _gethrdsection=_newData;
+      } 
+      notifyListeners();
+  }   
 
 }
