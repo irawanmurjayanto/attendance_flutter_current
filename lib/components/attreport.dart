@@ -42,13 +42,18 @@ class _AttbySectionState extends State<AttbySection> {
         ),
         backgroundColor: Colors.grey,
         body: Container(
+            margin: EdgeInsets.only(top:15,left:5,right:10),
+            
             width: double.infinity,
+            height: MediaQuery.sizeOf(context).height/3.5,
             decoration: BoxDecoration(
-              color: Colors.white
-              
+              color: Colors.white,
+              border: Border.all(style: BorderStyle.solid,color: Colors.white),
+              borderRadius: BorderRadius.circular(5),
+             
               ),
             
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.only(top:15,left:5,right:5),
             child: Column(
               children: [
                 //datepicker
@@ -60,7 +65,7 @@ class _AttbySectionState extends State<AttbySection> {
                     SizedBox(
                       width: 10,
                     ),
-                    Text(" To "),
+                    Text(" To ",style: TextStyle(color: Colors.white),),
                     SizedBox(
                       width: 10,
                     ),
@@ -69,9 +74,9 @@ class _AttbySectionState extends State<AttbySection> {
                     )
                   ],
                 ),
-                SizedBox(height: 5,),
+                SizedBox(height: 10,),
                 DropSection(),
-                SizedBox(height: 5,),
+                SizedBox(height: 10,),
                 SizedBox(width: 150,
                   child: 
                 ElevatedButton(
@@ -97,9 +102,12 @@ class _AttbySectionState extends State<AttbySection> {
       height: 30,
       decoration: BoxDecoration(
         
-          border: Border.all(style: BorderStyle.solid),
+          border: Border.all(style: BorderStyle.solid,color: Colors.black),
           borderRadius: BorderRadius.circular(10)),
       child: TextFormField(
+        style: TextStyle(
+          color: Colors.black
+        ),
         textAlign: TextAlign.center,
         controller: _begDate,
         onTap: () async {
@@ -131,18 +139,26 @@ class _AttbySectionState extends State<AttbySection> {
 
   Widget DropSection() {
     return Container( 
-      height: 35,
+      height: 55,
       margin: EdgeInsets.all(5),
       padding: EdgeInsets.only(left: 5,right: 5),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      border: Border.all(style: BorderStyle.solid)
-    ),
+    // decoration: BoxDecoration(
+    //   borderRadius: BorderRadius.circular(5),
+    //   border: Border.all(style: BorderStyle.solid,color: Colors.white)
+    // ),
     child:Consumer<MapDatas>(
       builder: (context, prov, child) {
         return DropdownButtonFormField(
+
+              style: TextStyle(color: Colors.black),
+           
           decoration: InputDecoration(
-            labelText: "Pilih Section"
+             label: Text("Pilih Label",style: TextStyle(fontSize: 9),),
+        
+             border: OutlineInputBorder(
+                borderSide: BorderSide(style: BorderStyle.solid)
+            )
+           
           ),
           items: prov.globalhrdsection
               .map((e) => DropdownMenuItem(

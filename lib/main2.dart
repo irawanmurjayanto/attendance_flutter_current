@@ -555,13 +555,28 @@ if (await Permission.location.isRestricted) {
             return[
               PopupMenuItem<int>(
                 value: 0,
-                child: Text("Employee Register"),
+                child: 
+                Row(
+                  children:[
+                    Icon(Icons.app_registration),
+                    SizedBox(width:5),
+                    Text("Employee Register"),
+                  ]
+                )
+                
+                
               ),       
                
-              //  PopupMenuItem<int>(
-              //   value: 1,
-              //   child: Text("Attendance By Section"),
-              // ),       
+               PopupMenuItem<int>(
+                value: 1,
+                child:Row(
+                  children:[
+                    Icon(Icons.report_off),
+                    SizedBox(width:5),
+                    Text("Attendance By Section"),
+                  ]
+                )
+              ),       
                  
 
             ];
@@ -574,10 +589,10 @@ if (await Permission.location.isRestricted) {
               getEmpReg();
             }
 
-            // if (value==1)
-            // {
-            //   Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
-            // }
+            if (value==1)
+            {
+              Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+            }
 
            
               
