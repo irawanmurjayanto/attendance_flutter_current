@@ -187,7 +187,7 @@ final _empregnik=TextEditingController();
        ),
       actions: [
         IconButton(onPressed: () {
-           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,ambilid!.toString()).then((value) => Navigator.pop(context));
+           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
         }, icon: Icon(Icons.save)),
 
         IconButton(onPressed: () {
@@ -829,7 +829,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,ambilid!.toString(),lok,'MASUK');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
 
        
       }, 
@@ -894,7 +894,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,ambilid!.toString() ,lok,'KELUAR');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString() ,lok,'KELUAR');   
 
      
      

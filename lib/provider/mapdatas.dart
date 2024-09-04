@@ -177,6 +177,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
               textColor: Colors.white,
               fontSize: 16.0
               );
+               EasyLoading.dismiss();
               return;
           }      
 
@@ -194,8 +195,11 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
               textColor: Colors.white,
               fontSize: 16.0
               );
-              return;
+
+               EasyLoading.dismiss();
             
+              return;
+             
           }
 
           //sound farewell  
@@ -215,7 +219,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
           //player.play(AssetSource('audio/bell.mpeg'));
          
         EasyLoading.dismiss();
-        
+
          showDialog(context: context, builder: (context) {
            return AlertDialog(
               content:
