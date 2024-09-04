@@ -232,10 +232,14 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
   } else if(Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     ambilid=androidDeviceInfo.id;
-    box.write("imei",androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()
-    +androidDeviceInfo.id.toString()
-    );
+    if (androidDeviceInfo.serialNumber.toString()=='unknown')
+    {
+    box.write("imei",androidDeviceInfo.hardware.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString());
     return androidDeviceInfo.id; // unique ID on Android
+    }else
+    {
+    box.write("imei",androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString());  
+    }
   }
 }
   
