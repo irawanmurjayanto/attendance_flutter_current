@@ -136,7 +136,8 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
  
  
 Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok,String absen) async {
-   
+       
+       EasyLoading.show(status:"Processing...");
       
     
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2.php');
@@ -213,7 +214,8 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
           
           //player.play(AssetSource('audio/bell.mpeg'));
          
-
+        EasyLoading.dismiss();
+        
          showDialog(context: context, builder: (context) {
            return AlertDialog(
               content:

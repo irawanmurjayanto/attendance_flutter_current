@@ -33,9 +33,11 @@ class About extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
-            Text("Attendance of PT. Paradise Island 1.5",style: TextStyle(color: Colors.black),),
-            SizedBox(height: 10,),
-             Text("Irawan Murjayanto 2024",style: TextStyle(color: Colors.black,)),
+            Text("Attendance of PT. Paradise Island 1.7",style: TextStyle(color: Colors.black),),
+             SizedBox(height: 10,),
+             Text("Developer By Irawan Murjayanto",style: TextStyle(color: Colors.black,)),
+             SizedBox(height: 10,),
+             Text("Design Assistance By Fera Paramitha",style: TextStyle(color: Colors.black,)),
              SizedBox(height: 10,),
              Text("Made By Flutter",style: TextStyle(color: Colors.black),)
           ],

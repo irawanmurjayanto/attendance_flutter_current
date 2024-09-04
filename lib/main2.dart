@@ -2,6 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_attendance_current/components/attreport.dart';
  
@@ -34,6 +36,7 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:flutter/foundation.dart';
  
   
  //awal
@@ -69,6 +72,61 @@ class HomepageMenu extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 class _HomepageState extends State<HomepageMenu> {
+
+
+
+
+ _getImei() async {
+    
+    var permission = await Permission.phone.status;
+
+    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+    
+
+    if (dInfo != null) {
+      setState(() {
+        deviceInfo = dInfo;
+          box.write("imei", deviceInfo!.deviceId.toString());
+      });
+    }
+
+    if (Platform.isAndroid) {
+      if (permission.isGranted) {
+        String? imei = await _deviceImeiPlugin.getDeviceImei();
+        if (imei != null) {
+          setState(() {
+            getPermission = true;
+            deviceImei = imei;
+          
+          });
+        }
+      } else {
+        PermissionStatus status = await Permission.phone.request();
+        if (status == PermissionStatus.granted) {
+          setState(() {
+            getPermission = false;
+          });
+          _getImei();
+        } else {
+          setState(() {
+            getPermission = false;
+            message = "Permission not granted, please allow permission";
+          });
+        }
+      }
+    } else {
+      String? imei = await _deviceImeiPlugin.getDeviceImei();
+      if (imei != null) {
+        setState(() {
+          getPermission = true;
+          deviceImei = imei;
+        });
+      }
+    }
+  }
+
+
+
      
   bool isloading = false;
    
@@ -85,17 +143,20 @@ class _HomepageState extends State<HomepageMenu> {
    getSession() async{
     await GetStorage.init();
    } 
+
+ 
   
   @override
   void initState() {
   
     super.initState();
  
-   // _getImeix();
+   // _getImei();
+  
    _getTimeClock();
    _gethasil();
    _getTime();
-   _getId(); 
+    _getId(); 
     getSession(); 
    
   }
@@ -171,7 +232,9 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
   } else if(Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     ambilid=androidDeviceInfo.id;
-    box.write("imei",androidDeviceInfo.id);
+    box.write("imei",androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()
+    +androidDeviceInfo.id.toString()
+    );
     return androidDeviceInfo.id; // unique ID on Android
   }
 }
@@ -444,8 +507,8 @@ if (await Permission.location.isRestricted) {
       //backgroundColor: Colors.transparent,
       
        appBar: AppBar(
-         title: const Center(child:Text('Attendance of PT. Paradise Island',style: TextStyle(color: Colors.white,fontSize: 18),)),
- backgroundColor: Colors.blueAccent,
+         title: const Center(child:Text('Attendance of PT. Paradise Island',style: TextStyle(color: Colors.white,fontSize: 18,fontWeight: FontWeight.bold,fontStyle: FontStyle.italic,),)),
+ backgroundColor: Colors.black12,
  toolbarHeight: screenHeight*0.1,
  
                 //   actions: [
@@ -469,9 +532,9 @@ if (await Permission.location.isRestricted) {
            children: [
            
             Image.asset("assets/images/appbar.png",
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
             //height: screenHeight*0.1,
-            height: screenHeight * 0.2,
+            height: screenHeight * 0.3,
             ),
             
            ],
@@ -479,7 +542,8 @@ if (await Permission.location.isRestricted) {
         actions: [
          
           PopupMenuButton(
-            iconColor: Colors.white,
+            
+            iconColor: Colors.black,
             iconSize: 30,
             color: Colors.white,
             itemBuilder: (context) {
@@ -490,10 +554,10 @@ if (await Permission.location.isRestricted) {
                 child: Text("Employee Register"),
               ),       
                
-               PopupMenuItem<int>(
-                value: 1,
-                child: Text("Attendance By Section"),
-              ),       
+              //  PopupMenuItem<int>(
+              //   value: 1,
+              //   child: Text("Attendance By Section"),
+              // ),       
                  
 
             ];
@@ -506,10 +570,10 @@ if (await Permission.location.isRestricted) {
               getEmpReg();
             }
 
-            if (value==1)
-            {
-              Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
-            }
+            // if (value==1)
+            // {
+            //   Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+            // }
 
            
               
@@ -543,11 +607,16 @@ if (await Permission.location.isRestricted) {
         child: 
       Container(
        //height all frame 
-       height: MediaQuery.sizeOf(context).height/1.1,
+       height: MediaQuery.sizeOf(context).height/1.2,
 
         // constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
-     color: Colors.black12,
+          
+         image:DecorationImage(
+          fit: BoxFit.cover,
+          image:
+          
+          AssetImage("assets/images/base1.png"))
         ),
         child:
         Column(
@@ -564,13 +633,13 @@ if (await Permission.location.isRestricted) {
                 fit: FlexFit.loose,
                 child: Container(
                  //frame block 2 
-                  height: MediaQuery.of(context).size.height/2.4,
+                //  height: MediaQuery.of(context).size.height/2.15,
                  padding: EdgeInsets.all(5),
                 // height: MediaQuery.of(context).size.height/3,
                   width: double.infinity,
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.only(left: 5,right:5),
                    decoration: BoxDecoration(
-                    color: Colors.white,
+                
                     borderRadius: BorderRadius.circular(10),
           
                    ),
@@ -602,13 +671,13 @@ Container(
 Container(
   height: MediaQuery.of(context).size.height/3,
   padding: EdgeInsets.all(20),
-  margin: EdgeInsets.only(left:10,right:10,top:2),
+  margin: EdgeInsets.only(left:10,right:10,top:2,bottom: 10),
 decoration: BoxDecoration(
   color: Colors.white,
   border: Border.all(style: BorderStyle.solid,color: Colors.white),
   borderRadius: BorderRadius.circular(7),  
    image: DecorationImage(
-      image: AssetImage('assets/images/back5b.jpg'),
+      image: AssetImage('assets/images/base2.png'),
       fit: BoxFit.cover,
       )
 
@@ -633,7 +702,7 @@ children: [
      width:  MediaQuery.of(context).size.height/5,
     clipBehavior: Clip.antiAlias,
     decoration: BoxDecoration(
-       color:Colors.blueGrey,
+       color:Colors.grey,
       borderRadius: BorderRadius.circular(10),
       border: Border.all(style: BorderStyle.solid,color: Colors.white,width: 5),
       boxShadow: [
@@ -890,10 +959,13 @@ ElevatedButton(
   final _jam=TextEditingController();
 
   Widget Jam_clock(){
-    return Padding(padding: EdgeInsets.all(5),
+    return Container(padding: EdgeInsets.all(5),
+    decoration: BoxDecoration(
+     
+    ),
     child: TextField(
       textAlign: TextAlign.center,
-      style: TextStyle(decoration: TextDecoration.none,fontWeight: FontWeight.bold,fontSize: 20), 
+      style: TextStyle(decoration: TextDecoration.none,fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white), 
      
       
       controller: _jam,
@@ -905,12 +977,16 @@ ElevatedButton(
 //u2
   Widget newData(){
    return Container(
-          padding: EdgeInsets.only(bottom:10,top:10),
+          padding: EdgeInsets.only(bottom:10,top:10,left:5,right:5),
             decoration: BoxDecoration(
+              color: Colors.grey,
+              border: Border.all(style: BorderStyle.solid,color: Colors.white),
               borderRadius: BorderRadius.circular(10),
+              
               image: DecorationImage(
-                image: AssetImage('assets/images/back5b.jpg'),
-                fit: BoxFit.cover,
+                
+                image: AssetImage('assets/images/logopif.png'),
+                fit: BoxFit.contain,
                 )
             ),
 
@@ -927,21 +1003,7 @@ ElevatedButton(
 
             
             
-
-             Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-             
-            Jam_clock(),
-            SizedBox(height: 5,),
-            Text (box.read("imei").toString(),style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),    
-            SizedBox(height: 5,),
-            
-            Text(location,style: TextStyle(color: Colors.black,fontSize: 16),),
-            SizedBox(height: 5,),
-            
-            SizedBox(height: 5,),
-            Text('${Address}',textAlign: TextAlign.center,),
-
-              ElevatedButton(onPressed: 
+             ElevatedButton(onPressed: 
                   () {
                     _getTime();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
@@ -958,7 +1020,25 @@ ElevatedButton(
                   )
                   
                   ),
- 
+          
+            Jam_clock(),
+            SizedBox(height: 5,),
+            Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+            SizedBox(height: 5,),
+            
+            Text(location,style: TextStyle(color: Colors.white,fontSize: 16),),
+            SizedBox(height: 5,),
+            
+            SizedBox(height: 5,),
+            Container(
+            decoration: BoxDecoration(
+              border:Border.all(style: BorderStyle.solid),
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white
+            ),  
+            child:Text('${Address}',textAlign: TextAlign.center,),
+            )
+             
 
 
 ]
@@ -1164,174 +1244,3 @@ Row(
 
 
 
-
-
-class MyApp_imei extends StatefulWidget {
- 
-
-  @override
-  State<MyApp_imei> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp_imei> {
-  String _platformVersion = 'Unknown';
-  String? deviceImei;
-  String? type;
-  String message = "Please allow permission request!";
-  DeviceInfo? deviceInfo;
-  
-  bool getPermission = false;
-  bool isloading = false;
-  final _deviceImeiPlugin = DeviceImei();
- 
-
-  _setPlatformType() {
-    if (Platform.isAndroid) {
-      setState(() {
-        type = 'Android';
-      });
-    } else if (Platform.isIOS) {
-      setState(() {
-        type = 'iOS';
-      });
-    } else {
-      setState(() {
-        type = 'other';
-      });
-    }
-  }
-
-  
-  _getImei() async {
-    
-    var permission = await Permission.phone.status;
-
-    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
-
-    if (dInfo != null) {
-      setState(() {
-        deviceInfo = dInfo;
-      });
-    }
-
-    if (Platform.isAndroid) {
-      if (permission.isGranted) {
-        String? imei = await _deviceImeiPlugin.getDeviceImei();
-        if (imei != null) {
-          setState(() {
-            getPermission = true;
-            deviceImei = imei;
-          });
-        }
-      } else {
-        PermissionStatus status = await Permission.phone.request();
-        if (status == PermissionStatus.granted) {
-          setState(() {
-            getPermission = false;
-          });
-       //   _getImei();
-        } else {
-          setState(() {
-            getPermission = false;
-            message = "Permission not granted, please allow permission";
-          });
-        }
-      }
-    } else {
-      String? imei = await _deviceImeiPlugin.getDeviceImei();
-      if (imei != null) {
-        setState(() {
-          getPermission = true;
-          deviceImei = imei;
-        });
-      }
-    }
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion = await _deviceImeiPlugin.getPlatformVersion() ??
-          'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-          
-        ),
-        body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Running on: $_platformVersion\n'),
-              const Divider(),
-              Text("ID : ${deviceInfo?.deviceId}"),
-              Text("SDK INT : ${deviceInfo?.sdkInt}"),
-              Text("MODEL : ${deviceInfo?.model}"),
-              Text("MANUFACTURE : ${deviceInfo?.manufacture}"),
-              Text("DEVICE : ${deviceInfo?.device}"),
-              const Divider(),
-              isloading
-                  ? const CircularProgressIndicator()
-                  : getPermission
-                      ? Text('Device $type: $deviceImei\n')
-                      : Text(message),
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _getImei,
-                  child: const Text("Get Device Info"),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-     
-  }
-}
-
-//t6
- 
-// class IntentUtils {
-
- 
-//   IntentUtils._();
-//   static Future<void> launchGoogleMaps(double lat1,double lat2) async {
-//     // const double destinationLatitude= 31.5204;
-//     // const double destinationLongitude = 74.3587;
-//     double destinationLatitude= lat1;
-//     double destinationLongitude = lat2;
-//     final uri = Uri(
-//         scheme: "google.navigation",
-//         // host: '"0,0"',  {here we can put host}
-//         queryParameters: {
-//           'q': '$destinationLatitude, $destinationLongitude'
-//         });
-//     if (await canLaunchUrl(uri)) {
-//       await launchUrl(uri);
-//     } else {
-//       debugPrint('An error occurred');
-//     }
-//   }
-// }
