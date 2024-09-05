@@ -5,7 +5,7 @@ import 'package:geocoding/geocoding.dart';
  import 'dart:async';
  
  
-import 'package:device_imei/device_imei.dart';
+ 
  
 // import 'package:get_location_addres/get_imei.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -50,7 +50,7 @@ class _Coordinate1State extends State<Coordinate1> {
   String? deviceImei;
   String? type;
   String message = "Please allow permission request!";
-  DeviceInfo? deviceInfo;
+ 
   bool getPermission = false;
 
 

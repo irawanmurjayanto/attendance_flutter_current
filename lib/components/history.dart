@@ -8,7 +8,7 @@ import 'package:flutter_attendance_current/provider/mapdatas.dart';
  
 // import 'package:flutter_attendance_current/route/routemap.dart';
 import 'package:flutter/services.dart';
-import 'package:device_imei/device_imei.dart';
+
 import 'dart:io'; 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -62,10 +62,10 @@ class _History1State extends State<History1> {
   String? deviceImei;
   String? type;
   String message = "Please allow permission request!";
-  DeviceInfo? deviceInfo;
+ 
   bool getPermission = false;
   bool isloading = false;
-  final _deviceImeiPlugin = DeviceImei();
+   
   TextEditingController _cari=TextEditingController();
  
     static DateTime now = DateTime.now();
