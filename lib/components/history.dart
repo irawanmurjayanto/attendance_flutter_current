@@ -8,7 +8,7 @@ import 'package:flutter_attendance_current/provider/mapdatas.dart';
  
 // import 'package:flutter_attendance_current/route/routemap.dart';
 import 'package:flutter/services.dart';
-import 'package:device_imei/device_imei.dart';
+
 import 'dart:io'; 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:device_info_plus/device_info_plus.dart';
