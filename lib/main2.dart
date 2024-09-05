@@ -18,7 +18,7 @@ import 'package:geocoding/geocoding.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:device_imei/device_imei.dart';
+// import 'package:device_imei/device_imei.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
  
@@ -26,7 +26,7 @@ import 'package:permission_handler/permission_handler.dart';
  
 import 'package:provider/provider.dart';
  
-import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
+// import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:device_info_plus/device_info_plus.dart';
  
@@ -76,54 +76,54 @@ class _HomepageState extends State<HomepageMenu> {
 
 
 
- _getImei() async {
+//  _getImei() async {
     
-    var permission = await Permission.phone.status;
+//     var permission = await Permission.phone.status;
 
-    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+//     DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
     
 
-    if (dInfo != null) {
-      setState(() {
-        deviceInfo = dInfo;
-          box.write("imei", deviceInfo!.deviceId.toString());
-      });
-    }
+//     if (dInfo != null) {
+//       setState(() {
+//         deviceInfo = dInfo;
+//           box.write("imei", deviceInfo!.deviceId.toString());
+//       });
+//     }
 
-    if (Platform.isAndroid) {
-      if (permission.isGranted) {
-        String? imei = await _deviceImeiPlugin.getDeviceImei();
-        if (imei != null) {
-          setState(() {
-            getPermission = true;
-            deviceImei = imei;
+//     if (Platform.isAndroid) {
+//       if (permission.isGranted) {
+//         String? imei = await _deviceImeiPlugin.getDeviceImei();
+//         if (imei != null) {
+//           setState(() {
+//             getPermission = true;
+//             deviceImei = imei;
           
-          });
-        }
-      } else {
-        PermissionStatus status = await Permission.phone.request();
-        if (status == PermissionStatus.granted) {
-          setState(() {
-            getPermission = false;
-          });
-          _getImei();
-        } else {
-          setState(() {
-            getPermission = false;
-            message = "Permission not granted, please allow permission";
-          });
-        }
-      }
-    } else {
-      String? imei = await _deviceImeiPlugin.getDeviceImei();
-      if (imei != null) {
-        setState(() {
-          getPermission = true;
-          deviceImei = imei;
-        });
-      }
-    }
-  }
+//           });
+//         }
+//       } else {
+//         PermissionStatus status = await Permission.phone.request();
+//         if (status == PermissionStatus.granted) {
+//           setState(() {
+//             getPermission = false;
+//           });
+//           _getImei();
+//         } else {
+//           setState(() {
+//             getPermission = false;
+//             message = "Permission not granted, please allow permission";
+//           });
+//         }
+//       }
+//     } else {
+//       String? imei = await _deviceImeiPlugin.getDeviceImei();
+//       if (imei != null) {
+//         setState(() {
+//           getPermission = true;
+//           deviceImei = imei;
+//         });
+//       }
+//     }
+//   }
 
 
 
@@ -199,12 +199,12 @@ final _empregnik=TextEditingController();
  }
 
 
-_shareImage2() async{
+// _shareImage2() async{
 
-final ByteData bytes = await rootBundle.load(image!.path);
-await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', text: 'My optional text.');
+// final ByteData bytes = await rootBundle.load(image!.path);
+// await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', text: 'My optional text.');
 
-}
+// }
 
   
 
@@ -217,7 +217,7 @@ await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/p
   String? deviceImei;
   String? type;
   String message = "Please allow permission request!";
-  DeviceInfo? deviceInfo;
+  // DeviceInfo? deviceInfo;
   bool getPermission = false;
  
   static String? ambilid;
@@ -282,7 +282,7 @@ _currentPosition=position;
 
 final snakbar2=SnackBar(content:Text(now2));
 
-  final _deviceImeiPlugin = DeviceImei();
+  // final _deviceImeiPlugin = DeviceImei();
 
  File? image;
     
@@ -355,76 +355,76 @@ TextEditingController _title=TextEditingController();
  }
 
 
- String? _tempImei;  
- final _imetText =TextEditingController();
+//  String? _tempImei;  
+//  final _imetText =TextEditingController();
 
 
-//u3
- _getImeix() async {
+// //u3
+//  _getImeix() async {
 
-    Fluttertoast.showToast(
-                          msg: "tset",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 2,
-                          backgroundColor: Colors.green,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                        ); 
+//     Fluttertoast.showToast(
+//                           msg: "tset",
+//                           toastLength: Toast.LENGTH_SHORT,
+//                           gravity: ToastGravity.CENTER,
+//                           timeInSecForIosWeb: 2,
+//                           backgroundColor: Colors.green,
+//                           textColor: Colors.white,
+//                           fontSize: 16.0
+//                         ); 
     
-    var permission = await Permission.phone.status;
+//     var permission = await Permission.phone.status;
 
-    //DeviceInfoPlugin androidDeviceInfo = DeviceInfoPlugin();
+//     //DeviceInfoPlugin androidDeviceInfo = DeviceInfoPlugin();
 
-    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+//     DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
 
 
       
 
-    if (dInfo != null) {
-      setState(() {
-        deviceInfo = dInfo;
-        _tempImei=deviceInfo!.deviceId;
-        box.write("imei",ambilid!.toString());
+//     if (dInfo != null) {
+//       setState(() {
+//         deviceInfo = dInfo;
+//         _tempImei=deviceInfo!.deviceId;
+//         box.write("imei",ambilid!.toString());
          
-      });
+//       });
 
            
-    }
+//     }
 
-    if (Platform.isAndroid) {
-      if (permission.isGranted) {
-        String? imei = await _deviceImeiPlugin.getDeviceImei();
-        if (imei != null) {
-          setState(() {
-            getPermission = true;
-            deviceImei = imei;
-          });
-        }
-      } else {
-        PermissionStatus status = await Permission.phone.request();
-        if (status == PermissionStatus.granted) {
-          setState(() {
-            getPermission = false;
-          });
-          _getImeix();
-        } else {
-          setState(() {
-            getPermission = false;
-            message = "Permission not granted, please allow permission";
-          });
-        }
-      }
-    } else {
-      String? imei = await _deviceImeiPlugin.getDeviceImei();
-      if (imei != null) {
-        setState(() {
-          getPermission = true;
-          deviceImei = imei;
-        });
-      }
-    }
-  }
+//     if (Platform.isAndroid) {
+//       if (permission.isGranted) {
+//         String? imei = await _deviceImeiPlugin.getDeviceImei();
+//         if (imei != null) {
+//           setState(() {
+//             getPermission = true;
+//             deviceImei = imei;
+//           });
+//         }
+//       } else {
+//         PermissionStatus status = await Permission.phone.request();
+//         if (status == PermissionStatus.granted) {
+//           setState(() {
+//             getPermission = false;
+//           });
+//           _getImeix();
+//         } else {
+//           setState(() {
+//             getPermission = false;
+//             message = "Permission not granted, please allow permission";
+//           });
+//         }
+//       }
+//     } else {
+//       String? imei = await _deviceImeiPlugin.getDeviceImei();
+//       if (imei != null) {
+//         setState(() {
+//           getPermission = true;
+//           deviceImei = imei;
+//         });
+//       }
+//     }
+//   }
 
 
   
