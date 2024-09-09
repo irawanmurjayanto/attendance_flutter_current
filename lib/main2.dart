@@ -37,6 +37,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:device_imei/device_imei.dart';
+import 'package:flutter_attendance_current/sqllite/database_helper.dart';
+ 
  
   
  //awal
@@ -74,60 +77,65 @@ class HomepageMenu extends StatefulWidget {
 class _HomepageState extends State<HomepageMenu> {
 
 
+ //sqllite
+ bool _isLoading = true;
 
+ List<Map<String, dynamic>> myData = [];
 
-//  _getImei() async {
+ void _refreshData() async {
+    final data = await DatabaseHelper.getItems();
+    setState(() {
+      myData = data;
+      _isLoading = false;
+    });
+  }
+
+  void deleteNIK(String nik) async {
+    await DatabaseHelper.deleteItem(nik);
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //   content: Text('Successfully deleted!'),
+    // backgroundColor:Colors.green
+    // ));
+    _refreshData();
+  }
+
     
-//     var permission = await Permission.phone.status;
+   Future<void> addNIK() async {
+    await DatabaseHelper.createItem(
+        _empregnik.text,'desc');
+    _refreshData();
+  }
 
-//     DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
     
+    deleteItemAll() async {
+    final db = await DatabaseHelper.db();
+  
+     await db.rawDelete('delete from absen');
+    
+      
+    
+  }
+    
+     getNIK() async {
+    final db = await DatabaseHelper.db();
+    var x=await db.rawQuery('select nik from absen');
+    var dbitem=x.first;
+    box.write('imei',dbitem['nik'].toString())   ; 
 
-//     if (dInfo != null) {
-//       setState(() {
-//         deviceInfo = dInfo;
-//           box.write("imei", deviceInfo!.deviceId.toString());
-//       });
-//     }
+        // Fluttertoast.showToast(
+        //                   msg: dbitem['nik'].toString(),
+        //                   toastLength: Toast.LENGTH_SHORT,
+        //                   gravity: ToastGravity.CENTER,
+        //                   timeInSecForIosWeb: 2,
+        //                   backgroundColor: Colors.green,
+        //                   textColor: Colors.white,
+        //                   fontSize: 16.0
+        //                 ); 
 
-//     if (Platform.isAndroid) {
-//       if (permission.isGranted) {
-//         String? imei = await _deviceImeiPlugin.getDeviceImei();
-//         if (imei != null) {
-//           setState(() {
-//             getPermission = true;
-//             deviceImei = imei;
-          
-//           });
-//         }
-//       } else {
-//         PermissionStatus status = await Permission.phone.request();
-//         if (status == PermissionStatus.granted) {
-//           setState(() {
-//             getPermission = false;
-//           });
-//           _getImei();
-//         } else {
-//           setState(() {
-//             getPermission = false;
-//             message = "Permission not granted, please allow permission";
-//           });
-//         }
-//       }
-//     } else {
-//       String? imei = await _deviceImeiPlugin.getDeviceImei();
-//       if (imei != null) {
-//         setState(() {
-//           getPermission = true;
-//           deviceImei = imei;
-//         });
-//       }
-//     }
-//   }
-
-
-
+  }
      
+
+
   bool isloading = false;
    
    
@@ -142,25 +150,11 @@ class _HomepageState extends State<HomepageMenu> {
    //late final String apiEndpoint;
    getSession() async{
     await GetStorage.init();
+   
    } 
 
  
   
-  @override
-  void initState() {
-  
-    super.initState();
- 
-   // _getImei();
-  
-   _getTimeClock();
-   _gethasil();
-   _getTime();
-    _getId(); 
-    getSession(); 
-   
-  }
-
   final box=GetStorage();
 
 final _empregnik=TextEditingController();
@@ -187,7 +181,15 @@ final _empregnik=TextEditingController();
        ),
       actions: [
         IconButton(onPressed: () {
-           Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
+          // Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
+            deleteNIK(_empregnik.text); 
+            addNIK();
+            getNIK();  
+            Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_empregnik.text).then((value) => 
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)));
+
+             
+             
         }, icon: Icon(Icons.save)),
 
         IconButton(onPressed: () {
@@ -214,7 +216,48 @@ final _empregnik=TextEditingController();
   }
 
 
-  String? deviceImei;
+
+
+ 
+
+
+  
+ getTestSaja() async{
+
+ 
+ 
+ 
+
+ 
+
+  showDialog(context: context, 
+  builder: (context) {
+    return AlertDialog(
+      
+      content: Column(
+        children: [
+          Text("1 :"+box.read('imei')),
+
+           
+           
+            
+      
+    
+        
+         // Text("3 :"+deviceImei!.toString()==null?"null":deviceImei!.toString()),
+   
+
+        ],
+      ),
+
+    );
+
+  },);
+
+ }
+
+
+  static String? deviceImei;
   String? type;
   String message = "Please allow permission request!";
   // DeviceInfo? deviceInfo;
@@ -222,6 +265,61 @@ final _empregnik=TextEditingController();
  
   static String? ambilid;
    
+ DeviceInfo? deviceInfo; 
+ final _deviceImeiPlugin = DeviceImei();
+
+static String? imeiira;
+ _getImei() async {
+    
+    var permission = await Permission.phone.status;
+
+    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+
+    if (dInfo != null) {
+      setState(() {
+        deviceInfo = dInfo;
+      });
+    }
+
+    if (Platform.isAndroid) {
+      if (permission.isGranted) {
+        String? imei = await _deviceImeiPlugin.getDeviceImei();
+        if (imei != null) {
+          setState(() {
+            getPermission = true;
+            deviceImei = imei;
+            imeiira!=imei;
+          });
+        }
+      } else {
+        PermissionStatus status = await Permission.phone.request();
+        if (status == PermissionStatus.granted) {
+          setState(() {
+            getPermission = false;
+          });
+          _getImei();
+        } else {
+          setState(() {
+            getPermission = false;
+            message = "Permission not granted, please allow permission";
+          });
+        }
+      }
+    } else {
+      String? imei = await _deviceImeiPlugin.getDeviceImei();
+      if (imei != null) {
+        setState(() {
+          getPermission = true;
+          deviceImei = imei;
+           imeiira!=imei;
+        });
+      }
+    }
+  }
+
+static String? deviceid1;
+static String? deviceid2;
+static String? sn3;
   
  Future<String?> _getId() async {
   var deviceInfo = DeviceInfoPlugin();
@@ -232,19 +330,60 @@ final _empregnik=TextEditingController();
   } else if(Platform.isAndroid) {
     var androidDeviceInfo = await deviceInfo.androidInfo;
     ambilid=androidDeviceInfo.id;
-    if (androidDeviceInfo.serialNumber.toString()=='unknown')
-    {
-    box.write("imei",androidDeviceInfo.hardware.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString());
-    return androidDeviceInfo.id; // unique ID on Android
-    }else
-    {
-    box.write("imei",androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString());  
-    }
+ 
+    setState(() {
+      sn3=androidDeviceInfo.serialNumber.toString();
+      deviceid1=androidDeviceInfo.hardware.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString();
+      deviceid2=androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString() ; 
+    });
+    
+    
   }
 }
   
 
+  getLoadMemoryx() async {
+
+    EasyLoading.show(status: "Processing..");
+
+    Timer.periodic(Duration(seconds: 2), (timer) {
+
+        deviceImei==null?
+ 
+      setState(() {
+         box.write('imei', deviceid1!.toString());
+      }):
+
+         setState(() {
+         box.write('imei', deviceImei!.toString());
+      });
+    
+
+     });
+        EasyLoading.dismiss();
+      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)); 
   
+  }
+
+   @override
+  void initState() {
+  
+    super.initState();
+ 
+    getSession(); 
+   // _getImei();
+   _getTimeClock();
+   _gethasil();
+   _getTime();
+   // _getId(); 
+    //deleteItemAll();
+    getNIK();
+   //getLoadMemory();
+
+    
+   
+  }
+
   
 
 
@@ -1025,7 +1164,12 @@ ElevatedButton(
              ElevatedButton(onPressed: 
                   () {
                     _getTime();
+                  //  getTestSaja();
+                   // getLoadMemory();
+                    getNIK();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
+                  
+                   // getTestSaja();
                   // _gethasil();
                   }, 
                   style: ElevatedButton.styleFrom(
@@ -1042,7 +1186,8 @@ ElevatedButton(
           
             Jam_clock(),
             SizedBox(height: 5,),
-            Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+          Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+           //Text (deviceImei!+"   IRAX",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
             SizedBox(height: 5,),
             
             Text(location,style: TextStyle(color: Colors.white,fontSize: 16),),
@@ -1197,13 +1342,14 @@ Row(
     ElevatedButton(onPressed: 
     () {
       _getTime();
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
+     // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
+      getTestSaja();
      // _gethasil();
     }, 
     child: Row(
       children: [
         Icon(Icons.refresh),
-        Text("Refresh",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+        Text("Refresh x",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
       ],
     )
     
