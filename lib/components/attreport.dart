@@ -60,12 +60,16 @@ class _AttbySectionState extends State<AttbySection> {
                 Row(
                   children: [
                     Flexible(
-                      child: PictBegDate(),
+                      child: 
+                     
+                         PictBegDate(),
+                      
+                    
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text(" To ",style: TextStyle(color: Colors.white),),
+                    Text(" To ",style: TextStyle(color: Colors.black),),
                     SizedBox(
                       width: 10,
                     ),
@@ -74,8 +78,10 @@ class _AttbySectionState extends State<AttbySection> {
                     )
                   ],
                 ),
-                SizedBox(height: 10,),
-                DropSection(),
+                SizedBox(height: 40,
+                child:  DropSection(),
+                ),
+               
                 SizedBox(height: 10,),
                 SizedBox(width: 150,
                   child: 
@@ -100,15 +106,25 @@ class _AttbySectionState extends State<AttbySection> {
     return Container(
       margin: EdgeInsets.only(left: 5,right: 5),
       height: 30,
-      decoration: BoxDecoration(
+      width: 100,
+      padding: EdgeInsets.only(bottom: 10),
+   
+      // decoration: BoxDecoration(
         
-          border: Border.all(style: BorderStyle.solid,color: Colors.black),
-          borderRadius: BorderRadius.circular(10)),
+      //     border: Border.all(style: BorderStyle.solid,color: Colors.black),
+      //     borderRadius: BorderRadius.circular(10)),
       child: TextFormField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+          
+    
+
+        ),
         style: TextStyle(
-          color: Colors.black
+          color: Colors.black,fontSize: 10
         ),
         textAlign: TextAlign.center,
+        // textAlignVertical: TextAlignVertical.top,
         controller: _begDate,
         onTap: () async {
           DateTime? pickdate = await showDatePicker(
