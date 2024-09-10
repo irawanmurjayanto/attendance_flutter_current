@@ -1,5 +1,6 @@
 
 
+import 'package:flutter_attendance_current/components/attreport.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/datamodel/listsection.dart';
@@ -272,6 +273,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
    List <hrdsection> get globalhrdsection=>_gethrdsection;
 
   Future <void> getListSection() async{
+    _getdatasection.clear();
 
       var url=Uri.parse(NamaServer.server+"hrd/carisection.php");
 
@@ -287,6 +289,87 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         _gethrdsection=_newData;
       } 
       notifyListeners();
-  }   
+  } 
 
-}
+
+Future <void> getCheckHak(String macadd,BuildContext context) async{
+
+      
+
+      var url=Uri.parse(NamaServer.server+"hrd/newcheckpersonal.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'macadd':macadd,
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body);
+        if(json['errormsg']=='failed')
+        {
+          
+              Fluttertoast.showToast(
+              msg: "Anda tidak berhak atas module ini",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+              return;
+        } else
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+        }
+
+         
+      } 
+      notifyListeners();
+  } 
+
+
+List<DataBySection> _getdatasection=[];
+List<DataBySection> get getglobal_datasection =>_getdatasection;
+
+Future <void> getDataBySection(String tgl1,String tgl2,String locatt) async{
+
+      _getdatasection.clear();
+
+      var url=Uri.parse(NamaServer.server+"hrd/newloaddataatt_parisbysection_flut.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'tgl1':tgl1,
+          'tgl2':tgl2,
+          'locatt':locatt,
+        }
+        
+      );   
+
+           print(tgl1+'/'+tgl2+'/'+locatt);
+
+        if (response.statusCode==200)
+       {
+        final json=jsonDecode(response.body)['data'] as List;
+        //final json=jsonDecode(response.body);
+         
+        //print(tgl1+'/'+tgl2+'/'+locatt);
+        final newData=json.map((e) => DataBySection.fromJson(e)).toList(); 
+        _getdatasection=newData;
+        }  
+
+         notifyListeners();
+      } 
+      
+  } 
+
+
+
+
+ 

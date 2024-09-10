@@ -730,7 +730,9 @@ if (await Permission.location.isRestricted) {
 
             if (value==1)
             {
-              Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+              getStatusInet(context);
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context);
+
             }
 
            
