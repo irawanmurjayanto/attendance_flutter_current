@@ -731,6 +731,7 @@ if (await Permission.location.isRestricted) {
             if (value==1)
             {
               getStatusInet(context);
+              EasyLoading.show(status: "Processing..");
               Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context);
 
             }

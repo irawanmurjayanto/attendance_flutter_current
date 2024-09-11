@@ -273,7 +273,9 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
    List <hrdsection> get globalhrdsection=>_gethrdsection;
 
   Future <void> getListSection() async{
+    EasyLoading.show(status: "Processing..");
     _getdatasection.clear();
+   // _getpersonsection.clear();
 
       var url=Uri.parse(NamaServer.server+"hrd/carisection.php");
 
@@ -287,6 +289,33 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         final json=jsonDecode(response.body)['data'] as List;
         final _newData=json.map((e) => hrdsection.fromJson(e)).toList();
         _gethrdsection=_newData;
+      } 
+      notifyListeners();
+      EasyLoading.dismiss();
+  } 
+
+   List <DataBySection_person> _getpersonsection=[];
+   List <DataBySection_person> get globalpersonsection=>_getpersonsection;
+
+ Future <void> getListPerson(String section) async{
+    _getpersonsection.clear();
+
+      var url=Uri.parse(NamaServer.server+"hrd/cariperson.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'section':section
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => DataBySection_person.fromJson(e)).toList();
+        _getpersonsection=_newData;
       } 
       notifyListeners();
   } 
@@ -336,7 +365,7 @@ Future <void> getCheckHak(String macadd,BuildContext context) async{
 List<DataBySection> _getdatasection=[];
 List<DataBySection> get getglobal_datasection =>_getdatasection;
 
-Future <void> getDataBySection(String tgl1,String tgl2,String locatt) async{
+Future <void> getDataBySection(String tgl1,String tgl2,String locatt,String nik) async{
 
       _getdatasection.clear();
 
@@ -348,20 +377,56 @@ Future <void> getDataBySection(String tgl1,String tgl2,String locatt) async{
           'tgl1':tgl1,
           'tgl2':tgl2,
           'locatt':locatt,
+          'nikperson':nik,
         }
         
       );   
 
-           print(tgl1+'/'+tgl2+'/'+locatt);
+      //     print(tgl1+'/'+tgl2+'/'+locatt);
 
         if (response.statusCode==200)
        {
         final json=jsonDecode(response.body)['data'] as List;
         //final json=jsonDecode(response.body);
-         
+         print(json);
         //print(tgl1+'/'+tgl2+'/'+locatt);
         final newData=json.map((e) => DataBySection.fromJson(e)).toList(); 
         _getdatasection=newData;
+        }  
+
+         notifyListeners();
+      } 
+
+
+
+
+      List<DataBySection_idno> _getdatasection_idno=[];
+      List<DataBySection_idno> get getglobal_datasection_idno =>_getdatasection_idno;
+
+Future <void> getDataBySection_idno(String idno) async{
+
+      _getdatasection_idno.clear();
+
+      var url=Uri.parse(NamaServer.server+"hrd/newloaddataatt_parisbysection_flut_idno.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'idno':idno,
+        
+        }
+        
+      );   
+ 
+
+        if (response.statusCode==200)
+       {
+        final json=jsonDecode(response.body)['data'] as List;
+       // final json=jsonDecode(response.body);
+         
+        print(json);
+        final newData=json.map((e) => DataBySection_idno.fromJson(e)).toList(); 
+        _getdatasection_idno=newData;
         }  
 
          notifyListeners();
