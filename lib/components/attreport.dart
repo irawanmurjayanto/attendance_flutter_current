@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_attendance_current/components/attreport2.dart';
+import 'package:flutter_attendance_current/components/history.dart';
 import 'package:flutter_attendance_current/components/server.dart';
+import 'package:flutter_attendance_current/datamodel/history.dart';
+import 'package:flutter_attendance_current/datamodel/listsection.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -48,13 +55,32 @@ class _AttbySectionState extends State<AttbySection> {
   String? _tempListSection;
   String? _tempListSection2;
   String? _tempListPerson;
+  String? _tempListPerson2;
+  
+  
+   
+
+  getRefreshDrop1() async {
+    await  Provider.of<MapDatas>(context, listen: false).getListPerson("");              
+  }
+
+  getRefreshDrop2(String datax) async{
+    await Provider.of<MapDatas>(context, listen: false).getListPerson(datax); 
+    DropPerson();
+  }
+
+  getHit() async{
+   final int hitx=_tempListPerson!.length;
+   return hitx;
+  }
 
   @override
   void didChangeDependencies() {
 
        if (_tempListSection==null)
     {
-      _tempListPerson="s";
+      _tempListSection='xx';
+      _tempListPerson='';
     } 
   
     // TODO: implement didChangeDependencies
@@ -77,7 +103,8 @@ class _AttbySectionState extends State<AttbySection> {
     getProtrait();
      if (_tempListSection==null)
     {
-      _tempListPerson="";
+      _tempListSection='xx';
+      _tempListPerson='';
     } 
   
     getDateNow();
@@ -85,11 +112,25 @@ class _AttbySectionState extends State<AttbySection> {
     super.initState();
   }
 
+  getMessage(String msg) async{
+
+
+    Fluttertoast.showToast(
+                          msg:msg,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 2,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Attendance Report"),
+          title: Text("Attendance By Section"),
         ),
         backgroundColor: Colors.grey,
         body: Container(
@@ -114,7 +155,7 @@ class _AttbySectionState extends State<AttbySection> {
                 SizedBox(
                   height: 5,
                 ),
-              // WdDataBySection(),
+               WdDataBySection(),
               ],
             )));
   }
@@ -160,27 +201,30 @@ class _AttbySectionState extends State<AttbySection> {
           SizedBox(
             height: 5,
           ),
-          SizedBox(
-              width: 150,
-              child: ElevatedButton(
-                  onPressed: () {
-                    _getRefreshDataBySection();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.production_quantity_limits,
-                        size: 20,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Process",
-                        style: TextStyle(fontSize: 8),
-                      )
-                    ],
-                  ))),
+          // SizedBox(
+          //     width: 120,
+          //     child: ElevatedButton(
+          //         onPressed: () {
+                       
+          //           _getRefreshDataBySection();
+                   
+
+          //         },
+          //         child: Row(
+          //           children: [
+          //             Icon(
+          //               Icons.production_quantity_limits,
+          //               size: 20,
+          //             ),
+          //             SizedBox(
+          //               width: 5,
+          //             ),
+          //             Text(
+          //               "Process",
+          //               style: TextStyle(fontSize: 8),
+          //             )
+          //           ],
+          //         ))),
         ],
       ),
     );
@@ -193,8 +237,8 @@ class _AttbySectionState extends State<AttbySection> {
                 color: Colors.grey[50],
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                    style: BorderStyle.solid, color: Colors.black54)),
-            height: MediaQuery.of(context).size.height / 1.9,
+                style: BorderStyle.solid, color: Colors.black54)),
+            height: MediaQuery.of(context).size.height / 1.65,
             child: RefreshIndicator(
                 onRefresh: () => _getRefreshDataBySection(),
                 child: FutureBuilder(
@@ -433,11 +477,35 @@ class _AttbySectionState extends State<AttbySection> {
                         value: e.section.toString(),
                       ))
                   .toList(),
+
+                  onTap: () {
+                     
+                    
+                    if (_tempListPerson=='')
+                    {
+                       //getMessage('null'); 
+                    }else
+                    {
+                        getMessage('You will reset this'); 
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => new AttbySection(),));
+                    }
+                                
+                  },
+                 
               onChanged: (value) {
                 setState(() {
                   _tempListSection = value;
+                  // _tempListPerson = null;
+                   
                 });
-             // Provider.of<MapDatas>(context, listen: false).getListPerson(_tempListSection!.toString()); 
+
+                
+                 getRefreshDrop2( _tempListSection!.toString());
+
+                       _getRefreshDataBySection();
+            
+              
+            
               },
             );
           },
@@ -452,6 +520,7 @@ class _AttbySectionState extends State<AttbySection> {
         child:  Consumer<MapDatas>(
                 builder: (context, prov, child) {
                   return DropdownButtonFormField(
+                    
                     style: TextStyle(color: Colors.black,fontSize: 10),
                     decoration: InputDecoration(
                         label: Text(
@@ -467,10 +536,15 @@ class _AttbySectionState extends State<AttbySection> {
                               value: e.nik.toString(),
                             ))
                         .toList(),
+                  //  value:_tempListSection,
+               
+                    //value: null,
                     onChanged: (value) {
                       setState(() {
                         _tempListPerson = value;
                       });
+                    
+                             _getRefreshDataBySection();
                     },
                   );
                

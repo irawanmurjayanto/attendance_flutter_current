@@ -1,6 +1,7 @@
 
 
 import 'package:flutter_attendance_current/components/attreport.dart';
+import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/datamodel/listsection.dart';
@@ -274,8 +275,10 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
 
   Future <void> getListSection() async{
     EasyLoading.show(status: "Processing..");
+    _gethrdsection.clear();
     _getdatasection.clear();
-   // _getpersonsection.clear();
+  
+    //_getpersonsection.clear();
 
       var url=Uri.parse(NamaServer.server+"hrd/carisection.php");
 
@@ -299,6 +302,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
 
  Future <void> getListPerson(String section) async{
     _getpersonsection.clear();
+    _getdatasection.clear();
 
       var url=Uri.parse(NamaServer.server+"hrd/cariperson.php");
 
@@ -321,7 +325,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
   } 
 
 
-Future <void> getCheckHak(String macadd,BuildContext context) async{
+Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
 
       
 
@@ -350,13 +354,32 @@ Future <void> getCheckHak(String macadd,BuildContext context) async{
               textColor: Colors.white,
               fontSize: 16.0
               );
+              EasyLoading.dismiss();
               return;
-        } else
+        } else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='1'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
         }
+        else if (((json['errormsg']==3)) & (menu=='3'))
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Data()));
+        }else{
 
-         
+           Fluttertoast.showToast(
+              msg: "Anda tidak berhak atas module ini",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+              EasyLoading.dismiss();
+              return;
+
+        }
+
+         EasyLoading.dismiss();
       } 
       notifyListeners();
   } 

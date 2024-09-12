@@ -317,6 +317,18 @@ static String? imeiira;
     }
   }
 
+getMessage(String msg){
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 20.0
+    );
+}  
+
 static String? deviceid1;
 static String? deviceid2;
 static String? sn3;
@@ -717,7 +729,28 @@ if (await Permission.location.isRestricted) {
                 )
               ),       
                  
+              PopupMenuItem<int>(
+                value: 2,
+                child:Row(
+                  children:[
+                    Icon(Icons.manage_history_outlined),
+                    SizedBox(width:5),
+                    Text("Manual Attendance"),
+                  ]
+                )
+              ),      
 
+      
+              PopupMenuItem<int>(
+                value: 3,
+                child:Row(
+                  children:[
+                    Icon(Icons.person),
+                    SizedBox(width:5),
+                    Text("Personal Data"),
+                  ]
+                )
+              ), 
             ];
           },
           onSelected: (value) {
@@ -732,7 +765,15 @@ if (await Permission.location.isRestricted) {
             {
               getStatusInet(context);
               EasyLoading.show(status: "Processing..");
-              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context);
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'1');
+
+            }
+
+             if (value==3)
+            {
+              getStatusInet(context);
+              EasyLoading.show(status: "Processing..");
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'3');
 
             }
 
@@ -956,30 +997,15 @@ ElevatedButton(
       onPressed: () {
 
       if (image==null){
-        Fluttertoast.showToast(
-        msg: "Photo Wajah harus ada",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 20.0
-       );
+        getMessage("Photo Wajah harus ada");
+          
         return;
         }
  
 
       if (Address=='search')
       {
-        Fluttertoast.showToast(
-        msg: "Alamat masih kosong,Mohon click tombol Refresh",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 20.0,
-        );
+        getMessage("Alamat masih kosong,Mohon click tombol Refresh"); 
         return;
       }
 
@@ -1022,28 +1048,13 @@ ElevatedButton(
       
       if (Address=='search')
       {
-        Fluttertoast.showToast(
-        msg: "Alamat masih kosong,Mohon click tombol Refresh",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 20.0,
-        );
+        getMessage("Alamat masih kosong,Mohon click tombol Refresh");
+       
         return;
       }
 
        if (image==null){
-        Fluttertoast.showToast(
-        msg: "Photo Wajah harus ada",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 20.0
-       );
+        getMessage("Photo Wajah harus ada");        
         return;
         }
 
