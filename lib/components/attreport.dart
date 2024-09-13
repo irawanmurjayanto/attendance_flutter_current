@@ -261,18 +261,29 @@ class _AttbySectionState extends State<AttbySection> {
                           return ListView.builder(
                             itemCount: prov.getglobal_datasection.length,
                             itemBuilder: (context, i) {
-                              return ListTile(
-                                leading: Container(
+                              return Card(
+                               child:
+                                Row(children: [
+
+                                    Container(
+                            
                                     padding: EdgeInsets.all(3),
                                     height: 50,
                                     width: 50,
+                                    clipBehavior: Clip.antiAlias,
                                     decoration: BoxDecoration(
+                                      
                                         borderRadius: BorderRadius.circular(5),
                                         border: Border.all(
                                             style: BorderStyle.solid,
                                             color: Colors.black,
-                                            width: 1)),
+                                            width: 1),
+                                            
+                                            
+                                            ),
+
                                     child: Image.network(
+                                       
                                       fit: BoxFit.cover,
                                       NamaServer.server +
                                           'hrd/uploademp/' +
@@ -295,9 +306,13 @@ class _AttbySectionState extends State<AttbySection> {
                                         }
                                       },
                                     )),
-                                title: InkWell(
-                                  child: Expanded(
-                                    child: Container(
+                                  
+                                Expanded(
+                                    child:
+                                    GestureDetector(
+                                      child: 
+                                     Container(
+                                      margin: EdgeInsets.only(left: 5),
                                         padding: EdgeInsets.all(2),
                                         decoration: BoxDecoration(
                                             color: Colors.white,
@@ -359,9 +374,9 @@ class _AttbySectionState extends State<AttbySection> {
                                             ),
                                             Icon(Icons.arrow_right)
                                           ],
-                                        )),
-                                  ),
-                                  onTap: () {
+                                        )
+                                        ),
+                                         onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -370,8 +385,15 @@ class _AttbySectionState extends State<AttbySection> {
                                                   .getglobal_datasection[i].idno
                                                   .toString()),
                                         ));
-                                  },
+                                  },    
+                                    )
+
+                                  ),
+                                 
+                            
+                                ]
                                 ),
+                                
                               );
                             },
                           );
@@ -379,7 +401,10 @@ class _AttbySectionState extends State<AttbySection> {
                       );
                     }
                   },
-                ))));
+                )
+                )
+                )
+                );
   }
 
   Widget PickBegDate() {
