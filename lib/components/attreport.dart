@@ -145,7 +145,11 @@ class _AttbySectionState extends State<AttbySection> {
             //   ),
 
             padding: EdgeInsets.only(top: 5, left: 5, right: 5),
-            child: Column(
+            child: 
+            
+            SingleChildScrollView(child: 
+            
+            Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -157,6 +161,7 @@ class _AttbySectionState extends State<AttbySection> {
                 ),
                WdDataBySection(),
               ],
+            ),
             )));
   }
 
@@ -397,9 +402,7 @@ class _AttbySectionState extends State<AttbySection> {
         // textAlignVertical: TextAlignVertical.top,
         controller: _begDate,
         
-        onChanged: (value) {
-           _getRefreshDataBySection();
-        },
+       
 
         onTap: () async {
           DateTime? pickdate = await showDatePicker(
@@ -413,6 +416,8 @@ class _AttbySectionState extends State<AttbySection> {
             setState(() {
               _begDate.text = formatdate;
             });
+
+             _getRefreshDataBySection();
           }
         },
       ),
@@ -439,9 +444,7 @@ class _AttbySectionState extends State<AttbySection> {
         // textAlignVertical: TextAlignVertical.top,
         controller: _endDate,
         
-          onChanged: (value) {
-           _getRefreshDataBySection();
-        },
+        
         
         onTap: () async {
           DateTime? pickdate = await showDatePicker(
@@ -455,6 +458,8 @@ class _AttbySectionState extends State<AttbySection> {
             setState(() {
               _endDate.text = formatdate;
             });
+
+             _getRefreshDataBySection();
           }
         },
       ),

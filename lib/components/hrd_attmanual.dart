@@ -49,7 +49,14 @@ class HRD_Att_Manual extends StatefulWidget {
 }
 class _HRD_Att_ManualState extends State<HRD_Att_Manual> {
 
-
+getPortrait() async{
+await SystemChrome.setPreferredOrientations(
+  [
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]
+);
+}
  //sqllite
  bool _isLoading = true;
 
@@ -118,12 +125,97 @@ class _HRD_Att_ManualState extends State<HRD_Att_Manual> {
    late Position _currentPosition;
    late Position _currentPosition2;
    ImageLoadingBuilder? loadingBuilder;
+   final _TextNik=TextEditingController();
+   String?_TempNIK;
+   final _TextCari=TextEditingController();
+
+
+   getNikDialog() async{
+    showDialog(context: context,
+     builder: (context) {
+       return SingleChildScrollView(
+
+       child: 
+       
+       AlertDialog(
+        
+         content: 
+         Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+               TextFormField(
+          controller: _TextCari,
+          decoration: InputDecoration(
+            hintText: "Search Name",
+            border: OutlineInputBorder()
+          ),
+          onChanged: (value) {
+           
+            Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+          },
+         ),
+          SizedBox(height: 5,),
+         Container(
+          decoration: BoxDecoration(
+              border: Border.all(style: BorderStyle.solid)
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height/2.5,
+              child: Consumer<MapDatas>(builder: (context, prov, child) {
+               return  ListView.builder(
+                  itemCount: prov.globalperson_manualatt.length,
+                  itemBuilder: (context, i) {
+                    return ListTile(
+                        title: 
+                        GestureDetector(
+                         child: 
+                                  Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(style: BorderStyle.solid,color: Colors.brown),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.blue
+                          ),
+                  
+                          child: Text
+                        (prov.globalperson_manualatt[i].nama_person!+"("+prov.globalperson_manualatt[i].nik!+")",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,color: Colors.white)),
+                        ),
+
+                          
+                          onTap: () {
+                              _TextNik.text=prov.globalperson_manualatt[i].nama_person!;
+                              _TempNIK=prov.globalperson_manualatt[i].nik!;
+                              box.write('imei', prov.globalperson_manualatt[i].nik!);
+                              Navigator.pop(context);                           
+                          },
+                        
+                        
+                        ),
+                        );
+ 
+                },);
+                
+              },),
+            ),
+          ),
+         )
+
+          ],
+         )
+       )
+       );
+     },);
+   }
+
  
 
    //late final String apiEndpoint;
    getSession() async{
     await GetStorage.init();
-   
+
    } 
 
  
@@ -173,15 +265,7 @@ final _empregnik=TextEditingController();
   },);
  }
 
-
-// _shareImage2() async{
-
-// final ByteData bytes = await rootBundle.load(image!.path);
-// await Share.file('Share image', 'esys.png', bytes.buffer.asUint8List(), 'image/png', text: 'My optional text.');
-
-// }
-
-  
+ 
 
    Future<Position> getInitialPosition () async {
     _currentPosition = await _getGeoLocationPosition();
@@ -354,7 +438,7 @@ static String? sn3;
   void initState() {
   
     super.initState();
- 
+    getPortrait();
     getSession(); 
    // _getImei();
    _getTimeClock();
@@ -758,23 +842,7 @@ if (await Permission.location.isRestricted) {
         ],
       
         ),
-      // floatingActionButton: FloatingActionButton.small(onPressed: () {
-
-      //  //_getImeix();
-      //  _getId();
-
-       
-      //                           Fluttertoast.showToast(
-      //                     msg: "test"+ambilid!.toString(),
-      //                     toastLength: Toast.LENGTH_SHORT,
-      //                     gravity: ToastGravity.CENTER,
-      //                     timeInSecForIosWeb: 2,
-      //                     backgroundColor: Colors.green,
-      //                     textColor: Colors.white,
-      //                     fontSize: 16.0
-      //                   );
-
-      // },),  
+      
       body:
       
       SingleChildScrollView(
@@ -782,7 +850,7 @@ if (await Permission.location.isRestricted) {
         child: 
       Container(
        //height all frame 
-       height: MediaQuery.sizeOf(context).height/1.2,
+       height: MediaQuery.sizeOf(context).height/1.3,
 
         // constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -838,11 +906,17 @@ if (await Permission.location.isRestricted) {
           
                 ),
 Container(
+  padding: EdgeInsets.all(5),
+  width: double.infinity,
+  margin: EdgeInsets.only(left: 10,right: 10),
   decoration: BoxDecoration(
-    border: Border.all(width: 1)
+    color:Colors.blue,
+    borderRadius: BorderRadius.circular(5),
+    border: Border.all(width: 1,color: Colors.white)
+
   ),
 
-  child: Text("Manual Attendance",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold),),
+  child: Text("Manual Attendance",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
 )
 ,
 //bedul2
@@ -850,7 +924,7 @@ Container(
  
   child: 
 Container(
-  height: MediaQuery.of(context).size.height/3.1,
+  height: MediaQuery.of(context).size.height/3.5,
   padding: EdgeInsets.all(20),
   margin: EdgeInsets.only(left:10,right:10,top:2,bottom: 10),
 decoration: BoxDecoration(
@@ -1137,8 +1211,8 @@ ElevatedButton(
               
               image: DecorationImage(
                 
-                image: AssetImage('assets/images/logopif.png'),
-                fit: BoxFit.contain,
+                image: AssetImage('assets/images/base2.png'),
+                fit: BoxFit.cover,
                 )
             ),
 
@@ -1178,11 +1252,7 @@ ElevatedButton(
                   
                   ),
           
-            Jam_clock(),
-            SizedBox(height: 5,),
-          Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
-           //Text (deviceImei!+"   IRAX",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
-            SizedBox(height: 5,),
+      
             
             Text(location,style: TextStyle(color: Colors.white,fontSize: 16),),
             SizedBox(height: 5,),
@@ -1195,10 +1265,59 @@ ElevatedButton(
               color: Colors.white
             ),  
             child:Text('${Address}',textAlign: TextAlign.center,),
-            )
+            ),
+            
              
 
+             //pick NIK Manually
+                
+         
+              SizedBox(height: 5,),
 
+
+               Container(
+                margin: EdgeInsets.only(top:5,bottom: 5),
+                decoration: BoxDecoration(
+                  border: Border.all(style: BorderStyle.solid,color: Colors.white,width: 2),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.black
+                ),
+                child: 
+               
+              TextFormField(
+              controller: _TextNik,
+              style: TextStyle(color: Colors.white,backgroundColor: Colors.black),
+              decoration: InputDecoration(
+                 
+                hintStyle: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),
+                hintText: "Person Name",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(style: BorderStyle.none,width: 2)
+                )
+              ),
+            
+             ),
+               ),
+             ElevatedButton(onPressed: () {
+
+              getNikDialog();
+               
+             }, child: 
+             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.wheelchair_pickup),
+                Text("Pick Person Name",textAlign: TextAlign.center,)
+              ],
+             )
+             )
+             
+             
+
+    
+           
+     
 ]
 ),
    ),

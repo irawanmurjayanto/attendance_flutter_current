@@ -326,6 +326,34 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
   } 
 
 
+ List <DataBySection_person> _getperson_manualatt=[];
+   List <DataBySection_person> get globalperson_manualatt=>_getperson_manualatt;
+
+ Future <void> getListPerson_manualatt(String nama) async{
+    _getperson_manualatt.clear();
+   
+
+      var url=Uri.parse(NamaServer.server+"hrd/cariperson_flut.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'nama':nama
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => DataBySection_person.fromJson(e)).toList();
+        _getperson_manualatt=_newData;
+      } 
+      notifyListeners();
+  } 
+
+
 Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
 
       
