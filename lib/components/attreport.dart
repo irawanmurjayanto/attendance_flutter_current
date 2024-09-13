@@ -396,6 +396,11 @@ class _AttbySectionState extends State<AttbySection> {
         textAlign: TextAlign.center,
         // textAlignVertical: TextAlignVertical.top,
         controller: _begDate,
+        
+        onChanged: (value) {
+           _getRefreshDataBySection();
+        },
+
         onTap: () async {
           DateTime? pickdate = await showDatePicker(
               context: context,
@@ -433,6 +438,11 @@ class _AttbySectionState extends State<AttbySection> {
         textAlign: TextAlign.center,
         // textAlignVertical: TextAlignVertical.top,
         controller: _endDate,
+        
+          onChanged: (value) {
+           _getRefreshDataBySection();
+        },
+        
         onTap: () async {
           DateTime? pickdate = await showDatePicker(
               context: context,

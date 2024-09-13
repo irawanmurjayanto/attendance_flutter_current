@@ -1,6 +1,7 @@
 
 
 import 'package:flutter_attendance_current/components/attreport.dart';
+import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
@@ -359,6 +360,9 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
         } else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='1'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+        }else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='2'))
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => HRD_Att_Manual()));
         }
         else if (((json['errormsg']==3)) & (menu=='3'))
         {

@@ -12,30 +12,34 @@ class _Hrd_DataState extends State<Hrd_Data> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Personal Data"),),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-              //row menu
-              Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/menudata.png"),
-                          fit: BoxFit.cover
-                          
-                          )
-                      ),
-                      
-                  )
-                ],
-              )
+      appBar: AppBar(
+        title: Text("Personal Data"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          //row menu
+          Row(
+            children: [],
+          )
+        ],
+      ),
+    );
+  }
 
-          ],
-        ),
+  Widget Menu(String pict, String title) {
+    return Column(
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/$pict.jpg"),
+                  fit: BoxFit.cover)),
+        )
+      
+      ],
     );
   }
 }

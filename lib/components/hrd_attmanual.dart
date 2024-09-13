@@ -42,39 +42,12 @@ import 'package:flutter_attendance_current/sqllite/database_helper.dart';
  
  
   
- //awal
- 
-    
- 
-
-// void main() {
-//   runApp(MyApp());
-// }
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Google Map',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: Homepage(),
-//     );
-//   }
-// }
- 
-
-
-
- 
-class HomepageMenu extends StatefulWidget {
-  const HomepageMenu({Key? key}) : super(key: key);
+class HRD_Att_Manual extends StatefulWidget {
+  const HRD_Att_Manual({Key? key}) : super(key: key);
   @override
-  _HomepageState createState() => _HomepageState();
+  _HRD_Att_ManualState createState() => _HRD_Att_ManualState();
 }
-class _HomepageState extends State<HomepageMenu> {
+class _HRD_Att_ManualState extends State<HRD_Att_Manual> {
 
 
  //sqllite
@@ -769,14 +742,6 @@ if (await Permission.location.isRestricted) {
 
             }
 
-             if (value==2)
-            {
-              getStatusInet(context);
-              EasyLoading.show(status: "Processing..");
-              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'2');
-
-            }
-
              if (value==3)
             {
               getStatusInet(context);
@@ -857,7 +822,7 @@ if (await Permission.location.isRestricted) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      
+
                       Container(                       
                       child: newData(),
                       ),
@@ -872,14 +837,20 @@ if (await Permission.location.isRestricted) {
                 )
           
                 ),
+Container(
+  decoration: BoxDecoration(
+    border: Border.all(width: 1)
+  ),
 
-
+  child: Text("Manual Attendance",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold),),
+)
+,
 //bedul2
 Container(
  
   child: 
 Container(
-  height: MediaQuery.of(context).size.height/3,
+  height: MediaQuery.of(context).size.height/3.1,
   padding: EdgeInsets.all(20),
   margin: EdgeInsets.only(left:10,right:10,top:2,bottom: 10),
 decoration: BoxDecoration(
@@ -895,18 +866,19 @@ decoration: BoxDecoration(
   
 ),
 
-
 child: Row(
  
  //mainAxisAlignment:MainAxisAlignment.center,
 children: [
-
-
-//for camera
+ 
+//for camera,t
 Column(
   mainAxisAlignment: MainAxisAlignment.spaceAround,
-  crossAxisAlignment: CrossAxisAlignment.center,
+ crossAxisAlignment: CrossAxisAlignment.center,
 children: [
+
+ 
+
   Container(
     height: MediaQuery.of(context).size.height/5,
      width:  MediaQuery.of(context).size.height/5,
@@ -1309,14 +1281,7 @@ mainAxisAlignment: MainAxisAlignment.center,
      child:Column(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
-
-
-    //cur   T
             Text("Summary",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-
-
-
-
             SizedBox(height: 1,),
             Jam_clock(),
             SizedBox(height: 5,),
