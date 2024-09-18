@@ -330,7 +330,7 @@ List<HRD_Detail_Personal> _gethrddetail_personal=[];
 List<HRD_Detail_Personal> get getglobalhrddetail_personal=>_gethrddetail_personal;
 
 Future <void> getListPersonAll(String nik) async{
-    // _gethrddetail_personal.clear();
+    _gethrddetail_personal.clear();
   
 
       var url=Uri.parse(NamaServer.server+"hrd/cariperson_all_flut.php");
@@ -346,7 +346,7 @@ Future <void> getListPersonAll(String nik) async{
       if (response.statusCode==200)
       {
         final json=jsonDecode(response.body)['data'] as List  ;
-        print(json);
+        print('datanya : '+json.toString());
        // setMessage2('masuk');
         final _newData=json.map((e) => HRD_Detail_Personal.fromJson(e)).toList();
         _gethrddetail_personal=_newData;
