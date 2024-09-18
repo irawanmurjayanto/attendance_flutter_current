@@ -5,6 +5,7 @@ import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
+import 'package:flutter_attendance_current/datamodel/hrd_data_model.dart';
 import 'package:flutter_attendance_current/datamodel/listsection.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:http/http.dart' as http;
@@ -323,6 +324,34 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         _getpersonsection=_newData;
       } 
       notifyListeners();
+  } 
+
+List<HRD_Detail_Personal> _gethrddetail_personal=[];
+List<HRD_Detail_Personal> get getglobalhrddetail_personal=>_gethrddetail_personal;
+
+Future <void> getListPersonAll(String nik) async{
+    // _gethrddetail_personal.clear();
+  
+
+      var url=Uri.parse(NamaServer.server+"hrd/cariperson_all_flut.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'nik':nik
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List  ;
+        print(json);
+       // setMessage2('masuk');
+        final _newData=json.map((e) => HRD_Detail_Personal.fromJson(e)).toList();
+        _gethrddetail_personal=_newData;
+      } 
+     notifyListeners();
   } 
 
 

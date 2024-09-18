@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_attendance_current/components/attreport.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
+import 'package:flutter_attendance_current/components/orientation.dart';
 import 'package:flutter_attendance_current/main.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
@@ -75,6 +76,7 @@ class HomepageMenu extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 class _HomepageState extends State<HomepageMenu> {
+
 
 
  //sqllite
@@ -379,6 +381,8 @@ static String? sn3;
 
    @override
   void initState() {
+
+    getPortraitCentral();
   
     super.initState();
  
