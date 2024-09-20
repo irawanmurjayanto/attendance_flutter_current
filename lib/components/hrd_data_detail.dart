@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/orientation.dart';
@@ -173,8 +175,15 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
        image = File(choosedimage!.path);
     });
     uploadImage();
+    setState(() {
+      
+    });
+
+    Future.delayed(Duration(seconds: 2));
+
+     
     
-         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  Hrd_Data_Detail_Search(NIK: NIK),));
+         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK),));
        
                            
    // EasyLoading.show(status: "Getting Image");
@@ -209,9 +218,30 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
     //return imageCheck;
     
   } 
+
+  getImageReload() async{
+    Image.network(
+                                      
+                                      fit: BoxFit.cover,
+                                      NamaServer.server+'hrd/pictprofile/'+box.read("NIK")+".jpg",
+                                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                                        return child;
+                                      },
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress==null){
+                                          return child;
+                                        }else{
+                                          return Center(child: CircularProgressIndicator(),);
+                                        }
+                                      },
+                                      
+                                      );
+  }
  
   @override
   void initState() {
+    getImageReload();
+    box.write("NIK", NIK);
    validateImage();
     getPortraitCentral();
      getCheck();
@@ -259,7 +289,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                  Column(
                         children: [
 
-                              TestRefesh(),
+                              
                               SizedBox(height: 10,),
                                 Container(
                                   width: double.infinity,
@@ -273,8 +303,11 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                 
                                 Text("Detail Data",style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,),
                                 ),
+                                
+                                
                                 SizedBox(height: 5,),  
-                                Row(
+                                
+                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
@@ -294,29 +327,14 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                      child: imageCheck=='noImage'?
                                       Icon(Icons.photo_camera,size: 50,)
                                       :
-                                     Image.network(
-                                      
-                                      fit: BoxFit.cover,
-                                      NamaServer.server+'hrd/pictprofile/'+NIK+".jpg",
-                                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                        return child;
-                                      },
-                                      loadingBuilder: (context, child, loadingProgress) {
-                                        if (loadingProgress==null){
-                                          return child;
-                                        }else{
-                                          return Center(child: CircularProgressIndicator(),);
-                                        }
-                                      },
-                                      
-                                      ),
+                                    getImageReload(),
                                       
                                     // _temp_image=='-'?Icon(Icons.photo_camera,size: 50,):Image.network(NamaServer.server+'hrd/pictprofile/'+_temp_image!+".jpg"),
                                      onTap: () {
 
                                      if (_Text_Nik.text.isEmpty)
                                      {
-                                      setMessage2("NIK Must be available")  ;  
+                                      setMessage2("NIK Must be available");
                                      }else{ 
                                      
                                      takePicture(ImageSource.camera);
@@ -328,6 +346,8 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                     ),
                                   ],
                                 ),
+
+                                
 
                            //top header 
                             SizedBox(height: 15,),  
