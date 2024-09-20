@@ -103,6 +103,28 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
  String _temp_image='';
 
  
+ getPickDate(TextEditingController ctrl,String tipe) async {
+ 
+ TextFormField(
+ controller: ctrl,
+ onTap: () async {
+   DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(2020), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+        ctrl.text=pickdateformat;
+      });
+   }
+
+ },
+ );
+
+ }
  
  getListSection() async{
 
