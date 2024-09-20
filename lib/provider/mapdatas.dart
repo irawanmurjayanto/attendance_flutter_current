@@ -327,6 +327,32 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
       EasyLoading.dismiss();
   } 
 
+
+   List <Status_HRD> _getstatushrd=[];
+   List <Status_HRD> get globalstatushrd=>_getstatushrd;
+
+ Future <void> getStatus_HRD(context,String tipe) async{
+  getStatusInet(context);
+
+  var url=Uri.parse(NamaServer.server+'hrd/status_hrd.php');
+
+  var response=await http.post(url,
+  body: {
+    'tipe':tipe
+  }
+  );
+
+    if (response.statusCode==200)
+    {
+      final json=jsonDecode(response.body)['data'] as List;
+      final newData=json.map((e) => Status_HRD.fromJson(e)).toList();
+      _getstatushrd=newData;
+    }
+     notifyListeners();
+ }
+
+
+
    List <DataBySection_person> _getpersonsection=[];
    List <DataBySection_person> get globalpersonsection=>_getpersonsection;
 

@@ -103,8 +103,49 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
  String _temp_image='';
  
  
-
+  String?_temp_gender;
+  String?_temp_gender_val;
   
+  getStatusMale(){
+ 
+
+    showDialog(context: context,
+     builder: (context) {
+       return AlertDialog(
+        content: 
+          FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getStatus_HRD(context,'gender'), 
+          builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting)
+            {
+              return Center(child: CircularProgressIndicator(),);
+            }else
+            {
+              return Consumer<MapDatas>(builder: (context, provgender, child) {
+                return ListView.builder(
+                  itemCount: provgender.globalstatushrd.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.white
+                        ),
+                        child: GestureDetector(
+                          child: Text(provgender.globalstatushrd[i].status!,style: TextStyle(color: Colors.white),),
+                          onTap: () {
+                            
+                          },
+                        )
+                      )
+                    );
+                  
+                },);
+              },);
+            }
+          },)
+       );
+     },);
+  }
 
   getCheck() async{
     
@@ -175,15 +216,15 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
        image = File(choosedimage!.path);
     });
     uploadImage();
-    setState(() {
-      
-    });
-
     Future.delayed(Duration(seconds: 2));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK),));
+  
+    
+ 
 
      
     
-         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK),));
+         
        
                            
    // EasyLoading.show(status: "Getting Image");
@@ -194,6 +235,8 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
  Future uploadImage() async{
 List<int> imageBytes = image!.readAsBytesSync();
 String baseimage = base64Encode(imageBytes);
+imageCache.clear();
+imageCache.clearLiveImages();
  
 await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,baseimage);
 
@@ -219,29 +262,11 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
     
   } 
 
-  getImageReload() async{
-    Image.network(
-                                      
-                                      fit: BoxFit.cover,
-                                      NamaServer.server+'hrd/pictprofile/'+box.read("NIK")+".jpg",
-                                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-                                        return child;
-                                      },
-                                      loadingBuilder: (context, child, loadingProgress) {
-                                        if (loadingProgress==null){
-                                          return child;
-                                        }else{
-                                          return Center(child: CircularProgressIndicator(),);
-                                        }
-                                      },
-                                      
-                                      );
-  }
+  
  
   @override
   void initState() {
-    getImageReload();
-    box.write("NIK", NIK);
+    
    validateImage();
     getPortraitCentral();
      getCheck();
@@ -257,6 +282,8 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         actions: [
+
+          
                IconButton(onPressed: () {
            Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
           }, icon: Icon(Icons.save)),
@@ -301,7 +328,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                   ),
                                   child: 
                                 
-                                Text("Detail Data",style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,),
+                                Text("Detail Data "+_Text_Nama.text,style: TextStyle(color: Colors.white,),textAlign: TextAlign.center,),
                                 ),
                                 
                                 
@@ -327,7 +354,22 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                      child: imageCheck=='noImage'?
                                       Icon(Icons.photo_camera,size: 50,)
                                       :
-                                    getImageReload(),
+                                     Image.network(
+                                      
+                                      fit: BoxFit.cover,
+                                      NamaServer.server+'hrd/pictprofile/'+NIK+".jpg",
+                                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                                        return child;
+                                      },
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress==null){
+                                          return child;
+                                        }else{
+                                          return Center(child: CircularProgressIndicator(),);
+                                        }
+                                      },
+                                      
+                                      ),
                                       
                                     // _temp_image=='-'?Icon(Icons.photo_camera,size: 50,):Image.network(NamaServer.server+'hrd/pictprofile/'+_temp_image!+".jpg"),
                                      onTap: () {
@@ -407,7 +449,24 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                             children: [
                               SizedBox(width: 100,
                               child: 
-                              TextField_HRD(_Text_Gender, "Gender"),
+                              // TextField_HRD(_Text_Gender, "Gender"),
+                                                        Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Gender,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Gender Status',
+                                    hintText: 'Gender',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                  ),
+                                )
                               ),
                               SizedBox(width: 5,),
                               SizedBox(width: 100,
