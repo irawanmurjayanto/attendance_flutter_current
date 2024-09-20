@@ -141,7 +141,7 @@ class HRD_Detail_Personal{
 class Status_HRD {
 
   String? status;
-  String? stat_val;
+  int? stat_val;
 
   Status_HRD({this.status,this.stat_val});
 

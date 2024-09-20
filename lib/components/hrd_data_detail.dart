@@ -101,19 +101,91 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
   final _Text_anak2=TextEditingController();
   final _Text_anak3=TextEditingController();
  String _temp_image='';
+
  
  
-  String?_temp_gender;
-  String?_temp_gender_val;
+ getListSection() async{
+
+   showDialog(context: context,
+     builder: (context) {
+       return AlertDialog(
+        title: Text('Section'),
+        content: 
+        SingleChildScrollView(child: 
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 200,
+              child: 
+              FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListSection(), 
+          builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting)
+            {
+              return Center(child: CircularProgressIndicator(),);
+            }else
+            {
+              return Consumer<MapDatas>(builder: (context, provgender, child) {
+                return ListView.builder(
+                  itemCount: provgender.globalhrdsection.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10), 
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.blue
+                        ),
+                        child: GestureDetector(
+                          child: Text(provgender.globalhrdsection[i].section!,style: TextStyle(color: Colors.white),),
+                          onTap: () {
+                            setState(() {
+                            
+                            _Text_Section.text=provgender.globalhrdsection[i].section!;
+                            });
+                          
+
+                           // setMessage2(_temp_statushrd!+'-'+_temp_statushrd_val!);
+                            Navigator.pop(context);
+                          },
+                        )
+                      )
+                    );
+                  
+                },);
+              },);
+            }
+          },)
+            )
+          ],
+        )
+        ),
+       );
+     },);
+
+ }
+
+
+  String?_temp_empstatus_val;
   
-  getStatusMale(){
+
+  getStatusMale(String tipe){
  
 
     showDialog(context: context,
      builder: (context) {
        return AlertDialog(
+        title: Text(
+          'Status '
+          ),
         content: 
-          FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getStatus_HRD(context,'gender'), 
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 150,
+              child: 
+              FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getStatus_HRD(context,tipe), 
           builder: (context, snapshot) {
             if (snapshot.connectionState==ConnectionState.waiting)
             {
@@ -126,14 +198,52 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
                   itemBuilder: (context, i) {
                     return Card(
                       child: Container(
+                        margin: EdgeInsets.only(bottom: 10), 
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: Colors.white
+                          color: Colors.blue
                         ),
                         child: GestureDetector(
                           child: Text(provgender.globalstatushrd[i].status!,style: TextStyle(color: Colors.white),),
                           onTap: () {
+                            setState(() {
+                              if (tipe=='gender')
+                              {
+                            //_temp_statushrd=provgender.globalstatushrd[i].status!;
+                          //  _temp_statushrd_val=provgender.globalstatushrd[i].stat_val!.toString();
+                            _Text_Gender.text=provgender.globalstatushrd[i].status!;
+                              return;
+                              }
+
+                              if (tipe=='kawin')
+                              {
+                            _Text_Marital_Status.text=provgender.globalstatushrd[i].status!;
                             
+                              return;
+                              }
+
+                                 if (tipe=='status1')
+                              {
+                            _Text_Emp_Status.text=provgender.globalstatushrd[i].status!;
+                            _temp_empstatus_val=provgender.globalstatushrd[i].stat_val!.toString();
+                            
+                              return;
+                              }
+
+
+                                    if (tipe=='status2')
+                              {
+                            _Text_Status_Pegawai.text=provgender.globalstatushrd[i].status!;
+                         //   _temp_empstatus_val=provgender.globalstatushrd[i].stat_val!.toString();
+                            
+                              return;
+                              }
+
+                            });
+                          
+
+                           // setMessage2(_temp_statushrd!+'-'+_temp_statushrd_val!);
+                            Navigator.pop(context);
                           },
                         )
                       )
@@ -143,6 +253,10 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
               },);
             }
           },)
+            )
+          ],
+        )
+          
        );
      },);
   }
@@ -285,7 +399,8 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
 
           
                IconButton(onPressed: () {
-           Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
+          // Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
+           
           }, icon: Icon(Icons.save)),
 
           IconButton(onPressed: () {
@@ -419,7 +534,26 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                               ),
                               SizedBox(width: 5,),
                               Expanded(child: 
-                              TextField_HRD(_Text_Section, "Section"),
+                               Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Section,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Section',
+                                    hintText: 'Section',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () {
+                                      getListSection();
+                                    },
+                                  ),
+                                )
                               )
                             ],
                           ),
@@ -465,13 +599,39 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                         borderSide: BorderSide(style: BorderStyle.solid)
                                       )  
                                     ),
+                                    onTap: () {
+                                      getStatusMale('gender');
+                                    },
                                   ),
                                 )
                               ),
                               SizedBox(width: 5,),
                               SizedBox(width: 100,
                               child: 
-                              TextField_HRD(_Text_Marital_Status, "Marital Status"),
+                            //TextField_HRD(_Text_Marital_Status, "Marital Status"),
+                          Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Marital_Status,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Marital Status',
+                                    hintText: 'Marital Status',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () {
+                                      getStatusMale('kawin');
+                                    },
+                                  ),
+                                )
+
+
+
                               ),
                               SizedBox(width: 5,),
                               Expanded(child: 
@@ -546,12 +706,57 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                             children: [
                               SizedBox(width: 170,
                               child: 
-                              TextField_HRD(_Text_Emp_Status, "Employes Status"),
+                            //  TextField_HRD(_Text_Emp_Status, "Employes Status"),
+
+
+                            Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Emp_Status,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Employes Status',
+                                    hintText: 'Employes Status',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () {
+                                      getStatusMale('status1');
+                                    },
+                                  ),
+                                )
+
                               ),
                               SizedBox(width: 5,),
                               Expanded( 
                               child: 
-                              TextField_HRD(_Text_Status_Pegawai, "Status Pegawai"),
+                             // TextField_HRD(_Text_Status_Pegawai, "Status Pegawai"),
+                              
+                               Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Status_Pegawai,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Status Pegawai',
+                                    hintText: 'Status Pegawai',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () {
+                                      getStatusMale('status2');
+                                    },
+                                  ),
+                                )
+                              
                               ),
                               
                             ],
