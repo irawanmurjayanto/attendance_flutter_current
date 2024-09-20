@@ -14,47 +14,59 @@ class HRD_Detail_Personal{
    int? usia;
    String? alamatktp;
    String? alamatnow;
+   String? nama_contack;
+   String? hubungan;
+   String? pendidikan;
+   String? jurusan;
+   int? status_emp;
+   String? status_pegawai;
+   String? awal_masuk;
+   String? resign_tgl;
+   String? masa_kontrak1;
+   String? masa_kontrak2;
+   String? remark_masakontrak;
 
-  //  String? status_emp;
-  //  String? no_ktp;
-  //  String? no_jkn;
-  //  String? no_kpj;
-  //  String? npwp;
-  //  String? rekening;
+   String? no_ktp;
+   String? no_jkn;
+   String? no_kpj;
+   String? No_BPJS;
+   String? npwp;
+   String? rekening;
+
+   String? No_HP;
+   String? Nama_Istrisuami;
+   String? Nama_Anak1;
+   String? Nama_Anak2;
+   String? Nama_Anak3;
+ 
+   String? pict_profile;
+
+ 
   
-  //  String? pendidikan;
-  //  String? jurusan;
-  //  String? status_pegawai;
-  //  String? masa_kontrak1;
-  //  String? masa_kontrak2;
+
+  
+
  
-  //  String? nama_contack;
-  //  String? hubungan;
  
-  //  String? resign_tgl;
-  //  String? awal_masuk;
  
-  //  String? remark_masakontrak;
+  
+
+ 
+  
   
   //  String? deptsal;
-  //  String? No_BPJS;
-  //  String? No_HP;
-  //  String? Nama_Istrisuami;
-  //  String? Nama_Anak1;
-  //  String? Nama_Anak2;
-  //  String? Nama_Anak3;
-  //  String? email;
-  //  String? pict_profile;
+ 
+
 
 
    HRD_Detail_Personal({
-   this.nik,this.nama_person, this.email,this.section,this.jabatan,this.tempat_lahir,this.tgl_lahir,this.no_telepon,this.gender,this.marital_status,this.usia,this.alamatktp,this.alamatnow,
+   this.nik,this.nama_person, this.email,this.section,this.jabatan,this.tempat_lahir,this.tgl_lahir,this.no_telepon,this.gender,this.marital_status,this.usia,this.alamatktp,this.alamatnow,this.nama_contack,this.hubungan,this.pendidikan,this.jurusan,this.status_emp,this.status_pegawai,this.awal_masuk,this.resign_tgl,this.masa_kontrak1,this.masa_kontrak2,this.remark_masakontrak,this.no_ktp,this.no_jkn,this.no_kpj,this.No_BPJS,this.npwp,this.rekening,this.No_HP,this.Nama_Istrisuami,this.Nama_Anak1,this.Nama_Anak2,this.Nama_Anak3,this.pict_profile
   //  
-  //  this.status_emp,this.no_ktp,this.no_jkn,this.no_kpj,this.npwp,
-  //  this.rekening,,this.pendidikan,this.jurusan,this.status_pegawai,this.masa_kontrak1,this.masa_kontrak2,
-  //this.nama_contack,this.hubungan,this.resign_tgl,this.awal_masuk,
-  //  ,this.remark_masakontrak,this.deptsal,
-  //  this.No_BPJS,this.No_HP,this.Nama_Istrisuami,this.Nama_Anak1,this.Nama_Anak2,this.Nama_Anak3,this.email,this.pict_profile
+  //  ,
+  //  ,, 
+  //,
+  //  ,this.deptsal,
+  // 
    });
  
 
@@ -74,37 +86,48 @@ class HRD_Detail_Personal{
     usia = json['usia'] ?? 0;
     alamatktp = json['alamatktp'] ?? '-';
     alamatnow = json['alamatnow'] ?? '-';
-    // status_emp = json['status_emp'];
-    // no_ktp = json['no_ktp'] ?? 'X';
-    // no_jkn = json['no_jkn'] ?? 'X';
-    // no_kpj = json['no_kpj'] ?? 'X';
-    // npwp = json['npwp'] ?? 'X';
-    // rekening = json['rekening'] ?? 'X';
+    nama_contack = json['nama_contack'] ?? '-';
+    hubungan= json['hubungan'] ?? '-';
+    pendidikan = json['pendidikan'] ?? '-';
+    jurusan = json['jurusan'] ?? '-';
+    status_emp = json['status_emp'] ?? '-';
+    status_pegawai = json['status_pegawai'] ?? '-';
+    awal_masuk= json['awal_masuk'] ?? '-';
+    resign_tgl = json['resign_tgl'] ?? '-';
+    masa_kontrak1 = json['masa_kontrak1'] ?? '-';
+    masa_kontrak2 = json['masa_kontrak2'] ?? '-';
+    remark_masakontrak = json['remark_masakontrak'] ?? '-';
+
+    no_ktp = json['no_ktp'] ?? '-';
+    no_jkn = json['no_jkn'] ?? '-';
+    no_kpj = json['no_kpj'] ?? '-';
+    No_BPJS= json['No_BPJS'] ?? '-';
+    npwp = json['npwp'] ?? '-';
+    rekening = json['rekening'] ?? '-';
     
-    // pendidikan = json['pendidikan'] ?? 'X';
-    // jurusan = json['jurusan'] ?? 'X';
-    // status_pegawai = json['status_pegawai'] ?? 'X';
-    // masa_kontrak1 = json['masa_kontrak1'] ?? 'X';
-    // masa_kontrak2 = json['masa_kontrak2'] ?? 'X';
+    No_HP= json['No_HP'] ?? '-';
+    Nama_Istrisuami= json['Nama_Istrisuami'] ?? '-'; 
+    Nama_Anak1 = json['Nama_Anak1'] ?? '-';
+    Nama_Anak2= json['Nama_Anak2'] ?? '-';
+    Nama_Anak3 = json['Nama_Anak3'] ?? '-';
+ 
+    pict_profile= json['pict_profile'] ?? '-';
     
-    // nama_contack = json['nama_contack'] ?? 'X';
-    // hubungan= json['hubungan'] ?? 'X';
+    
+
+    
    
-    // resign_tgl = json['resign_tgl'] ?? 'X';
-    // awal_masuk= json['awal_masuk'] ?? 'X';
     
-    // remark_masakontrak = json['remark_masakontrak'] ?? 'X';
+
+   
+   
+  
+    
+   
    
     // deptsal = json['deptsal'] ?? 'X';
-    // No_BPJS= json['No_BPJS'] ?? 'X';
-    // No_HP= json['No_HP'] ?? 'X';
-    // Nama_Istrisuami= json['Nama_Istrisuami'] ?? 'X'; 
-    // Nama_Anak1 = json['Nama_Anak1'] ?? 'X';
-    // Nama_Anak2= json['Nama_Anak2'] ?? 'X';
-    // Nama_Anak3 = json['Nama_Anak3'] ?? 'X';
-    // email= json['email'] ?? 'X';
-    // pict_profile= json['pict_profile'] ?? 'X';
-    
+   
+ 
     
 
  

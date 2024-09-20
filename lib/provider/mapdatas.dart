@@ -136,8 +136,36 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 }
 
 
+Future <void> saveImageByNIK(BuildContext context,nik,image) async {
+       getStatusInet(context);
+       EasyLoading.show(status:"Processing...");
+       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_nik.php');
 
+       var response=await http.post(
+        url,
+        body: {
+         'nik':nik,
+         'image':image, 
+        }
+        
+        );
+        
+        if (response.statusCode==200)
+        {
+          final json=jsonDecode(response.body);
+          if (json['message']=='success')
+          {
+                setMessage2("Photo Upload Succesfully");
+
+          }
+        }
+
+        notifyListeners();
+     
+
+}      
  
+
  
 Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok,String absen) async {
        
@@ -329,7 +357,9 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
 List<HRD_Detail_Personal> _gethrddetail_personal=[];
 List<HRD_Detail_Personal> get getglobalhrddetail_personal=>_gethrddetail_personal;
 
-Future <void> getListPersonAll(String nik) async{
+Future <void> getListPersonAll(context,String nik) async{
+  getStatusInet(context);
+  EasyLoading.show(status: 'Processing...');
     _gethrddetail_personal.clear();
   
 
