@@ -16,7 +16,10 @@ class _Hrd_DataState extends State<Hrd_Data> {
 
 final _TextCariNIK=TextEditingController();
 
+
   getSearchNIK() async{
+    _TextCariNIK.text='';
+    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_TextCariNIK.text);
     showDialog(context: context,
      builder: (context) {
        return SingleChildScrollView(

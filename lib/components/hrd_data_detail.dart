@@ -117,7 +117,10 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
    {
       final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
       setState(() {
+        if (tipe=='tgl_lahir')
+        {
         ctrl.text=pickdateformat;
+        }
       });
    }
 
@@ -420,13 +423,14 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
         actions: [
 
           
-               IconButton(onPressed: () {
+           IconButton(onPressed: () async {
           // Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
-           
+           await Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+
           }, icon: Icon(Icons.save)),
 
-          IconButton(onPressed: () {
-           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
+          IconButton(onPressed: () async{
+           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Test));
           }, icon: Icon(Icons.add))
         ],
@@ -533,7 +537,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                               Row(
                                 children: [
                             
-                              SizedBox(width: 70,
+                              SizedBox(width: 100,
                               child: 
                               TextField_HRD(_Text_Nik, "NIK"),
                               )
@@ -590,7 +594,48 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                               SizedBox(width: 5,),
                               SizedBox(width: 100,
                               child: 
-                              TextField_HRD(_Text_TanggalLahir, "Tanggal Lahir"),
+                             // TextField_HRD(_Text_TanggalLahir, "Tanggal Lahir"),
+                                      Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_TanggalLahir,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Tgl Lahir',
+                                    hintText: 'Tgl Lahir',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () async {
+                                      
+                                      //pickdate
+
+
+                                        DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(1900), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+         
+        _Text_TanggalLahir.text=pickdateformat;
+       
+      });
+   }  
+
+
+
+                                    },
+                                  ),
+                                )
+
                               ),
                               SizedBox(width: 5,),
                               Expanded(child: 
@@ -672,7 +717,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                              SizedBox(height: 5,),
                               
 
-                              TextField_HRD_Memo(_Text_Alamat_Ktp, "Alamat Tempat Tinggal"),
+                              TextField_HRD_Memo(_Text_Alamat_Now, "Alamat Tempat Tinggal"),
                                
 
 

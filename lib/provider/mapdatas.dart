@@ -11,7 +11,7 @@ import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:io';
@@ -135,6 +135,76 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 
 }
 
+
+Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
+       getStatusInet(context);
+       EasyLoading.show(status:"Processing...");
+       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_hrdall_flut.php');
+       var response=await http.post(
+        url,
+        body: {
+            'nik':nik,
+            'nama_person':nama,
+            'email':email,
+            'jabatan':jabatan,
+            'section':section,
+            'tempat_lahir':tp_lahir,
+            'tgl_lahir':tgl_lahir,
+            'no_telepon':no_telp,
+            'gender':gender,
+            'marital_status':marital_status,
+            'alamat_ktp':alamatktp,
+            'alamat_now':alamatnow,
+            'nama_contact':nama_contact,
+            'hubungan':hubungan,
+            'pendidikan':pendidikan,
+            'jurusan':jurusan,
+            'status_emp':status_emp,
+            'status_pegawai':status_pegawai,
+            'tgl_masuk':tgl_masuk,
+            'tgl_resign':tgl_resign,
+            'masa_kontrak1':masa_kontrak1,
+            'masa_kontrak2':masa_kontrak2,
+            'remarksmasa_kontrak':remarksmasa_kontrak,
+            'KTP':ktp,
+            'JKN':jkn,
+             'KPJ':kpj,
+            'BPJS':bpjs,
+            'NPWP':npwp,
+            'rekening':rekening,
+            'no_hp':no_hp,
+            'nama_suami_istri':nama_suami_istri,
+            'nama_anak1':nama_anak1,
+            'nama_anak2':nama_anak2,
+            'nama_anak3':nama_anak3,
+
+
+
+
+
+
+ 
+
+            
+        }
+        );
+
+        // if (response.statusCode==200)
+        // {
+          final json=jsonDecode(response.body);
+          print(json['message']);
+           if (json['message']=='ok')
+           {
+            setMessageAll(context, "Save Data Successfully");
+          }else
+          {
+            setMessageAll(context, 'Data Failed' );
+          }
+        // }
+
+         EasyLoading.dismiss();
+        notifyListeners();
+}       
 
 Future <void> saveImageByNIK(BuildContext context,nik,image) async {
        getStatusInet(context);
