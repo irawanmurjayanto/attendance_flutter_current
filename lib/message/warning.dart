@@ -5,6 +5,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+
+ 
+
 void setMessageAll(BuildContext context,String msg) {
   final message=SnackBar(content:Text(msg,style: TextStyle(fontSize: 16,color: Colors.yellow),textAlign: TextAlign.center,),
   behavior: SnackBarBehavior.floating,
@@ -12,12 +15,34 @@ void setMessageAll(BuildContext context,String msg) {
   shape: StadiumBorder(side: BorderSide(width:2,style: BorderStyle.solid,strokeAlign: BorderSide.strokeAlignCenter)),
   margin: EdgeInsets.only(
     left:30,right:30,bottom: MediaQuery.of(context).size.height-400
+
   ),
+ 
   );
   
-  ScaffoldMessenger.of(context).showSnackBar(message);
+ ScaffoldMessenger.of(context).showSnackBar(message);
+ 
 }
 
+
+void setMessageAll2(BuildContext context,String msg) {
+  final message=SnackBar(content:Text(msg,style: TextStyle(fontSize: 16,color: Colors.yellow),textAlign: TextAlign.center,),
+  behavior: SnackBarBehavior.floating,
+   backgroundColor: Colors.teal,
+   
+  shape: StadiumBorder(side: BorderSide(width:2,style: BorderStyle.solid,strokeAlign: BorderSide.strokeAlignCenter)),
+  margin: EdgeInsets.only(
+    left:30,right:30,bottom: MediaQuery.of(context).size.height-400
+
+  ),
+ action: SnackBarAction(label: "label", onPressed: () {
+   
+ },),
+  );
+  
+ ScaffoldMessenger.of(context).showSnackBar(message);
+ 
+}
 
   void getStatusInet(BuildContext context) async {
   final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());

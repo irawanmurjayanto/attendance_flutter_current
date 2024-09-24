@@ -1,9 +1,16 @@
+ 
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/hrd_data_detail.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'dart:async';
 
 class Hrd_Data extends StatefulWidget {
   const Hrd_Data({super.key});
@@ -14,7 +21,29 @@ class Hrd_Data extends StatefulWidget {
 
 class _Hrd_DataState extends State<Hrd_Data> {
 
+
+  
+//  Timer? _timer;
+//   late double _progress;
+// @override
+//   void initState() {
+    
+//          EasyLoading.addStatusCallback((status) {
+//       print('EasyLoading Status $status');
+//       if (status == EasyLoadingStatus.dismiss) {
+//         _timer?.cancel;
+//       }
+//     });
+//     EasyLoading.showSuccess('Use in initState');   
+//     // TODO: implement initState
+//     super.initState();
+//   }
+
 final _TextCariNIK=TextEditingController();
+
+
+
+ 
 
 
   getSearchNIK() async{
@@ -78,8 +107,11 @@ final _TextCariNIK=TextEditingController();
 
                           
                           onTap: () {
+                              getStatusInet(context);
+                              EasyLoading.show(status: 'Processing...');
                               Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: prov.globalperson_manualatt[i].nik!),));
-                              // Navigator.pop(context);
+                              
+                        
                                                     //  setMessage2(prov.globalperson_manualatt[i].nik!);
                           },
                         
@@ -107,6 +139,11 @@ final _TextCariNIK=TextEditingController();
         title: Text("Personal Data",style: TextStyle(color: Colors.white,),),
         foregroundColor: Colors.white,
         backgroundColor: Colors.blue,
+        // actions: [
+        //   IconButton(onPressed: () {
+        //      //Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: 'testnik',)));
+        //   }, icon:Icon(Icons.abc))
+        // ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

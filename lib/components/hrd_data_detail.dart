@@ -1,9 +1,9 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/orientation.dart';
-import 'package:flutter_attendance_current/components/refresh/testrefresh.dart';
+ 
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
@@ -12,11 +12,12 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 // import 'package:flutter/rendering.dart';
 // import 'package:flutter/services.dart';
+ 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Hrd_Data_Detail_Search extends StatefulWidget {
   final String NIK;
@@ -32,32 +33,6 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
   final box=GetStorage();
 
 
-@override
-  void didChangeDependencies() {
-  // getCheck();
-    
-    // setState(() {
-    //   _Text_Nik.text = provx.getglobalhrddetail_personal[0].nik!;
-    //   _Text_Nama.text = provx.getglobalhrddetail_personal[0].nama_person!;
-    //   // _Text_Email.text = provx.getglobalhrddetail_personal[0].email!;
-    //   // _Text_Jabatan.text = provx.getglobalhrddetail_personal[0].jabatan!;
-    //   // _Text_Section.text = provx.getglobalhrddetail_personal[0].section!;
-    // //   _Text_TempatLahir.text = provx.getglobalhrddetail_personal[0].tempat_lahir!;
-     
-
-    // //  // String _temp_TanggalLahir=DateFormat('dd-MMM-yyyy').format(provx.getglobalhrddetail_personal[0].tgl_lahir!);
-    // //    _Text_TanggalLahir.text = provx.getglobalhrddetail_personal[0].tgl_lahir!;
-    // //   _Text_NoTelepon.text = provx.getglobalhrddetail_personal[0].no_telepon!; 
-    // });
-   
-    
-    
-    
-
-                
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-  }
  
   final _Text_Nik=TextEditingController();
   final _Text_Nama=TextEditingController();
@@ -401,14 +376,43 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
     
   } 
 
-  
+  @override
+  void dispose() {
+    
+    // TODO: implement dispose
+    super.dispose();
+  }
  
+  Timer? _timer;
+  late double _progress;
+
+  getLoading() async {
+
+      _timer?.cancel();
+                      await EasyLoading.show(
+                        status: 'loading...',
+                        maskType: EasyLoadingMaskType.black,
+                      );
+                      print('EasyLoading show');
+  }
+
   @override
   void initState() {
-    
+    //CircularProgressIndicator();
+    //EasyLoading.init();
+  //   getLoading();
    validateImage();
     getPortraitCentral();
      getCheck();
+
+  //    EasyLoading.addStatusCallback((status) {
+  //     print('EasyLoading Status $status');
+  //     if (status == EasyLoadingStatus.dismiss) {
+  //       _timer?.cancel();
+  //     }
+  //   });
+  //   EasyLoading.showSuccess('Use in initState');   
+
     // TODO: implement initState
     super.initState();
   }
@@ -423,9 +427,10 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
         actions: [
 
           
-           IconButton(onPressed: () async {
+           IconButton(onPressed: () async{
+           setMessageAll(context, "Loading ....");
           // Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
-           await Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+           //await Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
 
           }, icon: Icon(Icons.save)),
 
@@ -435,7 +440,9 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
           }, icon: Icon(Icons.add))
         ],
       ),
-      body:  Container(
+      body:  
+      
+       Container(
         height: MediaQuery.of(context).size.height/1.2,
         child: 
            SingleChildScrollView(

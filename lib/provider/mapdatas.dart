@@ -138,7 +138,7 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 
 Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
        getStatusInet(context);
-       EasyLoading.show(status:"Processing...");
+       
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_hrdall_flut.php');
        var response=await http.post(
         url,
@@ -454,8 +454,7 @@ List<HRD_Detail_Personal> _gethrddetail_personal=[];
 List<HRD_Detail_Personal> get getglobalhrddetail_personal=>_gethrddetail_personal;
 
 Future <void> getListPersonAll(context,String nik) async{
-  getStatusInet(context);
-  EasyLoading.show(status: 'Processing...');
+
     _gethrddetail_personal.clear();
   
 
