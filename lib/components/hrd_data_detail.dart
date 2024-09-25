@@ -287,7 +287,7 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
       _Text_HubunganKeluarga.text = provx.getglobalhrddetail_personal[0].hubungan!; 
       _Text_Pendidikan.text = provx.getglobalhrddetail_personal[0].pendidikan!;
       _Text_Jurusan.text = provx.getglobalhrddetail_personal[0].jurusan!; 
-
+       _temp_empstatus_val= provx.getglobalhrddetail_personal[0].status_emp!.toString();
        _Text_Emp_Status.text = provx.getglobalhrddetail_personal[0].status_emp!.toString()=='1'?'Active':'Non Active';
       _Text_Status_Pegawai.text = provx.getglobalhrddetail_personal[0].status_pegawai!; 
       _Text_Tgl_Masuk.text = provx.getglobalhrddetail_personal[0].awal_masuk!;
@@ -427,10 +427,20 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
         actions: [
 
           
-           IconButton(onPressed: () async{
-           setMessageAll(context, "Loading ....");
+           IconButton(onPressed: () {
+           
           // Navigator.push(context,MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
-           //await Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+          if (_temp_empstatus_val==null)
+          {
+            _temp_empstatus_val='1';
+          }
+
+        
+
+          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+         //  Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text);
+         // setMessage2(_Text_Nik.text+'-'+_Text_Nama.text+'-'+_temp_empstatus_val!+'-'+_Text_Email.text);
+
 
           }, icon: Icon(Icons.save)),
 

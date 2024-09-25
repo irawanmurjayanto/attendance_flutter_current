@@ -379,13 +379,21 @@ static String? sn3;
   
   }
 
+
+  getGpsAuto() async {
+    Timer.periodic(Duration(seconds: 120), (timer) {
+    getNIK();
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));  
+    },);
+  }
+
    @override
   void initState() {
 
     getPortraitCentral();
   
     super.initState();
- 
+   // getGpsAuto(); 
     getSession(); 
    // _getImei();
    _getTimeClock();

@@ -3,6 +3,7 @@
 import 'package:flutter_attendance_current/components/attreport.dart';
 import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
+import 'package:flutter_attendance_current/components/hrd_data_cari.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/datamodel/hrd_data_model.dart';
@@ -137,8 +138,11 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 
 
 Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
+//Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email) async {
        getStatusInet(context);
-       
+       EasyLoading.show(status: "Processing.. ");
+
+   
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_hrdall_flut.php');
        var response=await http.post(
         url,
@@ -192,7 +196,7 @@ Future <void> savehrd_data_all(BuildContext context,String nik,String nama,Strin
         // if (response.statusCode==200)
         // {
           final json=jsonDecode(response.body);
-          print(json['message']);
+          print(json);
            if (json['message']=='ok')
            {
             setMessageAll(context, "Save Data Successfully");
@@ -548,7 +552,7 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
         }
         else if (((json['errormsg']==3)) & (menu=='3'))
         {
-           Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Data()));
+           Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Data_Cari()));
         }else{
 
            Fluttertoast.showToast(
