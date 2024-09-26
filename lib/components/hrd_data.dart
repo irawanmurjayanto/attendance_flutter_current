@@ -109,7 +109,7 @@ final _TextCariNIK=TextEditingController();
                           onTap: () {
                               getStatusInet(context);
                               EasyLoading.show(status: 'Processing...');
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: prov.globalperson_manualatt[i].nik!),));
+                            //  Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: prov.globalperson_manualatt[i].nik!),));
                               
                         
                                                     //  setMessage2(prov.globalperson_manualatt[i].nik!);

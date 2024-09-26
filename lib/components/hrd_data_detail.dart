@@ -21,15 +21,17 @@ import 'package:shimmer/shimmer.dart';
 
 class Hrd_Data_Detail_Search extends StatefulWidget {
   final String NIK;
-  const Hrd_Data_Detail_Search({Key?key,required this.NIK}):super(key: key);
+  final String Tipe;
+  const Hrd_Data_Detail_Search({Key?key,required this.NIK,required this.Tipe}):super(key: key);
 
   @override
-  State<Hrd_Data_Detail_Search> createState() => _Hrd_Data_Detail_SearchState(NIK:NIK);
+  State<Hrd_Data_Detail_Search> createState() => _Hrd_Data_Detail_SearchState(NIK:NIK,Tipe:Tipe);
 }
 
 class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
   final String NIK;
-  _Hrd_Data_Detail_SearchState({required this.NIK});
+  final String Tipe;
+  _Hrd_Data_Detail_SearchState({required this.NIK,required this.Tipe});
   final box=GetStorage();
 
 
@@ -331,7 +333,7 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
     });
     uploadImage();
     Future.delayed(Duration(seconds: 2));
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK),));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK,Tipe: 'edit',),));
   
     
  
@@ -437,7 +439,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
 
         
 
-          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(Tipe,context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
          //  Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text);
          // setMessage2(_Text_Nik.text+'-'+_Text_Nama.text+'-'+_temp_empstatus_val!+'-'+_Text_Email.text);
 
@@ -445,7 +447,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
           }, icon: Icon(Icons.save)),
 
           IconButton(onPressed: () async{
-           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
+           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: '',Tipe: 'insert',),));
            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Test));
           }, icon: Icon(Icons.add))
         ],

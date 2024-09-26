@@ -31,7 +31,7 @@ class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
       foregroundColor: Colors.white,
       actions: [
          IconButton(onPressed: () async{
-           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: ''),));
+           await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: '',Tipe: 'insert',),));
            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Test));
           }, icon: Icon(Icons.add))
       ],
@@ -100,7 +100,7 @@ class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
                       ),
                       onTap: () {
                         EasyLoading.show(status: 'Loading...');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: provx.globalperson_manualatt[i].nik!)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: provx.globalperson_manualatt[i].nik!,Tipe: 'edit',)));
                       },
                         )
                       )

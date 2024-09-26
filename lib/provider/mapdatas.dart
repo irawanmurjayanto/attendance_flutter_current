@@ -137,7 +137,7 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 }
 
 
-Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
+Future <void> savehrd_data_all(String tipe,BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
 //Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email) async {
        getStatusInet(context);
        EasyLoading.show(status: "Processing.. ");
@@ -150,6 +150,8 @@ Future <void> savehrd_data_all(BuildContext context,String nik,String nama,Strin
             'nik':nik,
             'nama_person':nama,
             'email':email,
+            'tipe':tipe,
+            
             'jabatan':jabatan,
             'section':section,
             'tempat_lahir':tp_lahir,
