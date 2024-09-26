@@ -554,12 +554,34 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                               Row(
                                 children: [
                             
-                              SizedBox(width: 100,
-                              child: 
-                              TextField_HRD(_Text_Nik, "NIK"),
-                              )
-                              ,
+                           //   SizedBox(width: 100,),
+                              // child: 
+                              // TextField_HRD(_Text_Nik, "NIK"),
+
+                              
+                              // )
+                              SizedBox(width: 120,
+                                child: 
+                              TextFormField(
+                                style: TextStyle(fontSize: 10),
+                                controller: _Text_Nik,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(style: BorderStyle.solid)
+                                  ),
+                                  labelStyle: TextStyle(fontSize: 10),
+                                  labelText: 'NIK',
+                                  hintText: "NIK",
+                                  suffixIcon:IconButton(onPressed: () {
+                                    
+                                  }, icon: Icon(Icons.person))
+                                ),
+                                
+                              ),
+                              ),
                               SizedBox(width: 5,),
+                        
+
                               Expanded(child: 
 
                               TextField_HRD(_Text_Nama, "Nama"),
