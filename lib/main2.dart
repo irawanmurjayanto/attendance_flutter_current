@@ -9,6 +9,7 @@ import 'package:flutter_attendance_current/components/attreport.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
 import 'package:flutter_attendance_current/components/orientation.dart';
+import 'package:flutter_attendance_current/components/photoprofile.dart';
 import 'package:flutter_attendance_current/main.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
@@ -387,8 +388,18 @@ static String? sn3;
     },);
   }
 
+
+  getRefreshMain() async{
+    Timer.periodic(Duration(seconds: 2), 
+    (timer) {
+      _gethasil();
+    },
+    );
+  }
    @override
   void initState() {
+   getRefreshMain();
+
 
     getPortraitCentral();
   
@@ -716,6 +727,21 @@ if (await Permission.location.isRestricted) {
             itemBuilder: (context) {
             
             return[
+
+               PopupMenuItem<int>(
+                value: 4,
+                child: 
+                Row(
+                  children:[
+                    Icon(Icons.photo_camera),
+                    SizedBox(width:5),
+                    Text("Photo Profile"),
+                  ]
+                )
+                
+                
+              ),      
+
               PopupMenuItem<int>(
                 value: 0,
                 child: 
@@ -766,6 +792,12 @@ if (await Permission.location.isRestricted) {
             ];
           },
           onSelected: (value) {
+
+               if (value==4)
+            {
+              //_getwarn("Menu 1");
+              Navigator.push(context,MaterialPageRoute(builder: (context) => PhotoProfile(),));
+            }
 
             if (value==0)
             {

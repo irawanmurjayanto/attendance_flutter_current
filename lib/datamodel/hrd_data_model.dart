@@ -153,3 +153,23 @@ class Status_HRD {
   }
 
 }
+
+
+class List_NIK {
+
+  String? nik;
+  String? nama_person;
+  String? deptsal;
+
+
+  List_NIK({this.nik,this.nama_person,this.deptsal});
+
+  factory List_NIK.fromJson(Map<String,dynamic> json){
+    return List_NIK(
+      nik: json['nik'],
+      nama_person: json['nama_person'],
+      deptsal: json['deptsal'],
+    );
+  }
+
+}

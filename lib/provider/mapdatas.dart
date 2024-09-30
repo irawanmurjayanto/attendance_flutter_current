@@ -137,10 +137,11 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 }
 
 
-Future <void> savehrd_data_all(String tipe,BuildContext context,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
+Future <void> savehrd_data_all(BuildContext context,String tipe,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
 //Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email) async {
        getStatusInet(context);
        EasyLoading.show(status: "Processing.. ");
+  
 
    
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_hrdall_flut.php');
@@ -151,7 +152,7 @@ Future <void> savehrd_data_all(String tipe,BuildContext context,String nik,Strin
             'nama_person':nama,
             'email':email,
             'tipe':tipe,
-            
+
             'jabatan':jabatan,
             'section':section,
             'tempat_lahir':tp_lahir,
@@ -195,10 +196,21 @@ Future <void> savehrd_data_all(String tipe,BuildContext context,String nik,Strin
         }
         );
 
-        // if (response.statusCode==200)
-        // {
+        if (response.statusCode==200)
+        {
           final json=jsonDecode(response.body);
+
+         
+
           print(json);
+
+           if (json['message']=='sudahada')
+           {
+                setMessageAll(context, json['messageerror']);
+                 EasyLoading.dismiss();
+                return;
+           } 
+
            if (json['message']=='ok')
            {
             setMessageAll(context, "Save Data Successfully");
@@ -206,7 +218,7 @@ Future <void> savehrd_data_all(String tipe,BuildContext context,String nik,Strin
           {
             setMessageAll(context, 'Data Failed' );
           }
-        // }
+        }
 
          EasyLoading.dismiss();
         notifyListeners();
@@ -375,6 +387,33 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
    
     
       }
+
+
+   List <List_NIK> _getlistnik=[];
+   List <List_NIK> get globallistnik=>_getlistnik;
+
+  Future <void> getListNIK() async{
+    EasyLoading.show(status: "Processing..");
+    _getlistnik.clear();
+    var url=Uri.parse(NamaServer.server+"hrd/list_nik_flut.php");
+
+      final response=await http.post(
+        url,
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final newData=json.map((e) => List_NIK.fromJson(e)).toList();
+        _getlistnik=newData;
+        
+      }
+      notifyListeners();
+
+  }
+
 
    List <hrdsection> _gethrdsection=[];
    List <hrdsection> get globalhrdsection=>_gethrdsection;

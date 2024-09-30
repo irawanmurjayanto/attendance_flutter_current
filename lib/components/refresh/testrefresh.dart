@@ -63,7 +63,7 @@ class _PhotoDataState extends State<PhotoData> {
     setState(() {
       
     });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>new  Hrd_Data_Detail_Search(NIK: box.read("NIK"),),));
+     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>new  Hrd_Data_Detail_Search(NIK: box.read("NIK"),),));
        
                            
    // EasyLoading.show(status: "Getting Image");

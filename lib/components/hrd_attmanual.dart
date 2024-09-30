@@ -62,57 +62,11 @@ await SystemChrome.setPreferredOrientations(
 
  List<Map<String, dynamic>> myData = [];
 
- void _refreshData() async {
-    final data = await DatabaseHelper.getItems();
-    setState(() {
-      myData = data;
-      _isLoading = false;
-    });
-  }
-
-  void deleteNIK(String nik) async {
-    await DatabaseHelper.deleteItem(nik);
-    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //   content: Text('Successfully deleted!'),
-    // backgroundColor:Colors.green
-    // ));
-    _refreshData();
-  }
-
-    
-   Future<void> addNIK() async {
-    await DatabaseHelper.createItem(
-        _empregnik.text,'desc');
-    _refreshData();
-  }
-
-    
-    deleteItemAll() async {
-    final db = await DatabaseHelper.db();
   
-     await db.rawDelete('delete from absen');
+  
     
-      
+  
     
-  }
-    
-     getNIK() async {
-    final db = await DatabaseHelper.db();
-    var x=await db.rawQuery('select nik from absen');
-    var dbitem=x.first;
-    box.write('imei',dbitem['nik'].toString())   ; 
-
-        // Fluttertoast.showToast(
-        //                   msg: dbitem['nik'].toString(),
-        //                   toastLength: Toast.LENGTH_SHORT,
-        //                   gravity: ToastGravity.CENTER,
-        //                   timeInSecForIosWeb: 2,
-        //                   backgroundColor: Colors.green,
-        //                   textColor: Colors.white,
-        //                   fontSize: 16.0
-        //                 ); 
-
-  }
      
 
 
@@ -188,7 +142,7 @@ await SystemChrome.setPreferredOrientations(
                           onTap: () {
                               _TextNik.text=prov.globalperson_manualatt[i].nama_person!;
                               _TempNIK=prov.globalperson_manualatt[i].nik!;
-                              box.write('imei', prov.globalperson_manualatt[i].nik!);
+                             // box.write('imei', prov.globalperson_manualatt[i].nik!);
                               Navigator.pop(context);                           
                           },
                         
@@ -222,48 +176,6 @@ await SystemChrome.setPreferredOrientations(
   
   final box=GetStorage();
 
-final _empregnik=TextEditingController();
- getEmpReg() async {
-  showDialog(context: context, builder: (context) {
-    // ignore: prefer_const_constructors
-    return AlertDialog(
-      
-       title: Text("Employee Register"), 
-       content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-          autofocus: true,  
-          controller: _empregnik,
-          decoration: InputDecoration(
-          labelText: "NIK",
-          hintText: "NIK"
-        ),
-       ),
-
-        ],
-        
-       ),
-      actions: [
-        IconButton(onPressed: () {
-          // Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
-            deleteNIK(_empregnik.text); 
-            addNIK();
-            getNIK();  
-            Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_empregnik.text).then((value) => 
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)));
-
-             
-             
-        }, icon: Icon(Icons.save)),
-
-        IconButton(onPressed: () {
-          Navigator.pop(context);
-        }, icon: Icon(Icons.cancel))
-      ],
-    );
-  },);
- }
 
  
 
@@ -446,7 +358,7 @@ static String? sn3;
    _getTime();
    // _getId(); 
     //deleteItemAll();
-    getNIK();
+   // getNIK();
    //getLoadMemory();
 
     
@@ -488,7 +400,7 @@ _currentPosition=position;
 
  
 
-final snakbar2=SnackBar(content:Text(now2));
+//final snakbar2=SnackBar(content:Text(now2));
 
   // final _deviceImeiPlugin = DeviceImei();
 
@@ -751,95 +663,7 @@ if (await Permission.location.isRestricted) {
             
            ],
         ),
-        actions: [
-         
-          PopupMenuButton(
-            
-            iconColor: Colors.black,
-            iconSize: 30,
-            color: Colors.white,
-            itemBuilder: (context) {
-            
-            return[
-              PopupMenuItem<int>(
-                value: 0,
-                child: 
-                Row(
-                  children:[
-                    Icon(Icons.app_registration),
-                    SizedBox(width:5),
-                    Text("Employee Register"),
-                  ]
-                )
-                
-                
-              ),       
-               
-               PopupMenuItem<int>(
-                value: 1,
-                child:Row(
-                  children:[
-                    Icon(Icons.report_off),
-                    SizedBox(width:5),
-                    Text("Attendance By Section"),
-                  ]
-                )
-              ),       
-                 
-              PopupMenuItem<int>(
-                value: 2,
-                child:Row(
-                  children:[
-                    Icon(Icons.manage_history_outlined),
-                    SizedBox(width:5),
-                    Text("Manual Attendance"),
-                  ]
-                )
-              ),      
-
-      
-              PopupMenuItem<int>(
-                value: 3,
-                child:Row(
-                  children:[
-                    Icon(Icons.person),
-                    SizedBox(width:5),
-                    Text("Personal Data"),
-                  ]
-                )
-              ), 
-            ];
-          },
-          onSelected: (value) {
-
-            if (value==0)
-            {
-              //_getwarn("Menu 1");
-              getEmpReg();
-            }
-
-            if (value==1)
-            {
-              getStatusInet(context);
-              EasyLoading.show(status: "Processing..");
-              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'1');
-
-            }
-
-             if (value==3)
-            {
-              getStatusInet(context);
-              EasyLoading.show(status: "Processing..");
-              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'3');
-
-            }
-
-           
-              
-          },
-          )
-          
-        ],
+       
       
         ),
       
@@ -1070,7 +894,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,_TempNIK!,lok,'MASUK');   
 
        
       }, 
@@ -1120,18 +944,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString() ,lok,'KELUAR');   
-
-     
-     
-
-      
-
-
-          
-    
-   
-
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,_TempNIK! ,lok,'KELUAR');   
        
       }, 
       
@@ -1234,7 +1047,7 @@ ElevatedButton(
                     _getTime();
                   //  getTestSaja();
                    // getLoadMemory();
-                    getNIK();
+                   // getNIK();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
                   
                    // getTestSaja();

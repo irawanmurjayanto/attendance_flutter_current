@@ -79,6 +79,89 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
   final _Text_anak3=TextEditingController();
  String _temp_image='';
 
+
+showNIK() async {
+  await showDialog(context: context, builder: (context) {
+    return SingleChildScrollView(
+
+    child: Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height/1.1,
+    child:
+    
+    AlertDialog(
+          content: FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListNIK(), builder: (context, snapshot) {
+            if (snapshot.connectionState==ConnectionState.waiting)
+            {
+                return Center(child: CircularProgressIndicator());
+            } else
+            {
+              return Consumer<MapDatas>(builder: (context, provx, child) {
+                return ListView.builder(
+                  itemCount: provx.globallistnik.length,
+                  itemBuilder: (context, i) {
+                    return Container(
+                      padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(style: BorderStyle.solid)
+                        ),
+                        child: 
+                        Row(children: [
+                        Expanded(child: 
+                        Text(provx.globallistnik[i].nik!,style: TextStyle(color: Colors.white,fontSize: 10),),
+                        ),
+                         Expanded(child: 
+                        Text(provx.globallistnik[i].nama_person!,style: TextStyle(color: Colors.white,fontSize: 10),),
+                         ),
+                          Expanded(child: 
+                        Text(provx.globallistnik[i].deptsal!,style: TextStyle(color: Colors.white,fontSize: 10),),
+                          )
+                        ]
+                        )
+                    );
+                },);
+              },);
+            }          
+          },),
+          actions: [
+            IconButton(onPressed: () {
+              Navigator.pop(context);
+            }, icon:Icon(Icons.close,size: 30,))
+          ],
+    )
+    )
+    );
+  },);
+  EasyLoading.dismiss();
+}
+
+ getPickDateNow(TextEditingController ctrl,String tipe) async {
+ 
+ TextFormField(
+ controller: ctrl,
+ onTap: () async {
+   DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(2020), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+        if (tipe=='tgl_lahir')
+        {
+        ctrl.text=pickdateformat;
+        }
+      });
+   }
+
+ },
+ );
+
+ }
  
  getPickDate(TextEditingController ctrl,String tipe) async {
  
@@ -403,6 +486,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
     //CircularProgressIndicator();
     //EasyLoading.init();
   //   getLoading();
+   
    validateImage();
     getPortraitCentral();
      getCheck();
@@ -439,7 +523,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
 
         
 
-          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(Tipe,context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,Tipe,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
          //  Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text);
          // setMessage2(_Text_Nik.text+'-'+_Text_Nama.text+'-'+_temp_empstatus_val!+'-'+_Text_Email.text);
 
@@ -575,7 +659,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                                   labelText: 'NIK',
                                   hintText: "NIK",
                                   suffixIcon:IconButton(onPressed: () {
-                                    
+                                    showNIK();
                                   }, icon: Icon(Icons.person))
                                 ),
                                 
@@ -657,7 +741,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
 
 
                                         DateTime?pickeddate=await showDatePicker(context: context, 
-   initialDate:  DateTime.now() ,
+   initialDate:  DateTime(1970) ,
    firstDate: DateTime(1900), 
    lastDate: DateTime(2030));
 
@@ -876,12 +960,101 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                             children: [
                               SizedBox(width: 170,
                               child: 
-                              TextField_HRD(_Text_Tgl_Masuk, "Tanggal Masuk"),
+                              //TextField_HRD(_Text_Tgl_Masuk, "Tanggal Masuk"),
+
+                               Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Tgl_Masuk,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Tgl Masuk',
+                                    hintText: 'Tgl Masuk',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () async {
+                                      
+                                      //pickdate
+
+
+                                        DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(1900), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+         
+        _Text_Tgl_Masuk.text=pickdateformat;
+       
+      });
+   }  
+
+
+
+                                    },
+                                  ),
+                               ),
+
+
                               ),
                               SizedBox(width: 5,),
                               Expanded( 
                               child: 
-                              TextField_HRD(_Text_Tgl_Resign, "Tanggal Resign"),
+                             // TextField_HRD(_Text_Tgl_Resign, "Tanggal Resign"),
+
+
+                                 Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_Tgl_Resign,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Tgl Resign',
+                                    hintText: 'Tgl Resign',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () async {
+                                      
+                                      //pickdate
+
+
+                                        DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(1900), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+         
+        _Text_Tgl_Resign.text=pickdateformat;
+       
+      });
+   }  
+
+
+
+                                    },
+                                  ),
+                               ),
+
+
+
+
                               ),
                               
                             ],
@@ -895,12 +1068,101 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                             children: [
                               SizedBox(width: 170,
                               child: 
-                              TextField_HRD(_Text_MasaKontrak1, "Awal Kontrak"),
+                            //  TextField_HRD(_Text_MasaKontrak1, "Awal Kontrak"),
+
+
+                                    Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_MasaKontrak1,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'Awal Kontrak',
+                                    hintText: 'Awal Kontrak',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () async {
+                                      
+                                      //pickdate
+
+
+                                        DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(1900), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+         
+        _Text_MasaKontrak1.text=pickdateformat;
+       
+      });
+   }  
+
+
+
+                                    },
+                                  ),
+                               ),
+    
+
+
+
                               ),
                               SizedBox(width: 5,),
                               Expanded( 
                               child: 
-                              TextField_HRD(_Text_MasaKOntrak2, "Akhir Kontrak"),
+                            //  TextField_HRD(_Text_MasaKOntrak2, "Akhir Kontrak"),
+ 
+                                   
+                                    Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: TextField(
+                                    
+                                    style: TextStyle(fontSize: 10),
+                                    controller: _Text_MasaKOntrak2,
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(fontSize: 12),
+                                    labelText: 'AKhir Kontrak',
+                                    hintText: 'Akhir Kontrak',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                        borderSide: BorderSide(style: BorderStyle.solid)
+                                      )  
+                                    ),
+                                    onTap: () async {
+                                      
+                                      //pickdate
+
+
+                                        DateTime?pickeddate=await showDatePicker(context: context, 
+   initialDate:  DateTime.now() ,
+   firstDate: DateTime(1900), 
+   lastDate: DateTime(2030));
+
+   if (pickeddate!=null)
+   {
+      final String pickdateformat=DateFormat('dd-MM-yyyy').format(pickeddate);
+      setState(() {
+         
+        _Text_MasaKOntrak2.text=pickdateformat;
+       
+      });
+   }  
+
+
+
+                                    },
+                                  ),
+                               ),
+
                               ),
                               
                             ],
@@ -1052,7 +1314,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
     
   }
 
-
+  
   Widget TextField_HRD_Memo(TextEditingController x,String hintT) {
     return Container(
       margin: EdgeInsets.only(top: 5),
