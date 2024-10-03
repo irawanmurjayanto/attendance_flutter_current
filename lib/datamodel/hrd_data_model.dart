@@ -1,6 +1,7 @@
 
 class HRD_Detail_Personal{
 
+   int? hak_person;
    String? nik;
    String? nama_person;
    String? email;
@@ -59,7 +60,7 @@ class HRD_Detail_Personal{
 
 
 
-   HRD_Detail_Personal({
+   HRD_Detail_Personal({this.hak_person,
    this.nik,this.nama_person, this.email,this.section,this.jabatan,this.tempat_lahir,this.tgl_lahir,this.no_telepon,this.gender,this.marital_status,this.usia,this.alamatktp,this.alamatnow,this.nama_contack,this.hubungan,this.pendidikan,this.jurusan,this.status_emp,this.status_pegawai,this.awal_masuk,this.resign_tgl,this.masa_kontrak1,this.masa_kontrak2,this.remark_masakontrak,this.no_ktp,this.no_jkn,this.no_kpj,this.No_BPJS,this.npwp,this.rekening,this.No_HP,this.Nama_Istrisuami,this.Nama_Anak1,this.Nama_Anak2,this.Nama_Anak3,this.pict_profile
   //  
   //  ,
@@ -72,7 +73,7 @@ class HRD_Detail_Personal{
 
 
  HRD_Detail_Personal.fromJson(Map<String, dynamic> json) {
-  
+    hak_person = json['hak_person'] ?? 0;
     nik = json['nik'] ?? '-';
     nama_person = json['nama_person'] ?? '-';
     email= json['email'] ?? '-';

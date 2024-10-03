@@ -894,7 +894,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,_TempNIK!,lok,'MASUK');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx_manualatt(context,baseimage2,_TempNIK!,lok,'MASUK');   
 
        
       }, 
@@ -944,7 +944,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,_TempNIK! ,lok,'KELUAR');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx_manualatt(context,baseimage2,_TempNIK! ,lok,'KELUAR');   
        
       }, 
       

@@ -137,7 +137,7 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
 }
 
 
-Future <void> savehrd_data_all(BuildContext context,String tipe,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
+Future <void> savehrd_data_all(String hak_person,BuildContext context,String tipe,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {
 //Future <void> savehrd_data_all(BuildContext context,String nik,String nama,String email) async {
        getStatusInet(context);
        EasyLoading.show(status: "Processing.. ");
@@ -148,6 +148,7 @@ Future <void> savehrd_data_all(BuildContext context,String tipe,String nik,Strin
        var response=await http.post(
         url,
         body: {
+            'hak_person':hak_person,
             'nik':nik,
             'nama_person':nama,
             'email':email,
@@ -226,7 +227,7 @@ Future <void> savehrd_data_all(BuildContext context,String tipe,String nik,Strin
 
 Future <void> saveImageByNIK(BuildContext context,nik,image) async {
        getStatusInet(context);
-       EasyLoading.show(status:"Processing...");
+    //   EasyLoading.show(status:"Processing...");
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_nik.php');
 
        var response=await http.post(
@@ -250,9 +251,145 @@ Future <void> saveImageByNIK(BuildContext context,nik,image) async {
 
         notifyListeners();
      
-
+  // EasyLoading.dismiss();
 }      
  
+
+
+ 
+Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,String lok,String absen) async {
+       
+       EasyLoading.show(status:"Processing...");
+      
+    
+       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_manual.php');
+
+
+ 
+//  EasyLoading.show(status: "Saving Data..");
+
+   
+     
+
+      final response = await http.post(
+          url,
+          body: {
+            'nik':nik,
+            'location':lok,
+            'absen':absen,
+            'image':image,
+
+         }
+          
+      );
+
+     final json = jsonDecode(response.body);
+        if (response.statusCode==200)
+        {
+         print(json);
+
+          if (json['detek']=='sudahabsen') {
+
+             Fluttertoast.showToast(
+              msg: "Anda sudah Absen MASUK hari ini jam "+json['jam'],
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+               EasyLoading.dismiss();
+              return;
+          }      
+
+
+
+         if (json['errormsg']=='fail') 
+         {
+        
+              Fluttertoast.showToast(
+              msg: "NIK Anda belum terdaftar,Mohon hubungi HRD",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 2,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0
+              );
+
+               EasyLoading.dismiss();
+            
+              return;
+             
+          }
+
+          //sound farewell  
+          final player = AudioPlayer();    
+          if (absen=='MASUK')
+          {
+             player.setAsset('assets/sound/feramasuk.mpeg');
+             player.play(); 
+          }else
+          {
+             player.setAsset('assets/sound/ferakeluar.mpeg');
+             player.play();
+
+          }
+
+          
+          //player.play(AssetSource('audio/bell.mpeg'));
+         
+        EasyLoading.dismiss();
+
+         showDialog(context: context, builder: (context) {
+           return AlertDialog(
+              content:
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.black ,
+                      borderRadius: BorderRadius.circular(5) 
+                    ),
+                    child:  Text(json['message'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold,color: Colors.white),), 
+                  ),
+                  
+                  SizedBox(height: 5,),
+                  Text(json['nama'],textAlign: TextAlign.center,style: TextStyle(fontWeight:FontWeight.bold)),
+                  Text('('+json['nik']+'/'+json['section']+')',style: TextStyle(fontWeight:FontWeight.bold),),
+                  Text("Status :",textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(json['absen']+'/'+json['jam'],textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              
+               
+            actions: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(onPressed: () {
+                    Navigator.pop(context);
+                  }, child: Text("Close"))
+                ],
+              )
+            ],
+           );
+         
+         },
+         
+         );
+        //  EasyLoading.dismiss(); 
+        }
+ 
+   
+    
+      }
+
 
  
 Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok,String absen) async {
@@ -418,7 +555,7 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
    List <hrdsection> _gethrdsection=[];
    List <hrdsection> get globalhrdsection=>_gethrdsection;
 
-  Future <void> getListSection() async{
+  Future <void> getListSection(String section) async{
     EasyLoading.show(status: "Processing..");
     _gethrdsection.clear();
     _getdatasection.clear();
@@ -429,6 +566,9 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
 
       final response=await http.post(
         url,
+        body: {
+           'section':section
+        }
         
       );   
 

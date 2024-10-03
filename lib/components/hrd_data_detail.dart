@@ -78,6 +78,7 @@ class _Hrd_Data_Detail_SearchState extends State<Hrd_Data_Detail_Search> {
   final _Text_anak2=TextEditingController();
   final _Text_anak3=TextEditingController();
  String _temp_image='';
+ String _temp_hak_person='';
 
 
 showNIK() async {
@@ -203,7 +204,7 @@ showNIK() async {
             Container(
               height: 200,
               child: 
-              FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListSection(), 
+              FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListSection(''), 
           builder: (context, snapshot) {
             if (snapshot.connectionState==ConnectionState.waiting)
             {
@@ -395,6 +396,7 @@ showNIK() async {
       _Text_anak2.text = provx.getglobalhrddetail_personal[0].Nama_Anak2!;
       _Text_anak3.text = provx.getglobalhrddetail_personal[0].Nama_Anak3!; 
       _temp_image=provx.getglobalhrddetail_personal[0].pict_profile!;
+      _temp_hak_person=provx.getglobalhrddetail_personal[0].hak_person!.toString();
 
     });
    EasyLoading.dismiss();
@@ -410,12 +412,17 @@ showNIK() async {
    
        // var img = await picker.pickImage(source: media);
           var choosedimage = await picker.pickImage(source: media,imageQuality: 4,preferredCameraDevice: CameraDevice.rear) ;
+       
         //set source: ImageSource.camera to get image from camera
        setState(() {
+        
        image = File(choosedimage!.path);
     });
+       EasyLoading.show(status: 'Processing..');
     uploadImage();
-    Future.delayed(Duration(seconds: 2));
+    imageCache.clear();
+    imageCache.clearLiveImages();
+    await Future.delayed(Duration(seconds: 5));
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Data_Detail_Search(NIK: NIK,Tipe: 'edit',),));
   
     
@@ -427,11 +434,12 @@ showNIK() async {
        
                            
    // EasyLoading.show(status: "Getting Image");
-      EasyLoading.dismiss();
+   //   EasyLoading.dismiss();
  }
 
 
  Future uploadImage() async{
+EasyLoading.show(status: 'Processing..');  
 List<int> imageBytes = image!.readAsBytesSync();
 String baseimage = base64Encode(imageBytes);
 imageCache.clear();
@@ -444,6 +452,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
   String? imageCheck;
  
   Future  validateImage() async {
+    
     http.Response res;
     try {
       res = await http.get(Uri.parse(NamaServer.server+'hrd/pictprofile/'+NIK+'.jpg'));
@@ -500,6 +509,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
   //   EasyLoading.showSuccess('Use in initState');   
 
     // TODO: implement initState
+    EasyLoading.dismiss();
     super.initState();
   }
 
@@ -523,7 +533,7 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
 
         
 
-          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,Tipe,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
+          Provider.of<MapDatas>(context,listen:false).savehrd_data_all(_temp_hak_person,context,Tipe,_Text_Nik.text, _Text_Nama.text, _Text_Email.text, _Text_Jabatan.text, _Text_Section.text, _Text_TempatLahir.text, _Text_TanggalLahir.text, _Text_NoTelepon.text,_Text_Gender.text,_Text_Marital_Status.text,_Text_Alamat_Ktp.text,_Text_Alamat_Now.text,_Text_NamaContact.text,_Text_HubunganKeluarga.text,_Text_Pendidikan.text,_Text_Jurusan.text,_temp_empstatus_val!,_Text_Status_Pegawai.text,_Text_Tgl_Masuk.text,_Text_Tgl_Resign.text,_Text_MasaKontrak1.text,_Text_MasaKOntrak2.text,_Text_RemarksMasaKontrak.text,_Text_KTP.text,_Text_JKN.text,_Text_KPJ.text,_Text_BPJS.text,_Text_NPWP.text,_Text_Rekening.text,_Text_NOHP.text,_Text_IstriSuami.text,_Text_anak1.text,_Text_anak2.text,_Text_anak3.text);
          //  Provider.of<MapDatas>(context,listen:false).savehrd_data_all(context,_Text_Nik.text, _Text_Nama.text, _Text_Email.text);
          // setMessage2(_Text_Nik.text+'-'+_Text_Nama.text+'-'+_temp_empstatus_val!+'-'+_Text_Email.text);
 
@@ -1209,15 +1219,17 @@ await Provider.of<MapDatas>(context,listen: false).saveImageByNIK(context,NIK,ba
                               SizedBox(height: 5,),
                             Row(
                             children: [
-                              SizedBox(width: 170,
-                              child: 
+                             // SizedBox(width: 300,
+                             // child: 
+                             Expanded(child: 
                               TextField_HRD(_Text_KPJ, "NO. KPJ"),
-                              ),
-                              SizedBox(width: 5,),
-                              Expanded( 
-                              child: 
-                              TextField_HRD(_Text_BPJS, "NO. BPJS"),
-                              ),
+                             )
+                             // ),
+                              // SizedBox(width: 5,),
+                              // Expanded( 
+                              // child: 
+                              // TextField_HRD(_Text_BPJS, "NO. BPJS"),
+                              // ),
                               
                             ],
                           ), 
