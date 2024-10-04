@@ -45,7 +45,7 @@ class _Hrd_Coordinate_setState extends State<Hrd_Coordinate_set> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Coordinate Location",style: TextStyle(color: Colors.white),
+        appBar: AppBar(title: Text("Coordinates Location",style: TextStyle(color: Colors.white),
         
         ),
         backgroundColor: Colors.blue ,
@@ -141,7 +141,7 @@ class _Hrd_Coordinate_setState extends State<Hrd_Coordinate_set> {
                               
                           ),
                           child: 
-                            Text(provx.globallistgoogle[i].lat1.toString(),style: TextStyle(color: Colors.white),),
+                            Text(provx.globallistgoogle[i].lat1.toString()??'',style: TextStyle(color: Colors.white),),
                         )
                         ),
                          Expanded(child: 
@@ -153,7 +153,7 @@ class _Hrd_Coordinate_setState extends State<Hrd_Coordinate_set> {
                               
                           ),
                             child: 
-                            Text(provx.globallistgoogle[i].long1.toString(),style: TextStyle(color: Colors.white),),
+                            Text(provx.globallistgoogle[i].long1.toString() ?? '',style: TextStyle(color: Colors.white),),
                         )
                         ),
 
@@ -175,7 +175,7 @@ class _Hrd_Coordinate_setState extends State<Hrd_Coordinate_set> {
                       ],
                      ),
                      onTap: () {
-                       setMessage2(provx.globallistgoogle[i].idno.toString());
+                   //    setMessage2(provx.globallistgoogle[i].idno.toString());
                        Navigator.push(context, MaterialPageRoute(builder: (context) => HrdcoordinateSub(idno: provx.globallistgoogle[i].idno!, homebase: provx.globallistgoogle[i].homebase!),));
                      },
 

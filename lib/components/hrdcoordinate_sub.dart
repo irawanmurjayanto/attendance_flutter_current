@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_attendance_current/components/hrdcoordinate.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
 import 'package:provider/provider.dart';
@@ -33,13 +34,13 @@ class _HrdcoordinateSubState extends State<HrdcoordinateSub> {
    
     final provx=Provider.of<MapDatas>(context,listen: false) ;
     await Provider.of<MapDatas>(context,listen: false).getList_Coordinate_edit(idno.toString());
-    setMessageAll(context, provx.globallistgoogle_edit[0].lat1.toString());
+   // setMessageAll(context, provx.globallistgoogle_edit[0].lat1.toString());
     setState(() {
        _temp_t1=provx.globallistgoogle_edit[0].lat1.toString();
-      _Text_lat1.text=provx.globallistgoogle_edit[0].lat1.toString();
-      _Text_lat2.text=provx.globallistgoogle_edit[0].lat2.toString();
-      _Text_long1.text=provx.globallistgoogle_edit[0].long1.toString();
-      _Text_long2.text=provx.globallistgoogle_edit[0].long2.toString();
+      _Text_lat1.text=provx.globallistgoogle_edit[0].lat1.toString()??'';
+      _Text_lat2.text=provx.globallistgoogle_edit[0].lat2.toString()??'';
+      _Text_long1.text=provx.globallistgoogle_edit[0].long1.toString()??'';
+      _Text_long2.text=provx.globallistgoogle_edit[0].long2.toString()??'';
       _Text_homebase.text=provx.globallistgoogle_edit[0].homebase!;
     });
    }
@@ -59,8 +60,10 @@ class _HrdcoordinateSubState extends State<HrdcoordinateSub> {
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         actions: [
-          IconButton(onPressed: () {
-            Provider.of<MapDatas>(context,listen: false).getList_Coordinate_save(idno.toString(), _Text_lat1.text, _Text_lat2.text, _Text_long1.text, _Text_long2.text);
+          IconButton(onPressed: ()async {
+            Provider.of<MapDatas>(context,listen: false).getList_Coordinate_save( _Text_lat1.text, _Text_lat2.text, _Text_long1.text, _Text_long2.text,homebase);
+            Navigator.pop(context);
+            await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new Hrd_Coordinate_set()));
           }, icon: Icon(Icons.save,size: 30,))
         ],
         ),
@@ -87,7 +90,7 @@ class _HrdcoordinateSubState extends State<HrdcoordinateSub> {
       margin: EdgeInsets.all(5),
       child: TextFormField(
           controller: str,
-          
+         
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5),
             borderSide: BorderSide(style: BorderStyle.solid)

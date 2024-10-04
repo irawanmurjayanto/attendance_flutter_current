@@ -392,7 +392,7 @@ Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,Str
 
 
 
-Future <void> getList_Coordinate_save(String idno,String lat1,String lat2,String long1,String long2) async{
+Future <void> getList_Coordinate_save(String lat1,String lat2,String long1,String long2,String homebase) async{
      
  
 
@@ -401,13 +401,27 @@ Future <void> getList_Coordinate_save(String idno,String lat1,String lat2,String
       final response=await http.post(
         url,
         body: {
-          'idno':idno
+           
+          'lat1':lat1,
+          'lat2':lat2,
+          'long1':long1,
+          'long2':long2,
+          'homebase':homebase,
         }
         
       );   
 
       if (response.statusCode==200)
       {
+        final json=jsonDecode(response.body);
+          print(json);
+        if (json['message']=='sukses')
+        {
+          setMessage2("Save Succesfully");
+        }else
+        {
+          setMessage2("Save failed");
+        }
       }
 
    }       
@@ -420,7 +434,7 @@ Future <void> getList_Coordinate_save(String idno,String lat1,String lat2,String
  Future <void> getList_Coordinate_edit(String idno) async{
     _getlistgoggle_edit.clear();
  
-
+      
       var url=Uri.parse(NamaServer.server+"hrd/list_location_google_edit.php");
 
       final response=await http.post(
@@ -468,6 +482,7 @@ List <List_Google> _getlistgoggle=[];
         _getlistgoggle=_newData;
       } 
       notifyListeners();
+      EasyLoading.dismiss();
   } 
 
  

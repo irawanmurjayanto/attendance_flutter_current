@@ -9,6 +9,7 @@ import 'package:flutter_attendance_current/components/attreport.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
 import 'package:flutter_attendance_current/components/hrdcoordinate.dart';
+import 'package:flutter_attendance_current/components/hrdcoordinate_menu.dart';
 import 'package:flutter_attendance_current/components/orientation.dart';
 import 'package:flutter_attendance_current/components/photoprofile.dart';
 import 'package:flutter_attendance_current/main.dart';
@@ -797,7 +798,7 @@ if (await Permission.location.isRestricted) {
                   children:[
                     Icon(Icons.map),
                     SizedBox(width:5),
-                    Text("Coordinate Google By Location"),
+                    Text("Coordinate Google Setting"),
                   ]
                 )
               ), 
@@ -808,7 +809,7 @@ if (await Permission.location.isRestricted) {
                 if (value==5)
             {
               //_getwarn("Menu 1");
-              Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Coordinate_set(),));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
             }
 
                if (value==4)

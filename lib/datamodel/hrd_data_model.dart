@@ -192,10 +192,10 @@ class List_Google {
   factory List_Google.fromJson(Map<String,dynamic> json){
     return List_Google(
       idno: json['idno'],
-      lat1: json['lat1'] ?? 0,
-      lat2: json['lat2'] ?? 0,
-      long1: json['long1'] ?? 0,
-      long2: json['long2'] ?? 0,
+      lat1: json['lat1'] ,
+      lat2: json['lat2'] ,
+      long1: json['long1'] ,
+      long2: json['long2'] ,
       homebase: json['homebase'],
     );
   }
