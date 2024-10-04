@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_attendance_current/components/attreport.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
+import 'package:flutter_attendance_current/components/hrdcoordinate.dart';
 import 'package:flutter_attendance_current/components/orientation.dart';
 import 'package:flutter_attendance_current/components/photoprofile.dart';
 import 'package:flutter_attendance_current/main.dart';
@@ -789,9 +790,26 @@ if (await Permission.location.isRestricted) {
                   ]
                 )
               ), 
+
+                PopupMenuItem<int>(
+                value: 5,
+                child:Row(
+                  children:[
+                    Icon(Icons.map),
+                    SizedBox(width:5),
+                    Text("Coordinate Google By Location"),
+                  ]
+                )
+              ), 
             ];
           },
           onSelected: (value) {
+
+                if (value==5)
+            {
+              //_getwarn("Menu 1");
+              Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Coordinate_set(),));
+            }
 
                if (value==4)
             {
@@ -1020,25 +1038,6 @@ Column(
    children: [
 
 
-// ElevatedButton(onPressed: () {
-//      takePicture(ImageSource.camera);
-//       // final player = AudioPlayer();  
-//       //     //player.play(AssetSource('audio/bell.mpeg'));
-//       //     player.setAsset('assets/sound/ferakeluar.mpeg');
-    
-//       //     player.play();
-
-
-//   }, child: 
-//   Row(
-//     children: [
-//       Icon(Icons.camera_enhance_rounded,size: 20,),
-//       SizedBox(width: 5,),
-//       Text("Ambil Photo   ",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)
-//     ],
-//   )
-//   ),
-
   SizedBox(height: 5,),
 
 ElevatedButton(
@@ -1050,7 +1049,7 @@ ElevatedButton(
       onPressed: () {
 
       if (image==null){
-        getMessage("Photo Wajah harus ada");
+        getMessage("Photo Wajah/Lokasi harus ada");
           
         return;
         }
@@ -1069,7 +1068,7 @@ ElevatedButton(
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
 
        
       }, 
@@ -1107,7 +1106,7 @@ ElevatedButton(
       }
 
        if (image==null){
-        getMessage("Photo Wajah harus ada");        
+        getMessage("Photo Wajah/Lokasi harus ada");        
         return;
         }
 
@@ -1118,8 +1117,10 @@ ElevatedButton(
 
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
+      //setMessage2(lat1new.toString()+","+lat2new.toString());
+
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(context,baseimage2,box.read('imei').toString() ,lok,'KELUAR');   
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString() ,lok,'KELUAR');   
 
      
      

@@ -391,13 +391,92 @@ Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,Str
       }
 
 
+
+Future <void> getList_Coordinate_save(String idno,String lat1,String lat2,String long1,String long2) async{
+     
  
-Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok,String absen) async {
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_google_save.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'idno':idno
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+      }
+
+   }       
+
+
+
+   List <List_Google> _getlistgoggle_edit=[];
+   List <List_Google> get globallistgoogle_edit=>_getlistgoggle_edit;
+
+ Future <void> getList_Coordinate_edit(String idno) async{
+    _getlistgoggle_edit.clear();
+ 
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_google_edit.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'idno':idno
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print('nilainya :'+json.toString());
+        final _newData=json.map((e) => List_Google.fromJson(e)).toList();
+        _getlistgoggle_edit=_newData;
+      } 
+      notifyListeners();
+  } 
+
+
+
+List <List_Google> _getlistgoggle=[];
+   List <List_Google> get globallistgoogle=>_getlistgoggle;
+
+ Future <void> getList_Coordinate() async{
+    _getlistgoggle.clear();
+ 
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_google.php");
+
+      final response=await http.post(
+        url,
+        // body: {
+        //   'tipe':tipe
+        // }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => List_Google.fromJson(e)).toList();
+        _getlistgoggle=_newData;
+      } 
+      notifyListeners();
+  } 
+
+ 
+Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image,String macadd,String lok,String absen) async {
        
        EasyLoading.show(status:"Processing...");
       
     
-       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2.php');
+       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_google.php');
 
 
  
@@ -409,6 +488,8 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
       final response = await http.post(
           url,
           body: {
+            'lat1':lat1,
+            'long1':long1,
             'macadd':macadd,
             'location':lok,
             'absen':absen,
@@ -422,6 +503,34 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
         if (response.statusCode==200)
         {
          print(json);
+       //  setMessage2(json);
+          
+        
+
+            
+ 
+         if (json['google']=='nomatch') {
+          //setMessageAll(context, "nomatch");
+          showDialog(context: context, builder: (context) {
+            return AlertDialog(
+              title: Text("Coordinat Warning "),
+              content: Text('Anda Telah diluar Koordinat google dengan lokasi kantor di  '+json['homebase']),
+              actions: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(onPressed: () {
+                      Navigator.pop(context);
+                    }, icon: Icon(Icons.close))
+                  ],
+                )
+              ],
+            );
+          },);
+          EasyLoading.dismiss();
+          return;
+         }
+
 
           if (json['detek']=='sudahabsen') {
 
@@ -459,6 +568,10 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
              
           }
 
+
+
+
+
           //sound farewell  
           final player = AudioPlayer();    
           if (absen=='MASUK')
@@ -473,9 +586,9 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
           }
 
           
-          //player.play(AssetSource('audio/bell.mpeg'));
+    
          
-        EasyLoading.dismiss();
+       // EasyLoading.dismiss();
 
          showDialog(context: context, builder: (context) {
            return AlertDialog(
@@ -518,8 +631,8 @@ Future <void> saveImageMapxx(BuildContext context,image,String macadd,String lok
          },
          
          );
-        //  EasyLoading.dismiss(); 
-        }
+          EasyLoading.dismiss(); 
+         }
  
    
     

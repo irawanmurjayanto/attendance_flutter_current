@@ -174,3 +174,30 @@ class List_NIK {
   }
 
 }
+
+
+
+class List_Google {
+
+  int? idno;
+  double? lat1;
+  double? lat2;
+  double? long1;
+  double? long2;
+  String? homebase;
+
+
+  List_Google({this.idno,this.lat1,this.lat2,this.long1,this.long2,this.homebase});
+
+  factory List_Google.fromJson(Map<String,dynamic> json){
+    return List_Google(
+      idno: json['idno'],
+      lat1: json['lat1'] ?? 0,
+      lat2: json['lat2'] ?? 0,
+      long1: json['long1'] ?? 0,
+      long2: json['long2'] ?? 0,
+      homebase: json['homebase'],
+    );
+  }
+
+}
