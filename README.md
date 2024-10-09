@@ -7,6 +7,10 @@ This application can lock user by range in google coordinates.Outside Coordinate
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/menu11.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/attbysection.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/detail.jpg?raw=true)
+
+detail Operation with Location :
+![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/menu11.jpg?raw=true)
+![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/multiregion.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinat.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinate.jpg?raw=true)
 
