@@ -18,3 +18,6 @@ For Multi Region Setting, User can log in attendance in everywhere
 Warning if user out of area in setting coordinate determinated<br>
 <br>
 
+![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/setuplocationinperson.jpg?raw=true)<br>
+Setting up, Location to each person in master
+
