@@ -8,10 +8,12 @@ This application can lock user by range in google coordinates.Outside Coordinate
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/attbysection.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/detail.jpg?raw=true)
 
-detail Operation with Location :<br>
+Detail Operation with Location :<br>
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/multiregion.jpg?raw=true)<br>
-For Multi Region Setting user can log in attendance in everywhere
-
+For Multi Region Setting, User can log in attendance in everywhere
+<br>
+Warning if user out of area in setting coordinate determination:<br>
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinat.jpg?raw=true)
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinate.jpg?raw=true)
+<br>
 
