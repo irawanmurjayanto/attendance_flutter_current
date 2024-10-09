@@ -14,7 +14,7 @@ For Multi Region Setting, User can log in attendance in everywhere
 <br>
 
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinat.jpg?raw=true)
-![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/coordinate.jpg?raw=true)<br>
+![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/menukoordinat2.jpg?raw=true)<br>
 Warning if user out of area in setting coordinate determinated<br>
 <br>
 
