@@ -43,6 +43,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:device_imei/device_imei.dart';
 import 'package:flutter_attendance_current/sqllite/database_helper.dart';
+import 'package:blinking_text/blinking_text.dart';
  
  
   
@@ -80,12 +81,39 @@ class HomepageMenu extends StatefulWidget {
 }
 class _HomepageState extends State<HomepageMenu> {
 
+//message map in/out
 
+
+getGoogleMap_Message(String hmb) async {
+     
+          //setMessageAll(context, "nomatch");
+          showDialog(context: context, builder: (context) {
+            return AlertDialog(
+              title: Text("Coordinat Warning "),
+              content: Text('Anda Telah diluar Koordinat google dengan lokasi kantor di  '+hmb),
+              actions: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(onPressed: () {
+                      Navigator.pop(context);
+                    }, icon: Icon(Icons.close))
+                  ],
+                )
+              ],
+            );
+          },);
+          EasyLoading.dismiss();
+          return;
+         }
+
+ 
 
  //sqllite
  bool _isLoading = true;
 
  List<Map<String, dynamic>> myData = [];
+ 
 
  void _refreshData() async {
     final data = await DatabaseHelper.getItems();
@@ -155,6 +183,7 @@ class _HomepageState extends State<HomepageMenu> {
    //late final String apiEndpoint;
    getSession() async{
     await GetStorage.init();
+   // box.erase();
    
    } 
 
@@ -395,26 +424,137 @@ static String? sn3;
     Timer.periodic(Duration(seconds: 2), 
     (timer) {
       _gethasil();
+    //  getRefreshHomeBase();
+      getRefreshHomeBase_second();
+     // setMessage2("test");
+
+
     },
     );
   }
+
+
+getRefreshHomeBase_second() async{
+
+  if (box.read('homebase1')=='Multi Region'){
+         //  Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+           box.write('homebase','In Area (' +box.read('homebase1')+')');
+           return;
+      }
+                       
+if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
+{
+          
+			 
+    if (lat2new>=long1_data && lat2new<=long2_data)
+	{
+	         //$result['koordinat']=$lat1.'---'.$long1;
+ 			    // box.write('homebase', 'in Area ('+homebase1+')');
+           box.write('homebase','In Area (' +box.read('homebase1')+')');
+           //check wethere in area 
+           box.write('map', 'in');
+			// echo json_encode($result);
+			
+			  
+	}else{
+	
+      //  box.write('homebase','Out of Area (' +box.read('homebase1')+')');
+        box.write('homebase','Out of Area (' +box.read('homebase1')+')');
+         //check wethere ou area 
+        box.write('map', 'out');
+			 
+			 
+	
+	}
+	 
+
+}else{
+            
+			   box.write('homebase', 'Out  of Area (' +box.read('homebase1')+')');
+         box.write('map', 'out');
+			 
+}
+ 
+  }
+
+  static double lat1_data=0;
+  static double lat2_data=0;
+  static double long1_data=0;
+  static double long2_data=0;
+  static String homebase1='';
+
+  //hmb
+  getRefreshHomeBase() async{
+                    getStatusInet(context);
+                    await getNIK();
+                    await  Provider.of<MapDatas>(context,listen: false).getList_Coordinate_FirstTime(box.read('imei'));
+                    
+                    final provx= Provider.of<MapDatas>(context,listen: false);
+                    box.write("homebase1", provx.globallistgoogle_firstime[0].homebase.toString());
+
+                    homebase1=provx.globallistgoogle_firstime[0].homebase.toString();
+                    box.write('lat1_data',provx.globallistgoogle_firstime[0].lat1!);
+                    box.write('lat2_data',provx.globallistgoogle_firstime[0].lat2!);
+                    box.write('long1_data',provx.globallistgoogle_firstime[0].long1!);
+                    box.write('long2_data',provx.globallistgoogle_firstime[0].long2!);
+
+                    lat1_data= provx.globallistgoogle_firstime[0].lat1!;
+                    lat2_data= provx.globallistgoogle_firstime[0].lat2!;
+                    long1_data= provx.globallistgoogle_firstime[0].long1!;
+                    long2_data= provx.globallistgoogle_firstime[0].long2!;
+
+                  setMessage2(box.read('homebase1')+'/'+lat1_data.toString()+'/'+lat2_data.toString()+'/'+long1_data.toString()+'/'+long2_data.toString());
+                   
+
+
+ 
+
+
+
+                  
+
+  }
+
+  //  @override
+  // void dispose() {
+ 
+  //   // TODO: implement dispose
+  //   super.dispose();
+  // }
+
+   @override
+  void didChangeDependencies() {
+    getNIK();  
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+  
    @override
   void initState() {
-   getRefreshMain();
-
-
-    getPortraitCentral();
-  
-    super.initState();
-   // getGpsAuto(); 
     getSession(); 
-   // _getImei();
    _getTimeClock();
    _gethasil();
    _getTime();
    // _getId(); 
     //deleteItemAll();
-    getNIK();
+    getNIK();  
+ 
+  // getRefreshHomeBase_second();
+ 
+  getPortraitCentral();
+ // Future.delayed(Duration(seconds: 10));
+  getRefreshHomeBase(); 
+  
+  //setMessageAll(context, "test");
+
+    getRefreshMain();
+    
+  
+    super.initState();
+   // getGpsAuto(); 
+
+   // _getImei();
+  
    //getLoadMemory();
 
     
@@ -809,7 +949,9 @@ if (await Permission.location.isRestricted) {
                 if (value==5)
             {
               //_getwarn("Menu 1");
-              Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
+             // Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
+              EasyLoading.show(status: "Processing..");
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'5');
             }
 
                if (value==4)
@@ -921,7 +1063,8 @@ if (await Permission.location.isRestricted) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      
+                      Homebase(box.read('homebase')==null?'':box.read('homebase')), 
+                      SizedBox(height: 5,),
                       Container(                       
                       child: newData(),
                       ),
@@ -1049,11 +1192,15 @@ ElevatedButton(
       //savedata
       onPressed: () {
 
+
+      if (box.read('homebase1')=='Multi Region'){  
+
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
           
         return;
         }
+      } 
  
 
       if (Address=='search')
@@ -1067,10 +1214,28 @@ ElevatedButton(
       String baseimage2=baseimage==null?'x':baseimage;
 
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
+      
 
       getStatusInet(context);
-      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+       //multiregion without check map
+      if (box.read('homebase1')=='Multi Region'){
+           List<int> imageBytes = image!.readAsBytesSync();
+           String baseimage = base64Encode(imageBytes);
+           baseimage2=baseimage==null?'x':baseimage;
+           Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+           return;
+      }
 
+      //check with map
+
+      if (box.read('map')=='in')
+      {
+          baseimage2='x ';
+      Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
+      }else
+      {
+        getGoogleMap_Message(box.read('homebase1'));
+      }  
        
       }, 
       
@@ -1106,23 +1271,49 @@ ElevatedButton(
         return;
       }
 
-       if (image==null){
-        getMessage("Photo Wajah/Lokasi harus ada");        
+       final String baseimage2;
+
+        if (box.read('homebase1')=='Multi Region'){  
+
+      if (image==null){
+        getMessage("Photo Wajah/Lokasi harus ada");
+          
         return;
         }
 
 
-      List<int> imageBytes = image!.readAsBytesSync();
-      String baseimage = base64Encode(imageBytes);
-      String baseimage2=baseimage==null?'x':baseimage;
+
+      } 
+
+
+     
 
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
 
       //setMessage2(lat1new.toString()+","+lat2new.toString());
 
       getStatusInet(context);
+        //multiregion without check map
+        if (box.read('homebase1')=='Multi Region'){
+           
+           List<int> imageBytes = image!.readAsBytesSync();
+           String baseimage = base64Encode(imageBytes);
+           baseimage2=baseimage==null?'x':baseimage;
+            
+           Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'KELUAR');   
+           return;
+      }
+        //check map in
+        if (box.read('map')=='in')
+      {
+        //  List<int> imageBytes = image!.readAsBytesSync();
+        //    String baseimage = base64Encode(imageBytes);
+           baseimage2='x ';
       Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString() ,lok,'KELUAR');   
-
+      }else
+      {
+        getGoogleMap_Message(box.read('homebase1'));
+      }
      
      
 
@@ -1201,6 +1392,27 @@ ElevatedButton(
     );
   }
 
+
+Widget Homebase(String homebase){
+  return Container(
+    padding: EdgeInsets.all(10), 
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(style: BorderStyle.solid,color: Colors.white)
+    ),
+     child:  BlinkText(
+    
+      'Home Base : '+homebase,
+      style: TextStyle(fontSize: 15,color: Colors.white),
+      beginColor: Colors.yellow,
+	    endColor: Colors.white,
+      times: 10,
+      duration:Duration(seconds: 10),
+     )
+  );
+}
+
 //u2
   Widget newData(){
    return Container(
@@ -1225,18 +1437,30 @@ ElevatedButton(
   children: [
 
 
-    //cur   T
-           
+    //cur   Top
+          
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 
-            
-            
-             ElevatedButton(onPressed: 
-                  () {
-                    _getTime();
-                  //  getTestSaja();
-                   // getLoadMemory();
-                    getNIK();
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));
+  // IconButton(onPressed: ()async {
+  //               ///await Provider.of<MapDatas>(context,listen: false).getList_Coordinate_FirstTime(box.read('imei'));
+                 
+  //               setMessage2(box.read('homebase1')+'-'+box.read('imei'));
+  //             }, icon:Icon(Icons.ac_unit,size: 40,)),
+                
+ ElevatedButton(onPressed:
+                  ()async {
+                    
+                   // _getTime();
+  
+                   // getNIK();
+                    //getRefreshHomeBase();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp()));
+                    
+                
+
+
                   
                    // getTestSaja();
                   // _gethasil();
@@ -1244,6 +1468,7 @@ ElevatedButton(
                   style: ElevatedButton.styleFrom(
                        fixedSize: Size(100,10) ,
                   ),
+                  //refresh nik right
                   child: Row(
                     children: [
                       Icon(Icons.refresh,size: 10,),
@@ -1252,6 +1477,12 @@ ElevatedButton(
                   )
                   
                   ),
+
+                ]  
+
+              ),
+
+            
           
             Jam_clock(),
             SizedBox(height: 5,),

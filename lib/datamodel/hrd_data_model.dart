@@ -156,6 +156,24 @@ class Status_HRD {
 }
 
 
+class List_Location_only {
+
+  String? homebase;
+ 
+
+  List_Location_only({this.homebase});
+
+  factory List_Location_only.fromJson(Map<String,dynamic> json){
+    return List_Location_only(
+      homebase: json['homebase'],
+    
+    );
+  }
+
+}
+
+
+
 class List_NIK {
 
   String? nik;
@@ -191,6 +209,34 @@ class List_Google {
 
   factory List_Google.fromJson(Map<String,dynamic> json){
     return List_Google(
+      idno: json['idno'],
+      lat1: json['lat1'] ,
+      lat2: json['lat2'] ,
+      long1: json['long1'] ,
+      long2: json['long2'] ,
+      homebase: json['homebase'],
+    );
+  }
+
+}
+
+
+
+
+class List_Google_1st {
+
+  int? idno;
+  double? lat1;
+  double? lat2;
+  double? long1;
+  double? long2;
+  String? homebase;
+
+
+  List_Google_1st({this.idno,this.lat1,this.lat2,this.long1,this.long2,this.homebase});
+
+  factory List_Google_1st.fromJson(Map<String,dynamic> json){
+    return List_Google_1st(
       idno: json['idno'],
       lat1: json['lat1'] ,
       lat2: json['lat2'] ,

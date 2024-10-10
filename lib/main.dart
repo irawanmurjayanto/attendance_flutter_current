@@ -48,6 +48,12 @@ class Lay_Nav_ira extends StatefulWidget {
 }
 
 class _Lay_Nav_iraState extends State<Lay_Nav_ira> {
+  @override
+  void initState() {
+    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Nav,));//
+    // TODO: implement initState
+    super.initState();
+  }
 
 final List<Widget> _children=[
   HomepageMenu(),

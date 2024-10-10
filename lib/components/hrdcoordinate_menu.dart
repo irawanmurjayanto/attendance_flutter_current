@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_attendance_current/components/hrd_data_cari.dart';
 import 'package:flutter_attendance_current/components/hrdcoordinate.dart';
 import 'package:flutter_attendance_current/components/hrdcoordinate_sub.dart';
+import 'package:flutter_attendance_current/components/hrdkoordinat_cari.dart';
+import 'package:flutter_attendance_current/main.dart';
+import 'package:flutter_attendance_current/main2.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HrdCoordinate_Menu extends StatefulWidget {
@@ -13,7 +17,11 @@ class HrdCoordinate_Menu extends StatefulWidget {
 class _HrdCoordinate_MenuState extends State<HrdCoordinate_Menu> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(onWillPop: () {
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new MyApp()))      ;
+       return Future.value(false);
+    },child: 
+     Scaffold(
         appBar: AppBar(title: Text('Coordinate Menu',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -25,7 +33,7 @@ class _HrdCoordinate_MenuState extends State<HrdCoordinate_Menu> {
               Row(
                 children: [
                     
-                    WMenu('Loc. Set Up','assets/images/menu2.jpg',Hrd_Coordinate_set()),
+                    WMenu('Loc. Set Up','assets/images/menu2.jpg',HrdCoordinat_cari()),
                     WMenu('Coordinate','assets/images/menu1.jpg',Hrd_Coordinate_set()),
                 ],
               )
@@ -33,6 +41,7 @@ class _HrdCoordinate_MenuState extends State<HrdCoordinate_Menu> {
             ],
           )
         ),
+    ),
     );
   }
 

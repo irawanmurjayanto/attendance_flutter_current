@@ -146,11 +146,13 @@ class DataBySection_person{
 
    String? nik;
    String? nama_person;
+   String? homebase;
     
 
 DataBySection_person({
   this.nik,
   this.nama_person,
+  this.homebase,
 });
 
 
@@ -158,6 +160,7 @@ DataBySection_person({
   
     nik = json['nik'];
     nama_person = json['nama_person'];
+    homebase = json['homebase']??'-';
   
   }
 

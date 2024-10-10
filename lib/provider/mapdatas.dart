@@ -4,6 +4,7 @@ import 'package:flutter_attendance_current/components/attreport.dart';
 import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/hrd_data_cari.dart';
+import 'package:flutter_attendance_current/components/hrdcoordinate_menu.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/datamodel/hrd_data_model.dart';
@@ -457,6 +458,39 @@ Future <void> getList_Coordinate_save(String lat1,String lat2,String long1,Strin
 
 
 
+
+List <List_Google_1st> _getlistgoggle_firstime=[];
+   List <List_Google_1st> get globallistgoogle_firstime=>_getlistgoggle_firstime;
+
+ Future <void> getList_Coordinate_FirstTime(String macadd) async{
+  
+     _getlistgoggle_firstime.clear();
+
+    
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_google_firsttime.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'macadd':macadd
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => List_Google_1st.fromJson(e)).toList();
+        _getlistgoggle_firstime=_newData;
+      } 
+      notifyListeners();
+     // EasyLoading.dismiss();
+  } 
+
+
+
 List <List_Google> _getlistgoggle=[];
    List <List_Google> get globallistgoogle=>_getlistgoggle;
 
@@ -524,27 +558,27 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
 
             
  
-         if (json['google']=='nomatch') {
-          //setMessageAll(context, "nomatch");
-          showDialog(context: context, builder: (context) {
-            return AlertDialog(
-              title: Text("Coordinat Warning "),
-              content: Text('Anda Telah diluar Koordinat google dengan lokasi kantor di  '+json['homebase']),
-              actions: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(onPressed: () {
-                      Navigator.pop(context);
-                    }, icon: Icon(Icons.close))
-                  ],
-                )
-              ],
-            );
-          },);
-          EasyLoading.dismiss();
-          return;
-         }
+        //  if (json['google']=='nomatch') {
+        //   //setMessageAll(context, "nomatch");
+        //   showDialog(context: context, builder: (context) {
+        //     return AlertDialog(
+        //       title: Text("Coordinat Warning "),
+        //       content: Text('Anda Telah diluar Koordinat google dengan lokasi kantor di  '+json['homebase']),
+        //       actions: [
+        //         Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: [
+        //             IconButton(onPressed: () {
+        //               Navigator.pop(context);
+        //             }, icon: Icon(Icons.close))
+        //           ],
+        //         )
+        //       ],
+        //     );
+        //   },);
+        //   EasyLoading.dismiss();
+        //   return;
+        //  }
 
 
           if (json['detek']=='sudahabsen') {
@@ -793,6 +827,67 @@ Future <void> getListPersonAll(context,String nik) async{
   } 
 
 
+Future <void> setList_Location_Only(String homebase,String nik) async{
+    
+   
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_flutonly_save.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'nik':nik,
+          'homebase':homebase,
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body);
+        print(json);
+        if (json['message']=='sukses')
+        {
+          setMessage2("Save Data Succesfully");
+        }else{
+          setMessage2("Failed Save data");
+        }
+       
+      } 
+      notifyListeners();
+      EasyLoading.dismiss();
+  } 
+
+
+List <List_Location_only> _getlist_location_only=[];
+   List <List_Location_only> get globallist_location_only=>_getlist_location_only;
+
+ Future <void> getList_Location_Only() async{
+    _getlist_location_only.clear();
+   
+
+      var url=Uri.parse(NamaServer.server+"hrd/list_location_flutonly.php");
+
+      final response=await http.post(
+        url,
+        // body: {
+        //   'nama':nama
+        // }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => List_Location_only.fromJson(e)).toList();
+        _getlist_location_only=_newData;
+      } 
+      notifyListeners();
+      EasyLoading.dismiss();
+  } 
+
+
  List <DataBySection_person> _getperson_manualatt=[];
    List <DataBySection_person> get globalperson_manualatt=>_getperson_manualatt;
 
@@ -818,6 +913,7 @@ Future <void> getListPersonAll(context,String nik) async{
         _getperson_manualatt=_newData;
       } 
       notifyListeners();
+      EasyLoading.dismiss();
   } 
 
 
@@ -855,6 +951,10 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
         } else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='1'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => AttbySection()));
+        }
+        else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='5'))
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu()));   
         }else if (((json['errormsg']==1)||(json['errormsg']==3))  & (menu=='2'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => HRD_Att_Manual()));
