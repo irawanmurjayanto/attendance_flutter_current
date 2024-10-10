@@ -28,6 +28,7 @@ class AttbySection2 extends StatelessWidget {
   }
 
   Widget WdLoadData(BuildContext context){
+    final _text_editdate=TextEditingController();
     return   
     Container(
       margin: EdgeInsets.all(5),
@@ -78,7 +79,23 @@ class AttbySection2 extends StatelessWidget {
                              ), 
                           ),
                             SizedBox(height: 10,),
+                            Row(
+                              children:[
                           Text(prov.getglobal_datasection_idno[i].absen!+' / '+prov.getglobal_datasection_idno[i].tglrec!,textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(height: 5,),
+                            IconButton(onPressed: () {
+                              //jam
+                              // showDialog(context: context, builder: (context) {
+                              //   return AlertDialog(
+                              //       title: Text("Edit Date"),
+                              //       content: TextField(
+                              //         controller: ,
+                              //       )
+                              //   );
+                              // },);
+                            }, icon: Icon(Icons.edit),iconSize: 30),
+
+                            ]),
                             SizedBox(height: 10,),
                           Text(prov.getglobal_datasection_idno[i].lokasi!,textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold)),
 

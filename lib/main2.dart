@@ -1209,10 +1209,10 @@ ElevatedButton(
         return;
       }
 
-      List<int> imageBytes = image!.readAsBytesSync();
-      String baseimage = base64Encode(imageBytes);
-      String baseimage2=baseimage==null?'x':baseimage;
-
+      // List<int> imageBytes = image!.readAsBytesSync();
+      // String baseimage = base64Encode(imageBytes);
+      // String baseimage2=baseimage==null?'x':baseimage;
+        String?baseimage2;
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
       
 
@@ -1222,6 +1222,7 @@ ElevatedButton(
            List<int> imageBytes = image!.readAsBytesSync();
            String baseimage = base64Encode(imageBytes);
            baseimage2=baseimage==null?'x':baseimage;
+
            Provider.of<MapDatas>(context,listen:false).saveImageMapxx(lat1new.toString(),lat2new.toString(),context,baseimage2,box.read('imei').toString(),lok,'MASUK');   
            return;
       }
