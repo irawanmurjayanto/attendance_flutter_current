@@ -9,7 +9,7 @@ This application can lock user by range in google coordinates.Outside Coordinate
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/detail.jpg?raw=true)
 
 Detail Operation with Location :<br>
-Lock Location can refresh AUTO location every 2 second for detecting area with lock location Data in main database <br>
+This application can refresh AUTO location every 2 second for detecting area with lock location Data in main database <br>
 ![alt text](https://github.com/irawanmurjayanto/attendance_flutter_current/blob/main/rd/multiregion.jpg?raw=true)<br>
 For Multi Region Setting, User can log in attendance in everywhere
 <br>
