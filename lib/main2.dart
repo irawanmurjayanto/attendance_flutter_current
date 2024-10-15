@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_attendance_current/components/attreport.dart';
+import 'package:flutter_attendance_current/components/emp_register.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
 import 'package:flutter_attendance_current/components/hrdcoordinate.dart';
@@ -82,8 +83,25 @@ class HomepageMenu extends StatefulWidget {
 class _HomepageState extends State<HomepageMenu> {
 
 //message map in/out
+static String?_temp_nik_name;
 
+getNik_Name() async{
 
+getStatusInet(context);
+EasyLoading.show(status: 'Processing..');
+
+if (box.read('imei')==null)
+{
+_temp_nik_name='-';
+}else
+{
+await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
+}  
+
+final provx=Provider.of<MapDatas>(context,listen: false);
+_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+EasyLoading.dismiss();
+}
 getGoogleMap_Message(String hmb) async {
      
           //setMessageAll(context, "nomatch");
@@ -165,6 +183,22 @@ getGoogleMap_Message(String hmb) async {
         //                   fontSize: 16.0
         //                 ); 
 
+   
+getStatusInet(context);
+EasyLoading.show(status: 'Processing..');
+
+if (box.read('imei')==null)
+{
+_temp_nik_name='-';
+}else
+{
+await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK('1031');
+}  
+
+final provx=Provider.of<MapDatas>(context,listen: false);
+_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+EasyLoading.dismiss();
+
   }
      
 
@@ -190,7 +224,112 @@ getGoogleMap_Message(String hmb) async {
  
   
   final box=GetStorage();
+ final _NameType=TextEditingController();
+  String? _temp_nik;
 
+getCariNIK() async {
+  setState(() {
+    _NameType.text='';
+  });
+      Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_empregnik.text);
+  showDialog(context: context, builder: (context) {
+    return SingleChildScrollView(
+
+    child: 
+    AlertDialog(
+          title: Text('Name by NIK'),
+          content: 
+          
+          Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            //Name Type    
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: 'Ketik Name',
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(style: BorderStyle.solid),
+                  borderRadius: BorderRadius.circular(5)
+                )
+              ),
+            controller: _NameType,
+            onChanged: (value) {
+              setState(() {
+              _NameType.text=value;  
+              });
+              
+                 Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+            },
+         
+          ),
+          //Detail Data
+           Container(
+             decoration: BoxDecoration(
+              border: Border.all(style: BorderStyle.solid)
+          ),
+            child: SingleChildScrollView(
+             child:  Container(
+                   height: MediaQuery.of(context).size.height/2.5,
+child: 
+              Consumer<MapDatas>(builder: (context, provx, child) {
+                 return ListView.builder(
+                  itemCount: provx.globalperson_manualatt.length,
+                  itemBuilder: (context, i) {
+                    return GestureDetector(
+                      child: 
+                    Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border.all(style: BorderStyle.solid,color: Colors.white),
+                      color: Colors.black
+                    ),
+                       child: 
+                          Text(provx.globalperson_manualatt[i].nama_person!+'('+provx.globalperson_manualatt[i].nik!+')',style: TextStyle(color: Colors.white,fontSize: 10),),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _temp_nik=provx.globalperson_manualatt[i].nik!;
+                        _empregnik.text=provx.globalperson_manualatt[i].nik!;
+                      });
+                      Navigator.pop(context);
+                    },
+
+                      );
+                   
+                 },);
+              },)
+             )
+            
+            )
+           
+             ) 
+
+          
+           
+
+
+            ],
+          ),
+          
+          actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+                  IconButton(onPressed: () {
+                Navigator.pop(context);
+              }, icon: Icon(Icons.close_rounded,size: 30,))
+            ],
+          )
+          ],
+    )
+
+    );
+    
+  },);
+} 
+ 
+ 
 final _empregnik=TextEditingController();
  getEmpReg() async {
   showDialog(context: context, builder: (context) {
@@ -228,7 +367,17 @@ final _empregnik=TextEditingController();
 
         IconButton(onPressed: () {
           Navigator.pop(context);
-        }, icon: Icon(Icons.cancel))
+        }, icon: Icon(Icons.cancel)),
+
+
+         ElevatedButton(
+          style:  ElevatedButton.styleFrom(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white
+          ),
+          onPressed: () {
+           getCariNIK();
+         }, child: Text('Search NIK'))
       ],
     );
   },);
@@ -549,6 +698,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
 
     getRefreshMain();
     
+    
   
     super.initState();
    // getGpsAuto(); 
@@ -556,8 +706,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
    // _getImei();
   
    //getLoadMemory();
-
-    
+ 
    
   }
 
@@ -963,6 +1112,7 @@ if (await Permission.location.isRestricted) {
             if (value==0)
             {
               //_getwarn("Menu 1");
+             // Navigator.push(context,MaterialPageRoute(builder: (context) => Emp_Register_NIK(),));
               getEmpReg();
             }
 
@@ -1143,7 +1293,16 @@ children: [
     ),
     child: image==null?Center
     (child: IconButton(onPressed: () {
+
+      //bthome     
+
+      if (box.read('homebase1')!='Multi Region')
+      {
+         ShowWarningPopup("Anda Sudah di fasilitas Lock Location Google,Jadi tidak perlu ambil photo.Bisa langsung click,absen masuk atau keluar", "Google Coordinate", context) ;
+         return;
+      } 
       takePicture(ImageSource.camera);
+      
       
     }, icon: Icon(Icons.photo_camera,size: 50,)))
     
@@ -1487,7 +1646,8 @@ Widget Homebase(String homebase){
           
             Jam_clock(),
             SizedBox(height: 5,),
-          Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+         // Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+          Text (_temp_nik_name==null?'-':_temp_nik_name!,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
            //Text (deviceImei!+"   IRAX",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
             SizedBox(height: 5,),
             

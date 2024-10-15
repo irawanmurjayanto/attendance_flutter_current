@@ -1,34 +1,40 @@
  import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/server.dart';
+import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
-class AttbySection2 extends StatelessWidget {
-  final String?idno;
-  const AttbySection2({Key?key,required this.idno}):super(key:key);
-  
- 
+ class AttbySection2 extends StatefulWidget {
+  final String idno;
+  const AttbySection2({Key?key,required this.idno});
+
+  @override
+  State<AttbySection2> createState() => _AttbySection2State(idno:idno);
+}
+
+class _AttbySection2State extends State<AttbySection2> {
+
+final String idno;
+_AttbySection2State({required this.idno});
+
+
+final _text_editdate=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-  
-
- 
- 
-  
-  
-
     return Scaffold(
-      appBar: AppBar(title: Text('Detail :'+idno!,style: TextStyle(fontSize: 12))),
-      body: SingleChildScrollView(
+      appBar: AppBar(title: Text('Detail Data : '+idno),),
+    
+body: SingleChildScrollView(
         child: Center(child: WdLoadData(context))),
       );
     
   }
 
   Widget WdLoadData(BuildContext context){
-    final _text_editdate=TextEditingController();
+    
     return   
     Container(
       margin: EdgeInsets.all(5),
@@ -85,14 +91,44 @@ class AttbySection2 extends StatelessWidget {
                             SizedBox(height: 5,),
                             IconButton(onPressed: () {
                               //jam
-                              // showDialog(context: context, builder: (context) {
-                              //   return AlertDialog(
-                              //       title: Text("Edit Date"),
-                              //       content: TextField(
-                              //         controller: ,
-                              //       )
-                              //   );
-                              // },);
+                              setState(() {
+                                _text_editdate.text=prov.getglobal_datasection_idno[i].tglrec!;
+                              });
+                              showDialog(context: context, builder: (context) {
+
+                                return AlertDialog(
+                                    title: Text("Edit Date "+prov.getglobal_datasection_idno[i].idno!.toString()),
+                                    content: TextField(
+                                      controller: _text_editdate,
+                                      onChanged: (value) {
+                                        setState(() {
+                                             _text_editdate.text=value;
+                                        });
+                                     
+                                      },
+                                    ),
+                                  actions: [
+                                      Row(
+                                        children: [
+                                          IconButton(onPressed: () {
+                                          Navigator.pop(context);
+                                          }, icon: Icon(Icons.close)),
+
+                                          IconButton(onPressed: ()async {
+                                              getStatusInet(context);
+                                            EasyLoading.show(status: 'Processing..');
+                                            setMessage2(prov.getglobal_datasection_idno[i].idno!.toString()+'--'+_text_editdate.text);
+                                            await Provider.of<MapDatas>(context,listen: false).saveDataBySectionbyDate(prov.getglobal_datasection_idno[i].idno!.toString(), _text_editdate.text);
+                                            EasyLoading.dismiss();
+                                            Navigator.pop(context);
+                                          }, icon: Icon(Icons.save))
+                                        ],
+                                      )
+                                  ],
+                                  
+                                );
+
+                              },);
                             }, icon: Icon(Icons.edit),iconSize: 30),
 
                             ]),
@@ -112,4 +148,7 @@ class AttbySection2 extends StatelessWidget {
     
     );
   }
+
+
+  
 }

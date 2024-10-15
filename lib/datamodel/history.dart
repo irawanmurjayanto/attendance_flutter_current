@@ -168,3 +168,39 @@ DataBySection_person({
  
 
 }
+
+
+
+
+
+class DataNama_person_NIK{
+
+ 
+
+   String? nik;
+   String? nama_person;
+   String? homebase;
+   String? deptsal;
+    
+
+DataNama_person_NIK({
+  this.nik,
+  this.nama_person,
+  this.homebase,
+  this.deptsal,
+});
+
+
+ DataNama_person_NIK.fromJson(Map<String, dynamic> json) {
+  
+    nik = json['nik'];
+    nama_person = json['nama_person']??'-';
+    homebase = json['homebase']??'-';
+    deptsal = json['deptsal']??'-';
+  
+  }
+
+
+ 
+
+}

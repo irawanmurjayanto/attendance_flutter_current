@@ -81,3 +81,32 @@ void setMessageAll2(BuildContext context,String msg) {
         fontSize: 16.0
        );
   }
+
+  void ShowWarningPopup(String msg,String ttl,BuildContext context) async{
+    return showDialog(context: context, builder: (context) {
+      return AlertDialog(
+                title: Text(ttl),  
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(msg,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),)
+                  ],
+                  
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    //     IconButton(onPressed: () {
+                    //   Navigator.pop(context);
+                    // }, icon: Icon(Icons.close)),
+                    ElevatedButton(onPressed: () {
+                      Navigator.pop(context);
+                    }, child: Text('Close'))
+                    ],
+                  )
+                ],
+      );
+    },);
+  }

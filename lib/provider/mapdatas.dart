@@ -770,6 +770,36 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
 
 
 
+ 
+   List <DataNama_person_NIK> _getnik_person=[];
+   List <DataNama_person_NIK> get globalnik_person=>_getnik_person;
+
+ Future <void> getListPersonByNIK(String nik) async{
+    _getpersonsection.clear();
+    
+
+      var url=Uri.parse(NamaServer.server+"hrd/cariperson_flut_nik.php");
+
+      final response=await http.post(
+        url,
+        body: {
+          'nik':nik
+        }
+        
+      );   
+
+      if (response.statusCode==200)
+      {
+        final json=jsonDecode(response.body)['data'] as List;
+        print(json);
+        final _newData=json.map((e) => DataNama_person_NIK.fromJson(e)).toList();
+        _getnik_person=_newData;
+      } 
+      notifyListeners();
+  }   
+
+
+
    List <DataBySection_person> _getpersonsection=[];
    List <DataBySection_person> get globalpersonsection=>_getpersonsection;
 
@@ -982,6 +1012,35 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
       } 
       notifyListeners();
   } 
+
+
+Future <void> saveDataBySectionbyDate(String idno,String tgl_rec) async{
+
+
+      var url=Uri.parse(NamaServer.server+"hrd/saveDataBySectionbyDate_flut.php");
+
+      final response =await http.post
+      (
+        url,
+        body: {
+          'idno':idno,
+          'tgl_rec':tgl_rec,
+        }
+      );
+
+      final json=jsonDecode(response.body);
+      if (json['message']=='ok')
+      {
+        setMessage2("Save data succesfully");
+      }else
+      {
+        setMessage2("Save data failed");
+      }
+notifyListeners();
+
+
+}
+
 
 
 List<DataBySection> _getdatasection=[];
