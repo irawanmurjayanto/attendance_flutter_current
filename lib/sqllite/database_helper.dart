@@ -69,7 +69,8 @@ class DatabaseHelper {
   static Future<void> deleteItem(String nik) async {
     final db = await DatabaseHelper.db();
     try {
-      await db.delete("absen", where: "nik = ?", whereArgs: [nik]);
+     // await db.delete("absen", where: "nik = ?", whereArgs: [nik]);
+      await db.delete("absen");
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     }

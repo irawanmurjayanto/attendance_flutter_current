@@ -192,7 +192,7 @@ if (box.read('imei')==null)
 _temp_nik_name='-';
 }else
 {
-await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK('1031');
+await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
 }  
 
 final provx=Provider.of<MapDatas>(context,listen: false);
