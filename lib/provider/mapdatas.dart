@@ -9,6 +9,7 @@ import 'package:flutter_attendance_current/components/server.dart';
 import 'package:flutter_attendance_current/datamodel/history.dart';
 import 'package:flutter_attendance_current/datamodel/hrd_data_model.dart';
 import 'package:flutter_attendance_current/datamodel/listsection.dart';
+import 'package:flutter_attendance_current/main.dart';
 import 'package:flutter_attendance_current/message/warning.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,6 +19,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:io';
 import 'package:just_audio/just_audio.dart';
+import 'package:flutter_attendance_current/sqllite/database_helper.dart';
  
 
 class MapDatas with ChangeNotifier {
@@ -119,8 +121,9 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0
+       
     );
-
+          return;
      }else
      {
        Fluttertoast.showToast(
@@ -132,10 +135,33 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
         textColor: Colors.white,
         fontSize: 16.0
        );
+
+
+        
+            // deleteNIK(_empregnik.text); 
+            // addNIK();
+            // getNIK();  
+
      }
   }
 
+
+
+         
+    await DatabaseHelper.deleteItem(nik);
+ 
+    
+ 
+    await DatabaseHelper.createItem(
+        nik,'desc');
+
+   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp()));
+   EasyLoading.dismiss();
+
+
 }
+
+
 
 
 Future <void> savehrd_data_all(String hak_person,BuildContext context,String tipe,String nik,String nama,String email,String jabatan,String section,String tp_lahir,String tgl_lahir,String no_telp,String gender,String marital_status,String alamatktp,String alamatnow,String nama_contact,String hubungan,String pendidikan,String jurusan,String status_emp,String status_pegawai,String tgl_masuk,String tgl_resign,String masa_kontrak1,String masa_kontrak2,String remarksmasa_kontrak,String ktp,String jkn,String kpj,String bpjs,String npwp,String rekening,String no_hp,String nama_suami_istri,String nama_anak1,String nama_anak2,String nama_anak3) async {

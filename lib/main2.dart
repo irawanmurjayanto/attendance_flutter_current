@@ -336,7 +336,7 @@ final _empregnik=TextEditingController();
     // ignore: prefer_const_constructors
     return AlertDialog(
       
-       title: Text("Employee Register"), 
+       title: Text("Employee Register : "+box.read('imei'),style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),), 
        content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -353,13 +353,21 @@ final _empregnik=TextEditingController();
         
        ),
       actions: [
-        IconButton(onPressed: () {
+        IconButton(onPressed: ()async {
           // Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
-            deleteNIK(_empregnik.text); 
-            addNIK();
-            getNIK();  
-            Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_empregnik.text).then((value) => 
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)));
+             
+            if (_empregnik.text!=box.read('imei'))
+            {
+              setMessage2('Anda tidak bisa Register Orang lain di device ini');
+              return;
+            } 
+            await Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_empregnik.text);
+          
+
+            // deleteNIK(_empregnik.text); 
+            // addNIK();
+            // getNIK();  
+           
 
              
              
