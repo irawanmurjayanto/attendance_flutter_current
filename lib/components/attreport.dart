@@ -165,7 +165,7 @@ class _AttbySectionState extends State<AttbySection> {
     //  _getRefreshDataBySection;
 
   
-    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_TextCariName.text);
+    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_TextCariName.text);
     showDialog(context: context,
      builder: (context) {
        return SingleChildScrollView(
@@ -187,7 +187,7 @@ class _AttbySectionState extends State<AttbySection> {
               ),
               onChanged: (value) {
                 
-               Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+               Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google (value);
 
               },
             ),

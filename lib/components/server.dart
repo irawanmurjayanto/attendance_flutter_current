@@ -1,3 +1,3 @@
 class NamaServer{
-  static String server='xxx';
+  static String server='http://kinipi.net/';
 }

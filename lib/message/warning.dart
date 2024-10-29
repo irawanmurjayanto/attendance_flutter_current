@@ -67,6 +67,7 @@ void setMessageAll2(BuildContext context,String msg) {
        );
       return;
     }
+     EasyLoading.dismiss();
   }
 
   void setMessage2(String msg) async{

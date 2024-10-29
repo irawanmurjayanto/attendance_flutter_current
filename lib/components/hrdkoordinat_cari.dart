@@ -121,7 +121,7 @@ class _HrdCoordinat_cariState extends State<HrdCoordinat_cari> {
             ),
             onChanged: (value) {
               _Text_Cari.text=value;
-              Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_Text_Cari.text);
+              Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_Text_Cari.text);
             },
           ),
 
@@ -132,7 +132,7 @@ class _HrdCoordinat_cariState extends State<HrdCoordinat_cari> {
             Container(
               height: MediaQuery.of(context).size.height,
               child: 
-          FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_Text_Cari.text),
+          FutureBuilder(future: Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_Text_Cari.text),
           builder: (context, snapshot) {
             if (snapshot.connectionState==ConnectionState.waiting)
             {

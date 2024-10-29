@@ -1,5 +1,7 @@
  
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -85,23 +87,30 @@ class _HomepageState extends State<HomepageMenu> {
 //message map in/out
 static String?_temp_nik_name;
 
-getNik_Name() async{
+// getNik_Name() async{
 
-getStatusInet(context);
-EasyLoading.show(status: 'Processing..');
+// getStatusInet(context);
+// EasyLoading.show(status: 'Processing..');
 
-if (box.read('imei')==null)
-{
-_temp_nik_name='-';
-}else
-{
-await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
-}  
+// if (box.read('imei')==null)
+// {
+// _temp_nik_name='-';
+// }else
+// {
+// await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
+// }  
 
-final provx=Provider.of<MapDatas>(context,listen: false);
-_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
-EasyLoading.dismiss();
+// final provx=Provider.of<MapDatas>(context,listen: false);
+// _temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+// EasyLoading.dismiss();
+// }
+
+
+
+getRefreshDatabaseNIK()async{
+  await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(_temp_nik_all);
 }
+
 getGoogleMap_Message(String hmb) async {
      
           //setMessageAll(context, "nomatch");
@@ -166,12 +175,93 @@ getGoogleMap_Message(String hmb) async {
       
     
   }
+
+    getNIK2() async {
+    //box.erase();  
+   
+// final provx=Provider.of<MapDatas>(context,listen: false);
+// _temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+ 
+// ShowWarningPopup('test', 'test', context);
+
+
+    final db = await DatabaseHelper.db();
+    var x=await db.rawQuery('select nik from absen');
+   
+    var dbitem=x.length;
+    var dbitem2=x.first;
+
+    setMessage2(dbitem.toString()+'-'+dbitem2.toString());
+
+    }
     
+    static String _temp_nik_all='x';
+    static String _temp_all_all='x';
+
+
      getNIK() async {
+    //box.erase();  
     final db = await DatabaseHelper.db();
     var x=await db.rawQuery('select nik from absen');
     var dbitem=x.first;
-    box.write('imei',dbitem['nik'].toString())   ; 
+    var hitung=x.length;
+    box.write('imei',dbitem['nik'].toString()) ;
+    if (hitung==0)
+    {
+     _temp_nik_all='x';
+    }
+    else{
+ _temp_nik_all= dbitem['nik'].toString();
+
+    }
+   
+        // Fluttertoast.showToast(
+        //                   msg: dbitem['nik'].toString(),
+        //                   toastLength: Toast.LENGTH_SHORT,
+        //                   gravity: ToastGravity.CENTER,
+        //                   timeInSecForIosWeb: 2,
+        //                   backgroundColor: Colors.green,
+        //                   textColor: Colors.white,
+        //                   fontSize: 16.0
+        //                 ); 
+
+   
+getStatusInet(context);
+EasyLoading.show(status: 'Processing..');
+
+if (_temp_nik_all==null)
+{
+_temp_nik_name='-';
+EasyLoading.dismiss();
+} 
+//await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
+await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(_temp_nik_all);
+//_temp_nik_name='-';
+ 
+ final provx=Provider.of<MapDatas>(context,listen: false);
+// return ListView.builder(
+//   itemCount: provx.globalnik_person.length,
+//   itemBuilder: (context, i) {
+//   return (Text(provx.globalnik_person[i].nik!));
+// },);
+
+
+
+_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+EasyLoading.dismiss();
+//ShowWarningPopup('test', 'test', context);
+
+  }
+     
+
+
+getNIK3() async{
+
+    final db = await DatabaseHelper.db();
+    var x=await db.rawQuery('select nik from absen');
+    var dbitem=x.first;
+    box.write('imei',dbitem['nik'].toString()) ;
+    _temp_nik_all= dbitem['nik'].toString();
 
         // Fluttertoast.showToast(
         //                   msg: dbitem['nik'].toString(),
@@ -190,18 +280,24 @@ EasyLoading.show(status: 'Processing..');
 if (box.read('imei')==null)
 {
 _temp_nik_name='-';
-}else
-{
-await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
-}  
-
-final provx=Provider.of<MapDatas>(context,listen: false);
-_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
 EasyLoading.dismiss();
+} 
+//await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
+await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(_temp_nik_all);
+//_temp_nik_name='-';
+ 
+ final provx=Provider.of<MapDatas>(context,listen: false);
+return ListView.builder(
+  itemCount: provx.globalnik_person.length,
+  itemBuilder: (context, i) {
+  return (Text(provx.globalnik_person[i].nik!));
+},);
 
-  }
-     
+//_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+//EasyLoading.dismiss();
+//ShowWarningPopup('test', 'test', context);
 
+}
 
   bool isloading = false;
    
@@ -217,7 +313,7 @@ EasyLoading.dismiss();
    //late final String apiEndpoint;
    getSession() async{
     await GetStorage.init();
-   // box.erase();
+    box.erase();
    
    } 
 
@@ -231,7 +327,7 @@ getCariNIK() async {
   setState(() {
     _NameType.text='';
   });
-      Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_empregnik.text);
+      Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_empregnik.text);
   showDialog(context: context, builder: (context) {
     return SingleChildScrollView(
 
@@ -258,7 +354,7 @@ getCariNIK() async {
               _NameType.text=value;  
               });
               
-                 Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+                 Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(value);
             },
          
           ),
@@ -336,7 +432,7 @@ final _empregnik=TextEditingController();
     // ignore: prefer_const_constructors
     return AlertDialog(
       
-       title: Text("Employee Register : "+box.read('imei'),style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),), 
+       title: Text("Employee Register : "+_temp_nik_all,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),), 
        content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -347,28 +443,54 @@ final _empregnik=TextEditingController();
           labelText: "NIK",
           hintText: "NIK"
         ),
+        onChanged: (value) {
+          setState(() {
+            _empregnik.text=value;
+          });
+        },
        ),
-
+          
         ],
         
        ),
       actions: [
         IconButton(onPressed: ()async {
           // Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,box.read("imei").toString()).then((value) => Navigator.pop(context));
-             
-            if (_empregnik.text!=box.read('imei'))
+            EasyLoading.show(status: 'Processing.. ') ;
+
+              if (_empregnik.text==_temp_nik_all)
+             {
+
+               ShowWarningPopup('Anda Sudah pernah Register di device ini','Warning', context);
+              EasyLoading.dismiss();
+              return;
+             }
+
+             if (_temp_nik_all=='x')
+             {
+
+              await Provider.of<MapDatas>(context,listen: false).provEmpReg_Check(context,_empregnik.text);
+              EasyLoading.dismiss();
+           
+ 
+               return;
+             }  
+
+            if (_empregnik.text!=_temp_nik_all)
             {
-              setMessage2('Anda tidak bisa Register Orang lain di device ini');
+              //setMessage2('Anda tidak bisa Register Orang lain di device ini');
+              ShowWarningPopup('Anda tidak bisa Register User lain di device ini','Warning', context);
+              EasyLoading.dismiss();
               return;
             } 
-            await Provider.of<MapDatas>(context,listen: false).provEmpReg(context, _empregnik.text,_empregnik.text);
+            
           
 
             // deleteNIK(_empregnik.text); 
             // addNIK();
             // getNIK();  
            
-
+             EasyLoading.dismiss();
              
              
         }, icon: Icon(Icons.save)),
@@ -378,14 +500,14 @@ final _empregnik=TextEditingController();
         }, icon: Icon(Icons.cancel)),
 
 
-         ElevatedButton(
-          style:  ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white
-          ),
-          onPressed: () {
-           getCariNIK();
-         }, child: Text('Search NIK'))
+        //  ElevatedButton(
+        //   style:  ElevatedButton.styleFrom(
+        //     backgroundColor: Colors.black,
+        //     foregroundColor: Colors.white
+        //   ),
+        //   onPressed: () {
+        //    getCariNIK();
+        //  }, child: Text('Search NIK'))
       ],
     );
   },);
@@ -545,36 +667,36 @@ static String? sn3;
 }
   
 
-  getLoadMemoryx() async {
+  // getLoadMemoryx() async {
 
-    EasyLoading.show(status: "Processing..");
+  //   EasyLoading.show(status: "Processing..");
 
-    Timer.periodic(Duration(seconds: 2), (timer) {
+  //   Timer.periodic(Duration(seconds: 2), (timer) {
 
-        deviceImei==null?
+  //       deviceImei==null?
  
-      setState(() {
-         box.write('imei', deviceid1!.toString());
-      }):
+  //     setState(() {
+  //        box.write('imei', deviceid1!.toString());
+  //     }):
 
-         setState(() {
-         box.write('imei', deviceImei!.toString());
-      });
+  //        setState(() {
+  //        box.write('imei', deviceImei!.toString());
+  //     });
     
 
-     });
-        EasyLoading.dismiss();
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)); 
+  //    });
+  //       EasyLoading.dismiss();
+  //     // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),)); 
   
-  }
+  // }
 
 
-  getGpsAuto() async {
-    Timer.periodic(Duration(seconds: 120), (timer) {
-    getNIK();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));  
-    },);
-  }
+  // getGpsAuto() async {
+  //   Timer.periodic(Duration(seconds: 120), (timer) {
+  //   getNIK();
+  //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp(),));  
+  //   },);
+  // }
 
 
   getRefreshMain() async{
@@ -584,6 +706,11 @@ static String? sn3;
     //  getRefreshHomeBase();
       getRefreshHomeBase_second();
      // setMessage2("test");
+
+     //force restart if homebase null
+    //  if (box.read('homebase')==null){
+    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => new MyApp(),));
+    //  }
 
 
     },
@@ -681,7 +808,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
 
    @override
   void didChangeDependencies() {
-    getNIK();  
+   // getNIK();  
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
@@ -689,6 +816,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
    @override
   void initState() {
     getSession(); 
+    
    _getTimeClock();
    _gethasil();
    _getTime();
@@ -699,6 +827,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
   // getRefreshHomeBase_second();
  
   getPortraitCentral();
+ // getNik_Name();
  // Future.delayed(Duration(seconds: 10));
   getRefreshHomeBase(); 
   
@@ -706,7 +835,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
 
     getRefreshMain();
     
-    
+    getRefreshDatabaseNIK();
   
     super.initState();
    // getGpsAuto(); 
@@ -715,7 +844,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
   
    //getLoadMemory();
  
-   
+  // EasyLoading.dismiss();
   }
 
   
@@ -1089,6 +1218,16 @@ if (await Permission.location.isRestricted) {
                 )
               ), 
 
+               PopupMenuItem<int>(
+                value: 6,
+                child:Row(
+                  children:[
+                    Icon(Icons.person),
+                    SizedBox(width:5),
+                    Text("Clear Data Register"),
+                  ]
+                )
+              ),   
                 PopupMenuItem<int>(
                 value: 5,
                 child:Row(
@@ -1103,8 +1242,32 @@ if (await Permission.location.isRestricted) {
           },
           onSelected: (value) {
 
+             
+                if (value==6)
+            {
+                 
+                 if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
+              //_getwarn("Menu 1");
+             // Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
+          
+                getStatusInet(context);
+              EasyLoading.show(status: "Processing..");
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'6');
+            } 
+
+
                 if (value==5)
             {
+                 
+                 if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
               //_getwarn("Menu 1");
              // Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
               EasyLoading.show(status: "Processing..");
@@ -1114,11 +1277,17 @@ if (await Permission.location.isRestricted) {
                if (value==4)
             {
               //_getwarn("Menu 1");
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
               Navigator.push(context,MaterialPageRoute(builder: (context) => PhotoProfile(),));
             }
 
             if (value==0)
             {
+                
               //_getwarn("Menu 1");
              // Navigator.push(context,MaterialPageRoute(builder: (context) => Emp_Register_NIK(),));
               getEmpReg();
@@ -1126,6 +1295,12 @@ if (await Permission.location.isRestricted) {
 
             if (value==1)
             {
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
+
               box.write('nik', 'x');
               getStatusInet(context);
               EasyLoading.show(status: "Processing..");
@@ -1135,6 +1310,11 @@ if (await Permission.location.isRestricted) {
 
              if (value==2)
             {
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
               getStatusInet(context);
               EasyLoading.show(status: "Processing..");
               Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'2');
@@ -1143,6 +1323,11 @@ if (await Permission.location.isRestricted) {
 
              if (value==3)
             {
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
               getStatusInet(context);
               EasyLoading.show(status: "Processing..");
               Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'3');
@@ -1358,13 +1543,14 @@ ElevatedButton(
       ),
       //savedata
       onPressed: () {
-
+        EasyLoading.show(status: 'Processing');
+       
 
       if (box.read('homebase1')=='Multi Region'){  
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-          
+        EasyLoading.dismiss()  ;
         return;
         }
       } 
@@ -1373,6 +1559,7 @@ ElevatedButton(
       if (Address=='search')
       {
         getMessage("Alamat masih kosong,Mohon click tombol Refresh"); 
+         EasyLoading.dismiss()  ;
         return;
       }
 
@@ -1384,6 +1571,13 @@ ElevatedButton(
       
 
       getStatusInet(context);
+
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }  
+
        //multiregion without check map
       if (box.read('homebase1')=='Multi Region'){
            List<int> imageBytes = image!.readAsBytesSync();
@@ -1430,7 +1624,7 @@ ElevatedButton(
       ),
       //savedata
       onPressed: () {
-
+       EasyLoading.show(status:'Processing.. ');
       
       if (Address=='search')
       {
@@ -1445,7 +1639,7 @@ ElevatedButton(
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-          
+           EasyLoading.dismiss()  ;
         return;
         }
 
@@ -1461,6 +1655,13 @@ ElevatedButton(
       //setMessage2(lat1new.toString()+","+lat2new.toString());
 
       getStatusInet(context);
+
+                if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }  
+
         //multiregion without check map
         if (box.read('homebase1')=='Multi Region'){
            
@@ -1486,7 +1687,7 @@ ElevatedButton(
      
 
       
-
+ EasyLoading.dismiss()  ;
 
           
     
@@ -1645,8 +1846,15 @@ Widget Homebase(String homebase){
                   )
                   
                   ),
+                  // IconButton(onPressed: () {
+                  //   getNIK2();
+                  // }, icon: Icon(Icons.access_alarm))
 
-                ]  
+                ],
+
+                  
+
+                
 
               ),
 
@@ -1655,7 +1863,10 @@ Widget Homebase(String homebase){
             Jam_clock(),
             SizedBox(height: 5,),
          // Text (box.read("imei").toString(),style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
-          Text (_temp_nik_name==null?'-':_temp_nik_name!,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+           Text (_temp_nik_name==null?'-':_temp_nik_name!,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+         //Text (_temp_all_all,style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
+        // getNIKXX(),
+         
            //Text (deviceImei!+"   IRAX",style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),    
             SizedBox(height: 5,),
             
@@ -1683,6 +1894,24 @@ Widget Homebase(String homebase){
     );
   }
 
+
+Widget getNIKXX(){
+return Padding(
+padding: EdgeInsets.all(1),
+ 
+ child: Consumer<MapDatas>(builder: (context, provx, child) {
+   return ListView.builder(
+  itemCount: provx.globalnik_person.length,
+  itemBuilder: (context, i) {
+  return (Text(provx.globalnik_person[i].nik!));
+},);
+
+ },),
+
+
+);
+
+}
 
 //just note script for next
   Widget getAmbildata(){

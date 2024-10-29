@@ -26,7 +26,7 @@ class _Emp_Register_NIKState extends State<Emp_Register_NIK> {
     //  _getRefreshDataBySection;
 
   
-    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_empregnik.text);
+    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_empregnik.text);
     showDialog(context: context,
      builder: (context) {
        return SingleChildScrollView(
@@ -48,7 +48,7 @@ class _Emp_Register_NIKState extends State<Emp_Register_NIK> {
               ),
               onChanged: (value) {
                 
-               Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+               Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(value);
 
               },
             ),
@@ -128,7 +128,7 @@ getCariNIK() async {
   setState(() {
     _empregnik.text='';
   });
-      Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_empregnik.text);
+      Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_empregnik.text);
   showDialog(context: context, builder: (context) {
     return SingleChildScrollView(
 
@@ -155,7 +155,7 @@ getCariNIK() async {
               _NameType.text=value;  
               });
               
-                 Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+                 Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(value);
             },
           ),
           //Detail Data

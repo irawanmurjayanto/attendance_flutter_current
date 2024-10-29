@@ -4,14 +4,14 @@ import 'package:flutter_attendance_current/provider/mapdatas.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
-class Hrd_Data_Cari extends StatefulWidget {
-  const Hrd_Data_Cari({super.key});
+class Clear_Data_Register extends StatefulWidget {
+  const Clear_Data_Register({super.key});
 
   @override
-  State<Hrd_Data_Cari> createState() => _Hrd_Data_CariState();
+  State<Clear_Data_Register> createState() => _Clear_Data_RegisterState();
 }
 
-class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
+class _Clear_Data_RegisterState extends State<Clear_Data_Register> {
 
   final _Text_Cari=TextEditingController();
   @override
@@ -26,7 +26,7 @@ class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Data Searching..",style: TextStyle(color: Colors.white),),
+      appBar: AppBar(title: Text("Clear Data Register",style: TextStyle(color: Colors.white),),
       backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
       actions: [
@@ -99,8 +99,37 @@ class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
                         
                       ),
                       onTap: () {
-                        EasyLoading.show(status: 'Loading...');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: provx.globalperson_manualatt[i].nik!,Tipe: 'edit',)));
+                        // EasyLoading.show(status: 'Loading...');
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => Hrd_Data_Detail_Search(NIK: provx.globalperson_manualatt[i].nik!,Tipe: 'edit',)));
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                              title: Text('Delete Register : '+provx.globalperson_manualatt[i].nama_person!+'-'+provx.globalperson_manualatt[i].nik!,style: TextStyle(fontSize: 12),),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Ada ingin delete data ini ?'),
+                                  SizedBox(height: 5,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(onPressed: () {
+                                        Navigator.pop(context);
+                                      }, child: Text('No')),
+                                      SizedBox(width: 5,),
+                                      ElevatedButton(onPressed: () async {
+                                        await Provider.of<MapDatas>(context,listen: false).provEmpReg_Del_Register(context, provx.globalperson_manualatt[i].nik!);
+                                        Navigator.pop(context);
+                                      }, child: Text('Yes')),
+                                        
+                                    ],
+                                  )
+                                  
+                                ],
+                              ),
+
+
+                          );
+                        },);
                       },
                         )
                       )

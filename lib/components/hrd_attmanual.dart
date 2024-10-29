@@ -106,7 +106,7 @@ await SystemChrome.setPreferredOrientations(
           ),
           onChanged: (value) {
            
-            Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+            Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(value);
           },
          ),
           SizedBox(height: 5,),

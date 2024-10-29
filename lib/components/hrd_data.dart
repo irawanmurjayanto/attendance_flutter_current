@@ -48,7 +48,7 @@ final _TextCariNIK=TextEditingController();
 
   getSearchNIK() async{
     _TextCariNIK.text='';
-    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(_TextCariNIK.text);
+    Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_TextCariNIK.text);
     showDialog(context: context,
      builder: (context) {
        return SingleChildScrollView(
@@ -70,7 +70,7 @@ final _TextCariNIK=TextEditingController();
               ),
               onChanged: (value) {
                 
-                Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt(value);
+                Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(value);
 
               },
             ),

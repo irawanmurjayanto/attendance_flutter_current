@@ -1,6 +1,7 @@
 
 
 import 'package:flutter_attendance_current/components/attreport.dart';
+import 'package:flutter_attendance_current/components/clear_data_register.dart';
 import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/hrd_data_cari.dart';
@@ -97,6 +98,94 @@ Future <void> getDelete(String idnoval) async{
 notifyListeners();
 }
 
+
+Future <void> provEmpReg_Del_Register(BuildContext context,String nik) async{
+
+   var url=Uri.parse(NamaServer.server+'hrd/cariperson_flut_delete_register.php');
+
+  final response=await http.post(
+    url,
+    body: {
+       'nik':nik,
+    
+    } 
+  ); 
+
+  final json =jsonDecode(response.body);
+  if (json['message']=='ok')
+  {
+    setMessage2('Delete Successfully');
+  }else
+  {
+    setMessage2('Delete failed');
+  }
+  notifyListeners();
+}
+
+
+
+Future <void> provEmpReg_Check(BuildContext context,String nik) async{
+
+   var url=Uri.parse(NamaServer.server+'hrd/cariperson_flut_register.php');
+
+  final response=await http.post(
+    url,
+    body: {
+       'nik':nik,
+    
+    } 
+  ); 
+
+  final json =jsonDecode(response.body);
+
+  if (json['message']=='ok')
+  {
+    
+        showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            title: Text('Register Warning'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                    Text('Apakah Nama Anda '+json['nama']+' ?')
+              ],
+            ),
+            actions: [
+             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(onPressed: () {
+                  Navigator.pop(context);
+                }, child: Text('No')),
+                SizedBox(width: 5,),
+                ElevatedButton(onPressed: () {
+                  provEmpReg(context, nik, nik);
+                }, child: Text('Yes')),
+              ],
+             )
+            ],
+          );
+        },);
+
+
+  }else
+  {
+    Fluttertoast.showToast(
+        msg: "NIK Anda tidak ada di Database kami,mohon hubungi HRD",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+       
+    );
+  }
+
+}
+
+
 Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
   var url=Uri.parse(NamaServer.server+'hrd/new_savereg_flut.php');
 
@@ -111,6 +200,7 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
   final json =jsonDecode(response.body);
   if (response.statusCode==200)
   {
+    print(json);
      if(json['errormsg']=='fail')
      {
        Fluttertoast.showToast(
@@ -123,6 +213,10 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
         fontSize: 16.0
        
     );
+
+    //  ShowWarningPopup('NIK Sudah Terdaftar,mohon hubungi HRD', 'Warning NIK', context);
+
+      EasyLoading.dismiss();
           return;
      }else
      {
@@ -136,13 +230,14 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
         fontSize: 16.0
        );
 
-
+  EasyLoading.dismiss();
         
             // deleteNIK(_empregnik.text); 
             // addNIK();
             // getNIK();  
 
      }
+     EasyLoading.dismiss();
   }
 
 
@@ -545,13 +640,17 @@ List <List_Google> _getlistgoggle=[];
       EasyLoading.dismiss();
   } 
 
+
+
+
+
  
 Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image,String macadd,String lok,String absen) async {
        
        EasyLoading.show(status:"Processing...");
       
     
-       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_google.php');
+       var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_google_gen2.php');
 
 
  
@@ -801,7 +900,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
    List <DataNama_person_NIK> get globalnik_person=>_getnik_person;
 
  Future <void> getListPersonByNIK(String nik) async{
-    _getpersonsection.clear();
+    _getnik_person.clear();
     
 
       var url=Uri.parse(NamaServer.server+"hrd/cariperson_flut_nik.php");
@@ -822,6 +921,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
         _getnik_person=_newData;
       } 
       notifyListeners();
+      EasyLoading.dismiss();
   }   
 
 
@@ -947,11 +1047,11 @@ List <List_Location_only> _getlist_location_only=[];
  List <DataBySection_person> _getperson_manualatt=[];
    List <DataBySection_person> get globalperson_manualatt=>_getperson_manualatt;
 
- Future <void> getListPerson_manualatt(String nama) async{
+ Future <void> getListPerson_manualatt_google(String nama) async{
     _getperson_manualatt.clear();
    
 
-      var url=Uri.parse(NamaServer.server+"hrd/cariperson_flut.php");
+      var url=Uri.parse(NamaServer.server+"hrd/cariperson_flut_google.php");
 
       final response=await http.post(
         url,
@@ -1018,6 +1118,10 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
         else if (((json['errormsg']==3)) & (menu=='3'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => Hrd_Data_Cari()));
+        }  
+         else if (((json['errormsg']==3)) & (menu=='6'))
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => Clear_Data_Register()));   
         }else{
 
            Fluttertoast.showToast(
