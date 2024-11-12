@@ -809,7 +809,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
          }
  
    
-    
+    EasyLoading.dismiss(); 
       }
 
 
@@ -1176,7 +1176,7 @@ notifyListeners();
 List<DataBySection> _getdatasection=[];
 List<DataBySection> get getglobal_datasection =>_getdatasection;
 
-Future <void> getDataBySection(String tgl1,String tgl2,String locatt,String nik) async{
+Future <void> getDataBySection(BuildContext context, tgl1,String tgl2,String locatt,String nik) async{
 
       _getdatasection.clear();
 
@@ -1195,10 +1195,25 @@ Future <void> getDataBySection(String tgl1,String tgl2,String locatt,String nik)
 
       //     print(tgl1+'/'+tgl2+'/'+locatt);
 
+
+        
         if (response.statusCode==200)
        {
+
+      final jsonwarn=jsonDecode(response.body);
+        print(jsonwarn);
+        if (jsonwarn['errormsg']=='nodata')
+        {
+              setMessageAll(context, "Tidak ada data");
+              EasyLoading.dismiss();
+              return;
+        }
+
+
         final json=jsonDecode(response.body)['data'] as List;
         //final json=jsonDecode(response.body);
+
+          
          print(json);
         //print(tgl1+'/'+tgl2+'/'+locatt);
         final newData=json.map((e) => DataBySection.fromJson(e)).toList(); 
@@ -1206,6 +1221,7 @@ Future <void> getDataBySection(String tgl1,String tgl2,String locatt,String nik)
         }  
 
          notifyListeners();
+         EasyLoading.dismiss();
       } 
 
 

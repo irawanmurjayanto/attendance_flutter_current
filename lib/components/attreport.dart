@@ -57,7 +57,7 @@ class _AttbySectionState extends State<AttbySection> {
       _tempListPerson='xx';
     _TextCariName.text='';
     });
-     _getRefreshDataBySection;
+     //_getRefreshDataBySection;
     
     Provider.of<MapDatas>(context,listen: false).getListSection(_Text_Cari_Section.text);
     showDialog(context: context,
@@ -163,7 +163,9 @@ class _AttbySectionState extends State<AttbySection> {
     //     _TextCariName.text='';
     // });
     //  _getRefreshDataBySection;
-
+    setState(() {
+      _TextCariName.text='';
+    });
   
     Provider.of<MapDatas>(context,listen: false).getListPerson_manualatt_google(_TextCariName.text);
     showDialog(context: context,
@@ -265,6 +267,8 @@ class _AttbySectionState extends State<AttbySection> {
     // final String tgl1=DateFormat('yyyy-MM-dd').format(DateTime.parse(_begDate.text));
     // final String tgl2=DateFormat('yyyy-MM-dd').format(DateTime.parse(_endDate.text));
 
+   EasyLoading.show(status: 'Processing');
+
     setState(() {
       _temptgl1 = _begDate.text;
       _temptgl2 = _endDate.text;
@@ -286,7 +290,7 @@ class _AttbySectionState extends State<AttbySection> {
      
     }
 
-    Provider.of<MapDatas>(context, listen: false).getDataBySection(
+    Provider.of<MapDatas>(context, listen: false).getDataBySection(context,
         _begDate.text, _endDate.text, _tempListSection!.toString(),_tempListPerson!.toString());
   }
 
@@ -357,7 +361,7 @@ class _AttbySectionState extends State<AttbySection> {
       _tempListSection='x';
       _tempListPerson='xx';
     } 
-    _getRefreshDataBySection();
+   // _getRefreshDataBySection();
     
     getDateNow();
    // getRefresh();
@@ -507,7 +511,7 @@ class _AttbySectionState extends State<AttbySection> {
               width: 120,
               child: ElevatedButton(
                   onPressed: () {
-                       
+                //    EasyLoading.show(status: 'Processing');   
                     _getRefreshDataBySection();
                    
 
@@ -547,7 +551,7 @@ class _AttbySectionState extends State<AttbySection> {
                 onRefresh: () => _getRefreshDataBySection(),
                 child: FutureBuilder(
                   future: Provider.of<MapDatas>(context, listen: false)
-                      .getDataBySection(_temptgl1.toString(),
+                      .getDataBySection(context,_temptgl1.toString(),
                           _temptgl2.toString(), _tempListSection!.toString(),_tempListPerson!.toString()),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -1076,7 +1080,8 @@ Widget WdDataBySection_2() {
           setState(() {
               _tempListPerson='xx';
               _tempListSection='xx';
-              _getRefreshDataBySection();
+              //akhiri
+             // _getRefreshDataBySection();
           });
         
             getSearchNIK();

@@ -829,7 +829,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
   getPortraitCentral();
  // getNik_Name();
  // Future.delayed(Duration(seconds: 10));
-  getRefreshHomeBase(); 
+  
   
   //setMessageAll(context, "test");
 
@@ -845,6 +845,9 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
    //getLoadMemory();
  
   // EasyLoading.dismiss();
+   getRefreshHomeBase(); 
+  Future.delayed(Duration(seconds: 3));
+  getRefreshHomeBase(); 
   }
 
   
@@ -1372,10 +1375,10 @@ if (await Permission.location.isRestricted) {
         decoration: BoxDecoration(
           
          image:DecorationImage(
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
           image:
           
-          AssetImage("assets/images/base1.png"))
+          AssetImage("assets/images/basenew3.jpg"))
         ),
         child:
         Column(
@@ -1437,7 +1440,7 @@ decoration: BoxDecoration(
   border: Border.all(style: BorderStyle.solid,color: Colors.white),
   borderRadius: BorderRadius.circular(7),  
    image: DecorationImage(
-      image: AssetImage('assets/images/base2.png'),
+      image: AssetImage('assets/images/basenew4.jpg'),
       fit: BoxFit.cover,
       )
 
@@ -1545,6 +1548,11 @@ ElevatedButton(
       onPressed: () {
         EasyLoading.show(status: 'Processing');
        
+        if (box.read('imei')==null){  
+           getMessage("Anda harus registrasi aplikasi dulu");
+           EasyLoading.dismiss();
+           return;
+        }
 
       if (box.read('homebase1')=='Multi Region'){  
 
@@ -1562,6 +1570,13 @@ ElevatedButton(
          EasyLoading.dismiss()  ;
         return;
       }
+
+
+      if (box.read('homebase1')==null){  
+         getMessage("Home Base masih kosong,mohon click tombol refresh");
+         EasyLoading.dismiss()  ;
+         return;
+      } 
 
       // List<int> imageBytes = image!.readAsBytesSync();
       // String baseimage = base64Encode(imageBytes);
@@ -1625,6 +1640,12 @@ ElevatedButton(
       //savedata
       onPressed: () {
        EasyLoading.show(status:'Processing.. ');
+
+       if (box.read('imei')==null){  
+           getMessage("Anda harus registrasi aplikasi dulu");
+           EasyLoading.dismiss();
+           return;
+        }
       
       if (Address=='search')
       {
@@ -1632,6 +1653,14 @@ ElevatedButton(
        
         return;
       }
+
+
+      if (box.read('homebase1')==null){  
+         getMessage("Home Base masih kosong,mohon click tombol refresh");
+         EasyLoading.dismiss()  ;
+         return;
+      } 
+
 
        final String baseimage2;
 
@@ -1687,7 +1716,7 @@ ElevatedButton(
      
 
       
- EasyLoading.dismiss()  ;
+ //EasyLoading.dismiss()  ;
 
           
     
