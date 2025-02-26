@@ -704,7 +704,7 @@ static String? sn3;
     (timer) {
       _gethasil();
     //  getRefreshHomeBase();
-   //   getRefreshHomeBase_second();
+     getRefreshHomeBase_second();
      // setMessage2("test");
 
      //force restart if homebase null
