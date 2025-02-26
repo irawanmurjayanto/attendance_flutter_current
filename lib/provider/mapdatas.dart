@@ -809,7 +809,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
          }
  
    
-    EasyLoading.dismiss(); 
+   
       }
 
 

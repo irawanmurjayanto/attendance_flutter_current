@@ -820,31 +820,18 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
    _getTimeClock();
    _gethasil();
    _getTime();
-   // _getId(); 
-    //deleteItemAll();
     getNIK();  
  
-  // getRefreshHomeBase_second();
  
   getPortraitCentral();
- // getNik_Name();
- // Future.delayed(Duration(seconds: 10));
-  
-  
-  //setMessageAll(context, "test");
+
 
     getRefreshMain();
     
     getRefreshDatabaseNIK();
   
     super.initState();
-   // getGpsAuto(); 
-
-   // _getImei();
-  
-   //getLoadMemory();
  
-  // EasyLoading.dismiss();
    getRefreshHomeBase(); 
   Future.delayed(Duration(seconds: 3));
   getRefreshHomeBase(); 
