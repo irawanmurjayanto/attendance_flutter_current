@@ -1459,7 +1459,7 @@ if (await Permission.location.isRestricted) {
 Container(
     padding: EdgeInsets.all(10), 
     decoration: BoxDecoration(
-      color: Colors.black,
+      color: Colors.blue,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(style: BorderStyle.solid,color: Colors.white)
     ),
@@ -1620,7 +1620,7 @@ ElevatedButton(
        
         if (box.read('imei')==null){  
            getMessage("Anda harus registrasi aplikasi dulu");
-          // EasyLoading.dismiss();
+            EasyLoading.dismiss();
            return;
         }
 
@@ -1628,7 +1628,7 @@ ElevatedButton(
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-      //  EasyLoading.dismiss()  ;
+        EasyLoading.dismiss()  ;
         return;
         }
       } 
@@ -1637,14 +1637,14 @@ ElevatedButton(
       if (Address=='search')
       {
         getMessage("Alamat masih kosong,Mohon click tombol Refresh"); 
-       //  EasyLoading.dismiss()  ;
+         EasyLoading.dismiss()  ;
         return;
       }
 
 
       if (box.read('homebase1')==null){  
          getMessage("Home Base masih kosong,mohon click tombol refresh");
-       //  EasyLoading.dismiss()  ;
+        EasyLoading.dismiss()  ;
          return;
       } 
 
@@ -1716,7 +1716,7 @@ ElevatedButton(
 
        if (box.read('imei')==null){  
            getMessage("Anda harus registrasi aplikasi dulu");
-         //  EasyLoading.dismiss();
+           EasyLoading.dismiss();
            return;
         }
       
@@ -1730,7 +1730,7 @@ ElevatedButton(
 
       if (box.read('homebase1')==null){  
          getMessage("Home Base masih kosong,mohon click tombol refresh");
-       //  EasyLoading.dismiss()  ;
+         EasyLoading.dismiss()  ;
          return;
       } 
 
@@ -1741,7 +1741,7 @@ ElevatedButton(
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-         //  EasyLoading.dismiss()  ;
+            EasyLoading.dismiss()  ;
         return;
         }
 
