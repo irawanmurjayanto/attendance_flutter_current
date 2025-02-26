@@ -197,7 +197,8 @@ getGoogleMap_Message(String hmb) async {
     
     static String _temp_nik_all='x';
     static String _temp_all_all='x';
-
+    static String _temp_homebase='';
+//ee1
 
      getNIK() async {
     //box.erase();  
@@ -215,15 +216,7 @@ getGoogleMap_Message(String hmb) async {
 
     }
    
-        // Fluttertoast.showToast(
-        //                   msg: dbitem['nik'].toString(),
-        //                   toastLength: Toast.LENGTH_SHORT,
-        //                   gravity: ToastGravity.CENTER,
-        //                   timeInSecForIosWeb: 2,
-        //                   backgroundColor: Colors.green,
-        //                   textColor: Colors.white,
-        //                   fontSize: 16.0
-        //                 ); 
+       
 
    
 getStatusInet(context);
@@ -234,22 +227,25 @@ if (_temp_nik_all==null)
 _temp_nik_name='-';
 EasyLoading.dismiss();
 } 
-//await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(box.read('imei'));
-await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(_temp_nik_all);
-//_temp_nik_name='-';
+
+
  
- final provx=Provider.of<MapDatas>(context,listen: false);
-// return ListView.builder(
-//   itemCount: provx.globalnik_person.length,
-//   itemBuilder: (context, i) {
-//   return (Text(provx.globalnik_person[i].nik!));
-// },);
+ await Provider.of<MapDatas>(context,listen: false).getListPersonByNIK(_temp_nik_all);
+// //_temp_nik_name='-';
+ 
+  final provx=Provider.of<MapDatas>(context,listen: false);
+ 
+  //setMessage2(provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!);
+
+ setState(() {
+   _temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+ });
+  
+ 
 
 
-
-_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
-EasyLoading.dismiss();
-//ShowWarningPopup('test', 'test', context);
+//EasyLoading.dismiss();
+// ShowWarningPopup('test', 'test', context);
 
   }
      
@@ -293,7 +289,11 @@ return ListView.builder(
   return (Text(provx.globalnik_person[i].nik!));
 },);
 
-//_temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+// setState(() {
+//   _temp_nik_name=provx.globalnik_person[0].nik!+' / '+provx.globalnik_person[0].nama_person!;
+// });
+// setMessage2(_temp_nik_name!+'ok');
+
 //EasyLoading.dismiss();
 //ShowWarningPopup('test', 'test', context);
 
@@ -735,19 +735,21 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
 	         //$result['koordinat']=$lat1.'---'.$long1;
  			    // box.write('homebase', 'in Area ('+homebase1+')');
            box.write('homebase','In Area (' +box.read('homebase1')+')');
+           _temp_homebase='In Area (' +box.read('homebase1');
            //check wethere in area 
            box.write('map', 'in');
 			// echo json_encode($result);
-			
+		//	setMessage2("in");
 			  
 	}else{
 	
       //  box.write('homebase','Out of Area (' +box.read('homebase1')+')');
         box.write('homebase','Out of Area (' +box.read('homebase1')+')');
          //check wethere ou area 
+        _temp_homebase='Out of Area (' +box.read('homebase1');
         box.write('map', 'out');
 			 
-			 
+			 	//	setMessage2("out");
 	
 	}
 	 
@@ -755,6 +757,7 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
 }else{
             
 			   box.write('homebase', 'Out  of Area (' +box.read('homebase1')+')');
+         _temp_homebase='Out of Area (' +box.read('homebase1');
          box.write('map', 'out');
 			 
 }
@@ -813,8 +816,10 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
     super.didChangeDependencies();
   }
   
+  //e2
    @override
   void initState() {
+    getRefreshDatabaseNIK();
     getSession(); 
     
    _getTimeClock();
@@ -824,18 +829,69 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
  
  
   getPortraitCentral();
+ 
+  
+   
 
-
-    getRefreshMain();
+    // getRefreshMain();
     
-    getRefreshDatabaseNIK();
+   // getRefreshDatabaseNIK();
   
     super.initState();
  
    getRefreshHomeBase(); 
-  Future.delayed(Duration(seconds: 3));
-  getRefreshHomeBase(); 
+  // Future.delayed(Duration(seconds: 3));
+  // getRefreshHomeBase(); 
+
+     _gethasil();
+   
+      getRefreshHomeBase_second();
+
+   Timer.periodic(Duration(seconds: 3), 
+    (timer) {
+
+  
+if (box.read('homebase1')==null)
+{
+  //   _gethasil();
+   
+   // getRefreshHomeBase(); 
+       _gethasil();
+      getRefreshHomeBase(); 
+      getRefreshHomeBase_second();
+    setMessage2("Waiting data for Home Base : "  );
+//Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp()));
+}else
+{
+    //  setMessage2("Waiting data for Home Base map exec");
+   
+    //  if (box.read('map')==null)
+    //  {
+    //    getRefreshHomeBase_second();
+    //    setMessage2("Waiting data for Home Base map");
+    //  }else{
+    //    setMessage2("Waiting data for Home Base : map ");
+    //  }
+    
+    getRefreshHomeBase_second();
+  //   setMessage2(box.read('homebase'));
+   // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => new MyApp()));
+  //Homebase(box.read('homebase'));
+  setState(() {
+      _temp_homebase=box.read('homebase');
+  });
+
+}
+
+   
+  
+
+
+    },
+    );
   }
+
+
 
   
 
@@ -1396,7 +1452,22 @@ if (await Permission.location.isRestricted) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      Homebase(box.read('homebase')==null?'':box.read('homebase')), 
+                     // Homebase(box.read('homebase')==null?'':box.read('homebase')), 
+//ee3
+Container(
+    padding: EdgeInsets.all(10), 
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(style: BorderStyle.solid,color: Colors.white)
+    ),
+     child:  Text('Home Base : '+_temp_homebase,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
+  ),
+
+
+
+
+
                       SizedBox(height: 5,),
                       Container(                       
                       child: newData(),
@@ -1518,7 +1589,8 @@ children: [
  
 SizedBox(width: 20,),
  //for save control
- 
+ Expanded(child: 
+
 Column(
   mainAxisAlignment: MainAxisAlignment.center,
    children: [
@@ -1533,11 +1605,20 @@ ElevatedButton(
       ),
       //savedata
       onPressed: () {
-        EasyLoading.show(status: 'Processing');
+      EasyLoading.show(status: 'Processing');
+      
+      //Timer.periodic(Duration(seconds: 1), (timer) {
+        Future.delayed(Duration(seconds: 1),(){
+
+       
+        
+        
+       
+   
        
         if (box.read('imei')==null){  
            getMessage("Anda harus registrasi aplikasi dulu");
-           EasyLoading.dismiss();
+          // EasyLoading.dismiss();
            return;
         }
 
@@ -1545,7 +1626,7 @@ ElevatedButton(
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-        EasyLoading.dismiss()  ;
+      //  EasyLoading.dismiss()  ;
         return;
         }
       } 
@@ -1554,20 +1635,18 @@ ElevatedButton(
       if (Address=='search')
       {
         getMessage("Alamat masih kosong,Mohon click tombol Refresh"); 
-         EasyLoading.dismiss()  ;
+       //  EasyLoading.dismiss()  ;
         return;
       }
 
 
       if (box.read('homebase1')==null){  
          getMessage("Home Base masih kosong,mohon click tombol refresh");
-         EasyLoading.dismiss()  ;
+       //  EasyLoading.dismiss()  ;
          return;
       } 
 
-      // List<int> imageBytes = image!.readAsBytesSync();
-      // String baseimage = base64Encode(imageBytes);
-      // String baseimage2=baseimage==null?'x':baseimage;
+    
         String?baseimage2;
       final String lok=lat1new.toString()+","+lat2new.toString()+","+Address.toString();
       
@@ -1600,15 +1679,16 @@ ElevatedButton(
       {
         getGoogleMap_Message(box.read('homebase1'));
       }  
-       
+       });
+ 
       }, 
-      
+       
       child: Row(
         
         children: [
-          Icon(Icons.input,color: Colors.white),
+          Icon(Icons.input,color: Colors.white,size: 20,),
           SizedBox(width: 5,),
-          Text("Absen Masuk",style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.bold))
+          Text("Absen Masuk",style: TextStyle(color: Colors.white,fontSize: 8,fontWeight: FontWeight.bold))
 
         ],
 
@@ -1628,9 +1708,13 @@ ElevatedButton(
       onPressed: () {
        EasyLoading.show(status:'Processing.. ');
 
+
+       Future.delayed(Duration(seconds: 1),(){
+ 
+
        if (box.read('imei')==null){  
            getMessage("Anda harus registrasi aplikasi dulu");
-           EasyLoading.dismiss();
+         //  EasyLoading.dismiss();
            return;
         }
       
@@ -1644,7 +1728,7 @@ ElevatedButton(
 
       if (box.read('homebase1')==null){  
          getMessage("Home Base masih kosong,mohon click tombol refresh");
-         EasyLoading.dismiss()  ;
+       //  EasyLoading.dismiss()  ;
          return;
       } 
 
@@ -1655,7 +1739,7 @@ ElevatedButton(
 
       if (image==null){
         getMessage("Photo Wajah/Lokasi harus ada");
-           EasyLoading.dismiss()  ;
+         //  EasyLoading.dismiss()  ;
         return;
         }
 
@@ -1707,17 +1791,18 @@ ElevatedButton(
 
           
     
-   
+    
 
+  });
        
       }, 
       
       child: Row(
         
         children: [
-          Icon(Icons.output,color: Colors.white),
+          Icon(Icons.output,color: Colors.white,size: 20,),
           SizedBox(width: 5,),
-          Text("Absen Keluar",style: TextStyle(color: Colors.white,fontSize: 10,fontWeight: FontWeight.bold),)
+          Text("Absen Keluar",style: TextStyle(color: Colors.white,fontSize: 8,fontWeight: FontWeight.bold),)
 
         ],
 
@@ -1730,7 +1815,7 @@ ElevatedButton(
 
    ],
 )
-
+ )
  
  
    
@@ -1786,15 +1871,7 @@ Widget Homebase(String homebase){
       borderRadius: BorderRadius.circular(20),
       border: Border.all(style: BorderStyle.solid,color: Colors.white)
     ),
-     child:  BlinkText(
-    
-      'Home Base : '+homebase,
-      style: TextStyle(fontSize: 15,color: Colors.white),
-      beginColor: Colors.yellow,
-	    endColor: Colors.white,
-      times: 10,
-      duration:Duration(seconds: 10),
-     )
+     child:  Text('Home Base : '+homebase,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
   );
 }
 

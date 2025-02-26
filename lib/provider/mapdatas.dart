@@ -349,7 +349,7 @@ Future <void> savehrd_data_all(String hak_person,BuildContext context,String tip
 
 Future <void> saveImageByNIK(BuildContext context,nik,image) async {
        getStatusInet(context);
-    //   EasyLoading.show(status:"Processing...");
+  //   EasyLoading.show(status:"Processing...");
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_nik.php');
 
        var response=await http.post(
@@ -381,7 +381,7 @@ Future <void> saveImageByNIK(BuildContext context,nik,image) async {
  
 Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,String lok,String absen) async {
        
-       EasyLoading.show(status:"Processing...");
+    EasyLoading.show(status:"Processing...");
       
     
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_manual.php');
@@ -421,7 +421,7 @@ Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,Str
               textColor: Colors.white,
               fontSize: 16.0
               );
-               EasyLoading.dismiss();
+              // EasyLoading.dismiss();
               return;
           }      
 
@@ -462,7 +462,7 @@ Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,Str
           
           //player.play(AssetSource('audio/bell.mpeg'));
          
-        EasyLoading.dismiss();
+       // EasyLoading.dismiss();
 
          showDialog(context: context, builder: (context) {
            return AlertDialog(
@@ -717,7 +717,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
               textColor: Colors.white,
               fontSize: 16.0
               );
-               EasyLoading.dismiss();
+             //  EasyLoading.dismiss();
               return;
           }      
 
@@ -736,7 +736,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
               fontSize: 16.0
               );
 
-               EasyLoading.dismiss();
+             //  EasyLoading.dismiss();
             
               return;
              
@@ -805,7 +805,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
          },
          
          );
-          EasyLoading.dismiss(); 
+        //  EasyLoading.dismiss(); 
          }
  
    
@@ -919,7 +919,9 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
         print(json);
         final _newData=json.map((e) => DataNama_person_NIK.fromJson(e)).toList();
         _getnik_person=_newData;
+        
       } 
+  
       notifyListeners();
       EasyLoading.dismiss();
   }   
