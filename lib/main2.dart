@@ -704,7 +704,7 @@ static String? sn3;
     (timer) {
       _gethasil();
     //  getRefreshHomeBase();
-      getRefreshHomeBase_second();
+   //   getRefreshHomeBase_second();
      // setMessage2("test");
 
      //force restart if homebase null
@@ -846,6 +846,8 @@ if ((lat1new*-1)>=(lat1_data*-1) && (lat1new*-1)<=(lat2_data*-1))
      _gethasil();
    
       getRefreshHomeBase_second();
+
+   getRefreshMain();   
 
    Timer.periodic(Duration(seconds: 3), 
     (timer) {
