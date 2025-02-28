@@ -101,9 +101,9 @@ body: SingleChildScrollView(
                                     content: TextField(
                                       controller: _text_editdate,
                                       onChanged: (value) {
-                                        setState(() {
-                                             _text_editdate.text=value;
-                                        });
+                                        // setState(() {
+                                        //      _text_editdate.text=value;
+                                        // });
                                      
                                       },
                                     ),
