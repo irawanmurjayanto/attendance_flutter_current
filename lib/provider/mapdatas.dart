@@ -651,6 +651,7 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
       
     
        var url = Uri.parse(NamaServer.server+'hrd/newsaveatt_flut2_google_gen2.php');
+ 
 
 
  
@@ -671,7 +672,10 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
 
          }
           
-      );
+      ).timeout(Duration(seconds: 10)).catchError((error) {
+  setMessage2("Time Out Connection to Server,please Try Again");
+  EasyLoading.dismiss();
+});
 
      final json = jsonDecode(response.body);
         if (response.statusCode==200)
