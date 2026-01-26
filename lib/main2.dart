@@ -1286,6 +1286,16 @@ if (await Permission.location.isRestricted) {
                   ]
                 )
               ), 
+              PopupMenuItem<int>(
+                value: 5,
+                child:Row(
+                  children:[
+                    Icon(Icons.map),
+                    SizedBox(width:5),
+                    Text("History Cuti/Izin"),
+                  ]
+                )
+              ), 
             ];
           },
           onSelected: (value) {
