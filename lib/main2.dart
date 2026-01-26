@@ -1287,10 +1287,10 @@ if (await Permission.location.isRestricted) {
                 )
               ), 
               PopupMenuItem<int>(
-                value: 5,
+                value: 7,
                 child:Row(
                   children:[
-                    Icon(Icons.map),
+                    Icon(Icons.account_balance_sharp),
                     SizedBox(width:5),
                     Text("History Cuti/Izin"),
                   ]
@@ -1299,6 +1299,23 @@ if (await Permission.location.isRestricted) {
             ];
           },
           onSelected: (value) {
+
+
+                if (value==7)
+            {
+                 
+                 if (_temp_nik_all=='x')
+                 {
+                  setMessage2('Anda belum register di device ini');
+                  return;
+                 }
+              //_getwarn("Menu 1");
+             // Navigator.push(context,MaterialPageRoute(builder: (context) => HrdCoordinate_Menu(),));
+          
+                getStatusInet(context);
+              EasyLoading.show(status: "Processing..");
+              Provider.of<MapDatas>(context,listen: false).getCheckHak(box.read('imei'),context,'7');
+            } 
 
              
                 if (value==6)

@@ -2,6 +2,7 @@
 
 import 'package:flutter_attendance_current/components/attreport.dart';
 import 'package:flutter_attendance_current/components/clear_data_register.dart';
+import 'package:flutter_attendance_current/components/history_izincuti_cari.dart';
 import 'package:flutter_attendance_current/components/hrd_attmanual.dart';
 import 'package:flutter_attendance_current/components/hrd_data.dart';
 import 'package:flutter_attendance_current/components/hrd_data_cari.dart';
@@ -1152,7 +1153,12 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
          else if (((json['errormsg']==3)) & (menu=='6'))
         {
            Navigator.push(context,MaterialPageRoute(builder: (context) => Clear_Data_Register()));   
-        }else{
+        }
+         else if (((json['errormsg']==1)||(json['errormsg']==3)) & (menu=='7'))
+        {
+           Navigator.push(context,MaterialPageRoute(builder: (context) => HistoryIzincutiCari()));   
+        }
+        else{
 
            Fluttertoast.showToast(
               msg: "Anda tidak berhak atas module ini",
