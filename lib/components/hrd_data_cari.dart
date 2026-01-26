@@ -92,8 +92,7 @@ class _Hrd_Data_CariState extends State<Hrd_Data_Cari> {
                           Expanded(child:
                           Text(provx.globalperson_manualatt[i].nama_person!,style: TextStyle(color: Colors.white),),
                           ),
-                          SizedBox(width: 5,),
-                          Icon(Icons.arrow_right,color: Colors.white,size: 30,) 
+                         
                           
                         ]
                         

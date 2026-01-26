@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
  
 import 'package:flutter_attendance_current/components/history.dart';
+import 'package:flutter_attendance_current/components/historycuti.dart';
 import 'package:flutter_attendance_current/main2.dart';
 import 'package:flutter_attendance_current/main3.dart';
 import 'package:flutter_attendance_current/provider/mapdatas.dart';
@@ -58,6 +59,7 @@ class _Lay_Nav_iraState extends State<Lay_Nav_ira> {
 final List<Widget> _children=[
   HomepageMenu(),
   HistoryMenu(),
+  HistoryCuti(),
   About()
 ];
 
@@ -100,6 +102,10 @@ void onBarTapped(int index) {
     BottomNavigationBarItem(
         icon: new Icon(Icons.history,size: 40),
         label: 'History'
+    ),
+      BottomNavigationBarItem(
+        icon: new Icon(Icons.add_chart,size: 40),
+        label: 'Cuti etc'
     ),
     BottomNavigationBarItem(
         icon: new Icon(Icons.person,size: 40),

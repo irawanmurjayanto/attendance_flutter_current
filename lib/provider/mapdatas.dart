@@ -56,6 +56,30 @@ List<DataModel> get datamap => _datamap;
 // }
 
 
+
+Future <void> getHistoryCuti (String imeino,String ket) async {
+  _datamap.clear();
+  var url=Uri.parse(NamaServer.server+'hrd/newloaddataatt_paris_flut_cuti.php');
+
+final response=await http.post(
+  url,
+  body: {
+    'macadd':imeino,
+    'ket':ket,
+  }
+  
+  );
+   print(response.body);
+  final json=jsonDecode(response.body)['data'] as List;
+  final newData=json.map((e) =>  DataModel.fromJson(e)).toList();
+
+  _datamap=newData;
+  notifyListeners();
+                
+
+}
+
+
 Future <void> getHistoryCari (String imeino) async {
   _datamap.clear();
   var url=Uri.parse(NamaServer.server+'hrd/newloaddataatt_paris_flut.php');
