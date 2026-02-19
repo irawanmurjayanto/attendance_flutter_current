@@ -59,7 +59,7 @@ class _Lay_Nav_iraState extends State<Lay_Nav_ira> {
 final List<Widget> _children=[
   HomepageMenu(),
   HistoryMenu(),
-  HistoryCuti(),
+  HistoryCutix(),
   About()
 ];
 

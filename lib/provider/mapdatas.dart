@@ -56,6 +56,38 @@ List<DataModel> get datamap => _datamap;
 
 // }
 
+List<DataModelSum> _datamapsum=[];
+List<DataModelSum> get datamapsum => _datamapsum;
+
+Future <void> getHistoryCutiSum (String imeino,String ket) async {
+  _datamapsum.clear();
+  var url=Uri.parse(NamaServer.server+'hrd/newloaddataatt_paris_flut_cuti_sum.php');
+
+final response=await http.post(
+  url,
+  body: {
+    'macadd':imeino,
+    'ket':ket,
+  }
+  
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});
+
+
+  
+
+   print(response.body);
+  final json=jsonDecode(response.body)['data'] as List;
+  final newData=json.map((e) =>  DataModelSum.fromJson(e)).toList();
+
+  _datamapsum=newData;
+  notifyListeners();
+                
+
+}
 
 
 Future <void> getHistoryCuti (String imeino,String ket) async {
@@ -69,7 +101,12 @@ final response=await http.post(
     'ket':ket,
   }
   
-  );
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});
+
    print(response.body);
   final json=jsonDecode(response.body)['data'] as List;
   final newData=json.map((e) =>  DataModel.fromJson(e)).toList();
@@ -91,7 +128,12 @@ final response=await http.post(
     'macadd':imeino,
   }
   
-  );
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});
+
    print(response.body);
   final json=jsonDecode(response.body)['data'] as List;
   final newData=json.map((e) =>  DataModel.fromJson(e)).toList();
@@ -112,7 +154,11 @@ Future <void> getDelete(String idnoval) async{
       'idno':idnoval
      }
     
-    );
+    ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});
 
     // if (response.statusCode==200)
     // {
@@ -134,7 +180,11 @@ Future <void> provEmpReg_Del_Register(BuildContext context,String nik) async{
        'nik':nik,
     
     } 
-  ); 
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+}); 
 
   final json =jsonDecode(response.body);
   if (json['message']=='ok')
@@ -159,7 +209,11 @@ Future <void> provEmpReg_Check(BuildContext context,String nik) async{
        'nik':nik,
     
     } 
-  ); 
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+}); 
 
   final json =jsonDecode(response.body);
 
@@ -220,7 +274,11 @@ Future <void> provEmpReg(BuildContext context,String nik,String macadd) async{
        'nik':nik,
        'macadd':macadd
     } 
-  ); 
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});  
 
   final json =jsonDecode(response.body);
   if (response.statusCode==200)
@@ -342,7 +400,11 @@ Future <void> savehrd_data_all(String hak_person,BuildContext context,String tip
 
             
         }
-        );
+        ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+}); 
 
         if (response.statusCode==200)
         {
@@ -384,7 +446,11 @@ Future <void> saveImageByNIK(BuildContext context,nik,image) async {
          'image':image, 
         }
         
-        );
+        ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+}); 
         
         if (response.statusCode==200)
         {
@@ -428,7 +494,11 @@ Future <void> saveImageMapxx_manualatt(BuildContext context,image,String nik,Str
 
          }
           
-      );
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+}); 
 
      final json = jsonDecode(response.body);
         if (response.statusCode==200)
@@ -556,7 +626,11 @@ Future <void> getList_Coordinate_save(String lat1,String lat2,String long1,Strin
           'homebase':homebase,
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});    
 
       if (response.statusCode==200)
       {
@@ -590,7 +664,11 @@ Future <void> getList_Coordinate_save(String lat1,String lat2,String long1,Strin
           'idno':idno
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});      
 
       if (response.statusCode==200)
       {
@@ -622,7 +700,11 @@ List <List_Google_1st> _getlistgoggle_firstime=[];
           'macadd':macadd
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});      
 
       if (response.statusCode==200)
       {
@@ -652,7 +734,11 @@ List <List_Google> _getlistgoggle=[];
         //   'tipe':tipe
         // }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -853,7 +939,11 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
       final response=await http.post(
         url,
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -886,7 +976,11 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
            'section':section
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});      
 
       if (response.statusCode==200)
       {
@@ -911,7 +1005,11 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
   body: {
     'tipe':tipe
   }
-  );
+  ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});    
 
     if (response.statusCode==200)
     {
@@ -940,7 +1038,11 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
           'nik':nik
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -972,7 +1074,11 @@ Future <void> saveImageMapxx(String lat1,String long1,BuildContext context,image
           'section':section
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1000,7 +1106,11 @@ Future <void> getListPersonAll(context,String nik) async{
           'nik':nik
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1027,7 +1137,11 @@ Future <void> setList_Location_Only(String homebase,String nik) async{
           'homebase':homebase,
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1061,7 +1175,11 @@ List <List_Location_only> _getlist_location_only=[];
         //   'nama':nama
         // }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1090,7 +1208,11 @@ List <List_Location_only> _getlist_location_only=[];
           'nama':nama
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1116,7 +1238,11 @@ Future <void> getCheckHak(String macadd,BuildContext context,String menu) async{
           'macadd':macadd,
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       if (response.statusCode==200)
       {
@@ -1192,7 +1318,11 @@ Future <void> saveDataBySectionbyDate(String idno,String tgl_rec) async{
           'idno':idno,
           'tgl_rec':tgl_rec,
         }
-      );
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});    
 
       final json=jsonDecode(response.body);
       if (json['message']=='ok')
@@ -1227,7 +1357,11 @@ Future <void> getDataBySection(BuildContext context, tgl1,String tgl2,String loc
           'nikperson':nik,
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
 
       //     print(tgl1+'/'+tgl2+'/'+locatt);
 
@@ -1279,7 +1413,11 @@ Future <void> getDataBySection_idno(String idno) async{
         
         }
         
-      );   
+      ).timeout(Duration(seconds: 5)).catchError((error) {
+    
+  setMessage2("Server sedang sibuk/Koneksi internet terganggu,Mohon diclick process kembali");
+  EasyLoading.dismiss();
+});       
  
 
         if (response.statusCode==200)

@@ -1,5 +1,3 @@
- 
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -44,7 +42,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:device_imei/device_imei.dart';
+//import 'package:device_imei/device_imei.dart';
 import 'package:flutter_attendance_current/sqllite/database_helper.dart';
 import 'package:blinking_text/blinking_text.dart';
  
@@ -570,65 +568,65 @@ final _empregnik=TextEditingController();
  }
 
 
-  static String? deviceImei;
-  String? type;
-  String message = "Please allow permission request!";
-  // DeviceInfo? deviceInfo;
-  bool getPermission = false;
+//   static String? deviceImei;
+//   String? type;
+//   String message = "Please allow permission request!";
+//   // DeviceInfo? deviceInfo;
+//   bool getPermission = false;
  
-  static String? ambilid;
+//   static String? ambilid;
    
- DeviceInfo? deviceInfo; 
- final _deviceImeiPlugin = DeviceImei();
+//  DeviceInfo? deviceInfo; 
+//  final _deviceImeiPlugin = DeviceImei();
 
-static String? imeiira;
- _getImei() async {
+// static String? imeiira;
+//  _getImei() async {
     
-    var permission = await Permission.phone.status;
+//     var permission = await Permission.phone.status;
 
-    DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
+//     DeviceInfo? dInfo = await _deviceImeiPlugin.getDeviceInfo();
 
-    if (dInfo != null) {
-      setState(() {
-        deviceInfo = dInfo;
-      });
-    }
+//     if (dInfo != null) {
+//       setState(() {
+//         deviceInfo = dInfo;
+//       });
+//     }
 
-    if (Platform.isAndroid) {
-      if (permission.isGranted) {
-        String? imei = await _deviceImeiPlugin.getDeviceImei();
-        if (imei != null) {
-          setState(() {
-            getPermission = true;
-            deviceImei = imei;
-            imeiira!=imei;
-          });
-        }
-      } else {
-        PermissionStatus status = await Permission.phone.request();
-        if (status == PermissionStatus.granted) {
-          setState(() {
-            getPermission = false;
-          });
-          _getImei();
-        } else {
-          setState(() {
-            getPermission = false;
-            message = "Permission not granted, please allow permission";
-          });
-        }
-      }
-    } else {
-      String? imei = await _deviceImeiPlugin.getDeviceImei();
-      if (imei != null) {
-        setState(() {
-          getPermission = true;
-          deviceImei = imei;
-           imeiira!=imei;
-        });
-      }
-    }
-  }
+//     if (Platform.isAndroid) {
+//       if (permission.isGranted) {
+//         String? imei = await _deviceImeiPlugin.getDeviceImei();
+//         if (imei != null) {
+//           setState(() {
+//             getPermission = true;
+//             deviceImei = imei;
+//             imeiira!=imei;
+//           });
+//         }
+//       } else {
+//         PermissionStatus status = await Permission.phone.request();
+//         if (status == PermissionStatus.granted) {
+//           setState(() {
+//             getPermission = false;
+//           });
+//           _getImei();
+//         } else {
+//           setState(() {
+//             getPermission = false;
+//             message = "Permission not granted, please allow permission";
+//           });
+//         }
+//       }
+//     } else {
+//       String? imei = await _deviceImeiPlugin.getDeviceImei();
+//       if (imei != null) {
+//         setState(() {
+//           getPermission = true;
+//           deviceImei = imei;
+//            imeiira!=imei;
+//         });
+//       }
+//     }
+//   }
 
 getMessage(String msg){
     Fluttertoast.showToast(
@@ -646,25 +644,25 @@ static String? deviceid1;
 static String? deviceid2;
 static String? sn3;
   
- Future<String?> _getId() async {
-  var deviceInfo = DeviceInfoPlugin();
-  if (Platform.isIOS) { // import 'dart:io'
-    var iosDeviceInfo = await deviceInfo.iosInfo;
-    ambilid=iosDeviceInfo.identifierForVendor;
-    return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-  } else if(Platform.isAndroid) {
-    var androidDeviceInfo = await deviceInfo.androidInfo;
-    ambilid=androidDeviceInfo.id;
+//  Future<String?> _getId() async {
+//   var deviceInfo = DeviceInfoPlugin();
+//   if (Platform.isIOS) { // import 'dart:io'
+//     var iosDeviceInfo = await deviceInfo.iosInfo;
+//     ambilid=iosDeviceInfo.identifierForVendor;
+//     return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+//   } else if(Platform.isAndroid) {
+//     var androidDeviceInfo = await deviceInfo.androidInfo;
+//     ambilid=androidDeviceInfo.id;
  
-    setState(() {
-      sn3=androidDeviceInfo.serialNumber.toString();
-      deviceid1=androidDeviceInfo.hardware.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString();
-      deviceid2=androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString() ; 
-    });
+//     setState(() {
+//       sn3=androidDeviceInfo.serialNumber.toString();
+//       deviceid1=androidDeviceInfo.hardware.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString();
+//       deviceid2=androidDeviceInfo.serialNumber.toString()+androidDeviceInfo.model.toString()+androidDeviceInfo.id.toString() ; 
+//     });
     
     
-  }
-}
+//   }
+// }
   
 
   // getLoadMemoryx() async {

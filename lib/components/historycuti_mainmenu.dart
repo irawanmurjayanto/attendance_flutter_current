@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_attendance_current/components/historycutidetail.dart';
+import 'package:flutter_attendance_current/components/historycutidetailsummary.dart';
 import 'package:flutter_attendance_current/components/server.dart';
 // import 'package:flutter_attendance_current/datamodel/history.dart';
 // import 'package:flutter_attendance_current/datamodel/listpend.dart';
@@ -151,62 +152,69 @@ final String nama;
             Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             
+                   SizedBox(height: 20,),
                 Container(
                   padding: EdgeInsets.all(5),
-                  child: Column(
+                  child: Row(
                     children: [
-                        SizedBox(height: 5,),
-                        GestureDetector(
+
+                    
+                        
+                         GestureDetector(
                         child: 
                       Container(
-                        width: MediaQuery.of(context).size.width-10,
-                        decoration: BoxDecoration(color: Colors.black),
-                        padding: EdgeInsets.only(top: 5,left: 10,bottom: 5,right: 5),
-                        child: Text(
-                          'Cuti',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                        ),                                                                  
+                         
+                        decoration: BoxDecoration(color: Colors.white,shape: BoxShape.circle),
+                        padding: EdgeInsets.all(10),
+                        child:  
+                         Menu_Detail('cuti.gif', 'Cuti'),
+                        
+                                                                                   
                       ),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik:nik, ket: 'cuti'),));
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetailSummary(nik: box.read('imei'), ket: 'cuti'),));
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetailSummary(nik:nik, ket: 'cuti'),));
+
                       },
                         ),
-                      SizedBox(height: 5,),
+                      SizedBox(width: 25,),
                       GestureDetector(
                         child: 
                          Container(
-                          width: MediaQuery.of(context).size.width-10,
-                             decoration: BoxDecoration(color: Colors.black),
-                           padding: EdgeInsets.only(top: 5,left: 10,bottom: 5,right: 5),
-                        child: Text(
-                          'Sakit',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                        ),                                                                  
+                         
+                                decoration: BoxDecoration(color: Colors.white,shape: BoxShape.circle),
+                        padding: EdgeInsets.all(10),
+                        child:   Menu_Detail('sakit.gif', 'Sakit'),                                                            
                       ),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: nik, ket: 'Sakit'),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: box.read('imei'), ket: 'Sakit'),));
                       },
                       ),
-                        SizedBox(height: 5,), 
+                        SizedBox(width: 25,), 
                       GestureDetector(
                         child:   
                          Container(
-                           width: MediaQuery.of(context).size.width-10,
-                             decoration: BoxDecoration(color: Colors.black),
-                          padding: EdgeInsets.only(top: 5,left: 10,bottom: 5,right: 5),
-                        child: Text(
-                          'Izin',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
-                        ),                                                                  
+                           
+                              decoration: BoxDecoration(color: Colors.white,shape: BoxShape.circle),
+                        padding: EdgeInsets.all(10),
+                        child:   Menu_Detail('izin.gif', 'Izin'),                                                            
                       ),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: nik, ket: 'izin'),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: box.read('imei'), ket: 'izin'),));
                       },
                       )
+
 
                     ],
                   ),
                 )
               ],
              ),
+
+
+             
 
         /*    
              SingleChildScrollView(
@@ -324,6 +332,29 @@ final String nama;
   
   }
 
+
+Widget Menu_Detail(String pict,String ttl){
+    return Container(
+   child: Column(
+ 
+    children: [
+        Container(
+          height: 50,
+          width: 50,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+             image: DecorationImage(image: AssetImage('assets/images/$pict'),fit: BoxFit.fill),
+             borderRadius: BorderRadius.circular(20),
+             border: Border.all(style: BorderStyle.solid,color: Colors.grey)
+          ),
+         // child: Image.asset('assets/images/menu11.gif'),
+        ),
+        const SizedBox(height: 5,),  
+        Text(ttl,style: const TextStyle(fontSize: 8,fontWeight: FontWeight.bold),),
+    ],
+   ),
+    );
+  }
 
 Widget showDateDetail(String tgl,String Absen) {
   final _tempDate=TextEditingController();
