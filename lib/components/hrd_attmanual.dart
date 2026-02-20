@@ -1292,7 +1292,7 @@ Row(
     child: Row(
       children: [
         Icon(Icons.refresh),
-        Text("Refresh x",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
+        Text("Refresh ",style:TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
       ],
     )
     

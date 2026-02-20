@@ -172,8 +172,7 @@ final String nama;
                                                                                    
                       ),
                       onTap: () {
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetailSummary(nik: box.read('imei'), ket: 'cuti'),));
+ 
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetailSummary(nik:nik, ket: 'cuti'),));
 
@@ -189,7 +188,7 @@ final String nama;
                         child:   Menu_Detail('sakit.gif', 'Sakit'),                                                            
                       ),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: box.read('imei'), ket: 'Sakit'),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: nik, ket: 'Sakit'),));
                       },
                       ),
                         SizedBox(width: 25,), 
@@ -202,7 +201,7 @@ final String nama;
                         child:   Menu_Detail('izin.gif', 'Izin'),                                                            
                       ),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: box.read('imei'), ket: 'izin'),));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryCutiDetail(nik: nik, ket: 'izin'),));
                       },
                       )
 
